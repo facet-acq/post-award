@@ -1,14 +1,21 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
-    "license": "MIT",
+    "name": "facet-acq/post-award",
+    "description": "Application Service Supporting Entitlement and Administration of Government Procurement Actions.",
+    "keywords": [
+        "procurement",
+        "procure to pay",
+        "entitlement",
+        "contract administration"
+    ],
+    "license": "BSD-3",
     "type": "project",
     "require": {
-        "php": ">=7.0.0",
+        "php": ">=7.1.0",
         "fideloper/proxy": "~3.3",
         "laravel/framework": "5.5.*",
-        "laravel/tinker": "~1.0"
+        "laravel/tinker": "~1.0",
+        "predis/predis": "^1.1",
+        "pusher/pusher-php-server": "^3.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
@@ -32,8 +39,7 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-            ]
+            "dont-discover": []
         }
     },
     "scripts": {
