@@ -1,5 +1,7 @@
 # FACET Post Award
 
+[![Build Status](https://travis-ci.org/facet-acq/post-award.svg?branch=develop)](https://travis-ci.org/facet-acq/post-award)
+
 [FACET-Acq](https://github.com/facet-acq/) is Federation of Administration and Contract Entitlement Transactions for Acquisitions. This service is designed to manage the 'post-award' portion of the Procurement-to-Payment business process.
 
 ## Scope
