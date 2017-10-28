@@ -23,41 +23,4 @@ While I can draw on my past experience in these processes and openly available r
 
 This project is a large concept, but it is very achievable. To do so technical assistance is accepted for code, design, DevOps and documentation.
 
-## Git Strategy
-
-### Branching
-
-This project leverages the popular Git-Flow as a general rule. If you're not currently using it, consider [learning more about git flow](https://datasift.github.io/gitflow/IntroducingGitFlow.html).
-
-_tl;dr_ all work is done in feature branches, these merge to develop which branches a release which is then merged back into both develop and master. Hotfixes are based on master and closed on merge to master and develop.
-
-This method ensures that:
-
-- the `master` branch has a tag for each commit layer, which matches production releases exactly
-- the `develop` branch holds the latest features ready for testing and quality assurance
-- each new feature is broken into a `features/[description]` branch for direct tracing of activities
-- new release candidates are built in a `release/[semanticVersion]` branch to do last minute changes before releasing to production
-  - version increments
-  - dependency lock down/updates
-- hotfixes are supported
-
-With its convenient plugin for Mac and Windows development platforms, even with simple understanding of the CLI concepts, the convention is easy to follow.
-
-### Pull Requests
-
-All PRs
-
-- should follow the style guidelines
-- must maintain or increase test coverage
-- reference the story/issue they address
-- call out any new dependencies added by the PR
-- check PR build results and resolve any issues
-- be made against the `develop` branch, or explain special circumstances why they are made against another
-
-### Commit messages
-
-Commit messages should reference the story/issue addressed, and must include a brief summary of the change proposed (this should be about 72 characters in length). The summary should be followed with a paragraph description of the change, intent, and explanation of any decisions made as part of the commit. This helps frame the story and lead to more meaningful code review feedback. In this vein, a PR should consist of several small commits instead of one large one. Incremental progress is easier to follow and review and a more natural workflow.
-
-### Merging
-
-All merges _should_ be conducted as `rebase` actions. If you're new to rebase-ing or have unanswered questions [this introduction blog post is excellent](https://dev.to/maxwell_dev/the-git-rebase-introduction-i-wish-id-had). This practice maintains the overall revision tree. The workflow is slightly more complex, but the long term benefits make it worth it to learn. Check out [the workflow](https://randyfay.com/content/rebase-workflow-git) here.
+Please make sure that code contributions follow the [style guide](https://github.com/facet-acq/post-award/wiki/Style-Guide#coding-styles) and that PRs follow the [PR strategy](https://github.com/facet-acq/post-award/wiki/Style-Guide#pull-requests).
