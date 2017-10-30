@@ -1,3 +1,5 @@
+sudo: required
+
 os:
   - linux
 
@@ -12,7 +14,10 @@ before_script:
   - cp .env.travis .env
   - pear install pear/PHP_CodeSniffer
   - phpenv rehash
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+  - php artisan serve &
 
 script:
   - vendor/bin/phpunit
+  - php artisan dusk
   - phpcs --ignore=app/Http/Controllers/Auth,app/Http/Controllers/Controller.php app/Http/Controllers
