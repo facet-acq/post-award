@@ -14,10 +14,25 @@ class CreateAgreementsTable extends Migration
     public function up()
     {
         Schema::create('agreements', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('order_identifier')
+            $table->uuid('uuid');
+            $table->primary('uuid');
+            $table->string('order')
                 ->index()
-                ->comment('Functional representation of the most basic form of an agreement. Equivalent to the ANSI X12 850 ST-BEG-BEG03 Order Identifier field.');
+                ->comment('Functional representation of the most basic form of an agreement.
+                    Equivalent to the ANSI X12 850 ST-BEG-BEG03 Order Identifier field.');
+            $table->string('release')
+                ->index()
+                ->nullable()
+                ->comment('Functional representation of a child agreement.
+                    This optional field Equivalent to the ANSI X12 850 ST-BEG-BEG04 Release Identifier field.');
+            $table->datetime('effective_date')
+                ->comment('Agreements go into effect at a specific date.
+                    This required field holds that date.');
+            $table->float('total_value');
+            $table->index([
+                'order',
+                'release'
+                ]);
             $table->timestamps();
         });
     }
