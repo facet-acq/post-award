@@ -23,9 +23,10 @@ While I can draw on my past experience in these processes and openly available r
 
 This project is a large concept, but it is very achievable. To do so technical assistance is accepted for code, design, DevOps and documentation.
 
-<<<<<<< HEAD
+## Style Guide
+
 Please make sure that code contributions follow the [style guide](https://github.com/facet-acq/post-award/wiki/Style-Guide#coding-styles) and that PRs follow the [PR strategy](https://github.com/facet-acq/post-award/wiki/Style-Guide#pull-requests).
-=======
+
 ## Git Strategy
 
 ### Branching
@@ -64,4 +65,3 @@ Commit messages should reference the story/issue addressed, and must include a b
 ### Merging
 
 All merges _should_ be conducted as `rebase` actions. If you're new to rebase-ing or have unanswered questions [this introduction blog post is excellent](https://dev.to/maxwell_dev/the-git-rebase-introduction-i-wish-id-had). This practice maintains the overall revision tree. The workflow is slightly more complex, but the long term benefits make it worth it to learn. Check out [the workflow](https://randyfay.com/content/rebase-workflow-git) here.
->>>>>>> Add contributing file
