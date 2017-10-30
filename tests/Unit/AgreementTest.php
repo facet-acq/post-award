@@ -13,7 +13,6 @@ class AgreementTest extends TestCase
     public function it_tracks_the_order_identifier()
     {
         $agreement = factory(\App\Agreement::class)->create();
-
         $this->assertNotNull($agreement->order);
     }
 
@@ -21,8 +20,14 @@ class AgreementTest extends TestCase
     public function it_tracks_the_release_identifier()
     {
         $agreement = factory(\App\Agreement::class)->create();
-
         $this->assertNotNull($agreement->release);
+    }
+
+    /** @test */
+    public function it_allows_release_identifier_to_be_null()
+    {
+        $agreement = factory(\App\Agreement::class)->create(['release' => null]);
+        $this->assertNull($agreement->release);
     }
 
     /** @test */
@@ -76,5 +81,17 @@ class AgreementTest extends TestCase
         $this->assertEquals($releaseId, $newAgreement->release);
         $this->assertEquals($effectiveDate, $newAgreement->effective_date);
         $this->assertEquals($totalValue, $newAgreement->total_value);
+    }
+
+    /** @test */
+    public function it_integrates_with_eloquent_find()
+    {
+        $agreement = factory(\App\Agreement::class)->create();
+        $agreementFound = \App\Agreement::find($agreement->uuid);
+
+        $this->assertEquals($agreement->uuid, $agreementFound->uuid);
+
+        $agreementSearched = \App\Agreement::where('uuid', $agreement->uuid)->get();
+        $this->assertCount(1, $agreementSearched);
     }
 }
