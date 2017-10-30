@@ -47,4 +47,14 @@ class Agreement extends Model
     {
         return 'uuid';
     }
+
+    /**
+     * Getter to integrate uuid value into Eloquent functionality
+     *
+     * @return void
+     */
+    public function getKeyName()
+    {
+        return 'uuid';
+    }
 }
