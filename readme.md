@@ -1,5 +1,6 @@
 # FACET Post Award
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d715c190ecd1406d8f91ddf9e7864d2c)](https://www.codacy.com/app/djfurman/post-award?utm_source=github.com&utm_medium=referral&utm_content=facet-acq/post-award&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/facet-acq/post-award.svg?branch=develop)](https://travis-ci.org/facet-acq/post-award)
 
 [FACET-Acq](https://github.com/facet-acq/) is Federation of Administration and Contract Entitlement Transactions for Acquisitions. This service is designed to manage the 'post-award' portion of the Procurement-to-Payment business process.
