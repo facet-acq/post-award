@@ -10,34 +10,19 @@ module.exports = __webpack_require__(38);
 /***/ }),
 
 /***/ 12:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-// External Setup
-__webpack_require__(13);
-// require('./echo');
-
-window.Vue = __webpack_require__(9);
-
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
 /**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
+ * Setup basic Axios AJAX headers and settings
  */
 
-var FacetLandingPage = Vue.component('facet-landing-page', __webpack_require__(34));
-
-var app = new Vue({
-  el: '#app',
-  component: { FacetLandingPage: FacetLandingPage }
-});
-
-/***/ }),
-
-/***/ 13:
-/***/ (function(module, exports, __webpack_require__) {
-
-// Setup basic Axios AJAX headers and settings
-window.axios = __webpack_require__(2);
+window.axios = __WEBPACK_IMPORTED_MODULE_0_axios___default.a;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 // Setup CSRF token
@@ -48,6 +33,21 @@ if (token) {
 } else {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
+
+// require('./echo');
+
+/**
+ * Setup Vue for the project
+ */
+
+window.Vue = __WEBPACK_IMPORTED_MODULE_1_vue___default.a;
+
+// Vue Comonent
+var FacetLandingPage = __WEBPACK_IMPORTED_MODULE_1_vue___default.a.component('facet-landing-page', __webpack_require__(34));
+
+var app = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
+    component: { FacetLandingPage: FacetLandingPage }
+}).$mount('#app');
 
 /***/ }),
 
