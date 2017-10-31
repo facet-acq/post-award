@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/facet-acq/post-award.svg?branch=develop)](https://travis-ci.org/facet-acq/post-award)
 [![Known Vulnerabilities](https://snyk.io/test/github/facet-acq/post-award/badge.svg)](https://snyk.io/test/github/facet-acq/post-award)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d715c190ecd1406d8f91ddf9e7864d2c)](https://www.codacy.com/app/djfurman/post-award?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=facet-acq/post-award&amp;utm_campaign=Badge_Grade)
 
 [FACET-Acq](https://github.com/facet-acq/) is Federation of Administration and Contract Entitlement Transactions for Acquisitions. This service is designed to manage the 'post-award' portion of the Procurement-to-Payment business process.
 
