@@ -23,6 +23,9 @@ before_script:
   - php artisan serve &
 
 script:
-  - vendor/bin/phpunit
+  - vendor/bin/phpunit --coverage-clover clover.xml
   - php artisan dusk
   - phpcs --ignore=app/Http/Controllers/Auth,app/Http/Controllers/Controller.php app/Http/Controllers
+
+after_script:
+  - php vendor/bin/codacycoverage clover clover.xml
