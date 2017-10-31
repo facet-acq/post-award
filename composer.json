@@ -19,6 +19,7 @@
         "webpatser/laravel-uuid": "^3.0"
     },
     "require-dev": {
+        "codacy/coverage": "^1.4",
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
         "laravel/dusk": "^2.0",
