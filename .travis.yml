@@ -13,11 +13,10 @@ addons:
 
 install:
   - composer self-update
-  - composer install --no-interaction
   - cp .env.travis .env
   - pear install pear/PHP_CodeSniffer
-  - phpenv rehash
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
+  - phpenv rehash
 
 before_script:
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
