@@ -4,7 +4,7 @@ webpackJsonp([1],{
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(12);
-module.exports = __webpack_require__(38);
+module.exports = __webpack_require__(37);
 
 
 /***/ }),
@@ -29,9 +29,9 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 var token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
 // require('./echo');
@@ -42,24 +42,24 @@ if (token) {
 
 window.Vue = __WEBPACK_IMPORTED_MODULE_1_vue___default.a;
 
-// Vue Comonent
-var FacetLandingPage = __WEBPACK_IMPORTED_MODULE_1_vue___default.a.component('facet-landing-page', __webpack_require__(34));
+// Vue Component
+var FacetLandingPage = __WEBPACK_IMPORTED_MODULE_1_vue___default.a.component('facet-landing-page', __webpack_require__(33));
 
 var app = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
-    component: { FacetLandingPage: FacetLandingPage }
+  component: { FacetLandingPage: FacetLandingPage }
 }).$mount('#app');
 
 /***/ }),
 
-/***/ 34:
+/***/ 33:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(35)
+var normalizeComponent = __webpack_require__(34)
 /* script */
-var __vue_script__ = __webpack_require__(36)
+var __vue_script__ = __webpack_require__(35)
 /* template */
-var __vue_template__ = __webpack_require__(37)
+var __vue_template__ = __webpack_require__(36)
 /* template functional */
   var __vue_template_functional__ = false
 /* styles */
@@ -100,7 +100,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 35:
+/***/ 34:
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -210,7 +210,7 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 
-/***/ 36:
+/***/ 35:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -230,7 +230,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 37:
+/***/ 36:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -260,7 +260,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 38:
+/***/ 37:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

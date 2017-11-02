@@ -12,9 +12,9 @@ let mix = require('laravel-mix');
  */
 
 mix.js('resources/assets/js/app.js', 'public/js')
-    .sass('resources/assets/sass/app.scss', 'public/css')
-    .extract(['vue', 'bulma', 'axios']);
+  .sass('resources/assets/sass/app.scss', 'public/css')
+  .extract(['vue', 'axios']);
 
 if (mix.inProduction()) {
-    mix.version();
+  mix.version();
 }
