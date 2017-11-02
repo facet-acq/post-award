@@ -9,9 +9,9 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 let token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
 // require('./echo');
@@ -22,9 +22,9 @@ if (token) {
 import Vue from 'vue';
 window.Vue = Vue;
 
-// Vue Comonent
+// Vue Component
 const FacetLandingPage = Vue.component('facet-landing-page', require('./components/FacetLandingPage.vue'));
 
 const app = new Vue({
-    component: { FacetLandingPage }
+  component: { FacetLandingPage }
 }).$mount('#app');

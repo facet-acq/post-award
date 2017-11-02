@@ -1,0 +1,16 @@
+{
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module"
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:vue/recommended"
+    ],
+    "plugins": [
+        "eslint-plugin-vue@beta"
+    ],
+    "rules": {
+        "vue/valid-v-if": "error"
+    }
+}
