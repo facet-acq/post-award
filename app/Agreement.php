@@ -2,10 +2,13 @@
 
 namespace App;
 
+use \App\Traits\IdentifyByUuid;
 use Illuminate\Database\Eloquent\Model;
 
 class Agreement extends Model
 {
+    use IdentifyByUuid;
+
     /**
      * Documents Mass Assignment Properties
      *
@@ -25,36 +28,8 @@ class Agreement extends Model
      */
     public $incrementing = false;
 
-    /**
-     * Setup model event hooks
-     *
-     * @return void
-     */
-    public static function boot()
+    public function addSeller($seller)
     {
-        parent::boot();
-        self::creating(function ($model) {
-            $model->uuid = (string) \Uuid::generate(4);
-        });
-    }
 
-    /**
-     * Setup route model binding for UUID
-     *
-     * @return void
-     */
-    public function getRouteKeyName()
-    {
-        return 'uuid';
-    }
-
-    /**
-     * Getter to integrate uuid value into Eloquent functionality
-     *
-     * @return void
-     */
-    public function getKeyName()
-    {
-        return 'uuid';
     }
 }

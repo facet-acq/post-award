@@ -1,22 +1,25 @@
+/**
+ * Setup basic Axios AJAX headers and settings
+ */
+import axios from 'axios';
+window.axios = axios;
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+// Setup CSRF token
+let token = document.head.querySelector('meta[name="csrf-token"]');
+if (token) {
+  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+}
 
 /**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
+ * Setup Vue for the project
  */
+import Vue from 'vue';
+window.Vue = Vue;
 
-require('./bootstrap');
-
-window.Vue = require('vue');
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+// Vue Component
+const FacetLandingPage = Vue.component('facet-landing-page', require('./components/FacetLandingPage.vue'));
 
 const app = new Vue({
-    el: '#app'
-});
+  component: { FacetLandingPage }
+}).$mount('#app');
