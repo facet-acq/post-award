@@ -27,4 +27,9 @@ class Agreement extends Model
      * @var boolean
      */
     public $incrementing = false;
+
+    public function addSeller($seller)
+    {
+
+    }
 }

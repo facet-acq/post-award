@@ -15,4 +15,9 @@ class Party extends Model
     * @var boolean
     */
     public $incrementing = false;
+
+    public function agreements()
+    {
+        return $this->hasMany(Agreement::class);
+    }
 }
