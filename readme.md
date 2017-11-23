@@ -17,3 +17,38 @@ In line with the [FACET-Acq](https://github.com/facet-acq/) vision, this service
 ## Contributing
 
 Contributions are welcome from both technical and business minded individuals, please [review our wiki](https://github.com/facet-acq/post-award/wiki#contributing) and join us!
+
+## Deployment Plan
+
+![amazon web services resilient deployment concept](DeployingPostAward.png)
+
+## Installation
+
+### Development
+
+In development? Great! There are a few options. I personally like the tiered approach.
+
+| Environment | System |
+| :--- | :--- |
+| Local | Mac/Linux |
+| CI | Travis |
+| Testing | Docker |
+| Production | Docker |
+
+#### IDE and Editors
+
+For an editor, I've recently been leveraging Visual Studio Code a free NodeJS based code editor which provides an excellent feature set and strong extensions for working with PHP and VueJS. As a charting tool, I leverage draw.io desktop.
+
+#### Local
+
+Locally I run the following on my Mac/Linux development environments:
+
+- Zsh
+- Git
+- Php
+- NodeJS
+- Laravel Valet
+- PostgreSQL
+- Redis
+
+While not the most automated setup (with the exception of Valet), I am quite comfortable with these from years of system work. I think the learning opportunities are valuable from working with the software on a more direct level.
