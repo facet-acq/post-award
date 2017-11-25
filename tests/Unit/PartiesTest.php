@@ -18,16 +18,15 @@ class PartiesTest extends TestCase
         $this->assertCount(1, Party::all());
     }
 
-    /** @test */
     public function it_has_many_agreements()
     {
         $party = factory(Party::class)->create();
 
         $agreements = factory(Agreement::class, 3)->create();
         $agreements->each(function ($agreement) use ($party) {
-            $agreement->addSeller($party);
+            $agreement->addBuyer($party);
         });
 
-        $this->assertCount(3, $party->agreements()->get());
+        $this->assertCount(3, $party->agreements->get());
     }
 }

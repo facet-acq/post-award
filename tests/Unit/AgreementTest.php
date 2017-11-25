@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Party;
+use App\Agreement;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -12,28 +14,28 @@ class AgreementTest extends TestCase
     /** @test */
     public function it_tracks_the_order_identifier()
     {
-        $agreement = factory(\App\Agreement::class)->create();
+        $agreement = factory(Agreement::class)->create();
         $this->assertNotNull($agreement->order);
     }
 
     /** @test */
     public function it_tracks_the_release_identifier()
     {
-        $agreement = factory(\App\Agreement::class)->create();
+        $agreement = factory(Agreement::class)->create();
         $this->assertNotNull($agreement->release);
     }
 
     /** @test */
     public function it_allows_release_identifier_to_be_null()
     {
-        $agreement = factory(\App\Agreement::class)->create(['release' => null]);
+        $agreement = factory(Agreement::class)->create(['release' => null]);
         $this->assertNull($agreement->release);
     }
 
     /** @test */
     public function it_adds_a_guid_to_each_agreement_as_the_id()
     {
-        $agreement = factory(\App\Agreement::class)->create();
+        $agreement = factory(Agreement::class)->create();
         $this->assertNotNull($agreement->uuid);
         $this->assertEquals(36, strlen($agreement->uuid));
     }
@@ -41,7 +43,7 @@ class AgreementTest extends TestCase
     /** @test */
     public function it_tracks_the_effective_date()
     {
-        $agreement = factory(\App\Agreement::class)->create();
+        $agreement = factory(Agreement::class)->create();
         $this->assertNotNull($agreement->effective_date);
         $this->assertInstanceOf(\Carbon\Carbon::class, $agreement->effective_date);
     }
@@ -49,7 +51,7 @@ class AgreementTest extends TestCase
     /** @test */
     public function it_tracks_total_agreement_value()
     {
-        $agreement = factory(\App\Agreement::class)->create();
+        $agreement = factory(Agreement::class)->create();
         $this->assertNotNull($agreement->total_value);
     }
 
@@ -61,7 +63,7 @@ class AgreementTest extends TestCase
         $effectiveDate = \Carbon\Carbon::now()->toDateString();
         $totalValue = 1000.05;
 
-        $newAgreement = new \App\Agreement([
+        $newAgreement = new Agreement([
             'order' => $orderId,
             'release' => $releaseId,
             'effective_date' => $effectiveDate,
@@ -86,12 +88,36 @@ class AgreementTest extends TestCase
     /** @test */
     public function it_integrates_with_eloquent_find()
     {
-        $agreement = factory(\App\Agreement::class)->create();
-        $agreementFound = \App\Agreement::find($agreement->uuid);
+        $agreement = factory(Agreement::class)->create();
+        $agreementFound = Agreement::find($agreement->uuid);
 
         $this->assertEquals($agreement->uuid, $agreementFound->uuid);
 
-        $agreementSearched = \App\Agreement::where('uuid', $agreement->uuid)->get();
+        $agreementSearched = Agreement::where('uuid', $agreement->uuid)->get();
         $this->assertCount(1, $agreementSearched);
+    }
+
+    /** @test */
+    public function it_can_add_a_buyer()
+    {
+        $party = factory(Party::class)->create();
+        $agreement = factory(Agreement::class)->create();
+
+        $agreement->addBuyer($party);
+
+        $this->assertNotNull($agreement->buyer());
+        $this->assertEquals($party->uuid, $agreement->buyer->uuid);
+    }
+
+    /** @test */
+    public function it_can_add_a_seller()
+    {
+        $party = factory(Party::class)->create();
+        $agreement = factory(Agreement::class)->create();
+
+        $agreement->addSeller($party);
+
+        $this->assertNotNull($agreement->seller());
+        $this->assertEquals($party->uuid, $agreement->seller->uuid);
     }
 }
