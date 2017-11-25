@@ -40,4 +40,16 @@ class Agreement extends Model
     {
         return $this->belongsTo(Party::class);
     }
+
+    public function seller()
+    {
+        return $this->belongsTo(Party::class);
+    }
+
+    public function addSeller($seller)
+    {
+        $this->seller()->associate($seller);
+        $this->save();
+        return $this;
+    }
 }

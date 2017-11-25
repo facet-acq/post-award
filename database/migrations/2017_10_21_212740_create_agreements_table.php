@@ -31,7 +31,11 @@ class CreateAgreementsTable extends Migration
             $table->uuid('buyer_uuid')
                 ->index()
                 ->nullable()
-                ->comment('Unique Identifier of the purchasing agent party of the identifier');
+                ->comment('Unique identifier of the purchasing agent party of the identifier');
+            $table->uuid('seller_uuid')
+                ->index()
+                ->nullable()
+                ->comment('Unique identifier of the vending agent party of the identifier');
             $table->float('total_value');
             $table->index([
                 'order',
