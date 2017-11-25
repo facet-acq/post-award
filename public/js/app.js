@@ -27,14 +27,9 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 // Setup CSRF token
 var token = document.head.querySelector('meta[name="csrf-token"]');
-
 if (token) {
   window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-} else {
-  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
-
-// require('./echo');
 
 /**
  * Setup Vue for the project
@@ -221,6 +216,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -245,7 +251,27 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "container is-fluid" }, [
-      _c("h1", [_vm._v("FACET")])
+      _c("h1", [_vm._v("FACET")]),
+      _vm._v(" "),
+      _c("section", [
+        _c("h1", [_vm._v("Getting Started Guide")]),
+        _vm._v(" "),
+        _c("h2", [_vm._v("FACET Post Award")]),
+        _vm._v(" "),
+        _c("p", [
+          _vm._v(
+            "Post Award is contract entitlement and administration system designed arond the federated microservices computing model and built from the ground up for cloud-based computuing and microdeployments as needed."
+          )
+        ]),
+        _vm._v(" "),
+        _c("h2", [_vm._v("Technologies")]),
+        _vm._v(" "),
+        _c("p", [
+          _vm._v(
+            "This system is built on powerful open source frameworks leveraging each for its core strengths and handing off defined contacts between system segments."
+          )
+        ])
+      ])
     ])
   }
 ]
