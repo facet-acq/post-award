@@ -28,8 +28,16 @@ class Agreement extends Model
      */
     public $incrementing = false;
 
-    public function addSeller($seller)
-    {
 
+    public function addBuyer($buyer)
+    {
+        $this->buyer()->associate($buyer);
+        $this->save();
+        return $this;
+    }
+
+    public function buyer()
+    {
+        return $this->belongsTo(Party::class);
     }
 }

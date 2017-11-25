@@ -28,11 +28,15 @@ class CreateAgreementsTable extends Migration
             $table->datetime('effective_date')
                 ->comment('Agreements go into effect at a specific date.
                     This required field holds that date.');
+            $table->uuid('buyer_uuid')
+                ->index()
+                ->nullable()
+                ->comment('Unique Identifier of the purchasing agent party of the identifier');
             $table->float('total_value');
             $table->index([
                 'order',
                 'release'
-                ]);
+            ]);
             $table->timestamps();
         });
     }
