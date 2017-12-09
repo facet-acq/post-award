@@ -1,8 +1,9 @@
 <?php
 
+use App\Role;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class RolesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(RolesTableSeeder::class);
+        Role::create(['description' => 'seller']);
+        Role::create(['description' => 'buyer']);
     }
 }
