@@ -20,7 +20,9 @@ Contributions are welcome from both technical and business minded individuals, p
 
 ## Deployment Plan
 
-![amazon web services resilient deployment concept](DeployingPostAward.png)
+### Resiliency Diagram for Web Application
+
+![amazon web services resilient deployment concept](design/DeployingPostAward.png)
 
 ## Installation
 
