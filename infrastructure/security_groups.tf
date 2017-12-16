@@ -69,3 +69,15 @@ resource "aws_security_group" "trading_partner_dropzone" {
     Contact   = "${var.contact_info}"
   }
 }
+
+resource "aws_security_group" "nat_instance" {
+  name        = "NatInstance"
+  description = "Passthrough to access internet resources from private subnets"
+  vpc_id      = "${aws_vpc.qa.id}"
+
+  tags {
+    Name      = "NatInstance"
+    CreatedBy = "Terraform"
+    Contact   = "${var.contact_info}"
+  }
+}

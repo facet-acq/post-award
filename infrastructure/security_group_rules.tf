@@ -11,7 +11,7 @@ resource "aws_security_group_rule" "allow_internet_http_to_alb" {
   security_group_id = "${aws_security_group.public_load_balancer.id}"
 }
 
-resource "aws_security_group_rule" "allow_internet_http_to_alb" {
+resource "aws_security_group_rule" "allow_internet_https_to_alb" {
   description = "Allow big scary internet IPv4 encrypted traffic to the ALB"
 
   type      = "ingress"
@@ -37,7 +37,7 @@ resource "aws_security_group_rule" "allow_internet6_http_to_alb" {
   security_group_id = "${aws_security_group.public_load_balancer.id}"
 }
 
-resource "aws_security_group_rule" "allow_internet6_http_to_alb" {
+resource "aws_security_group_rule" "allow_internet6_https_to_alb" {
   description = "Allow big scary internet IPv6 encrypted traffic to the ALB"
 
   type      = "ingress"
@@ -180,7 +180,7 @@ resource "aws_security_group_rule" "allow_database_access_out_from_bastion" {
   security_group_id = "${aws_security_group.bastion.id}"
 }
 
-esource "aws_security_group_rule" "allow_database_access_in_from_bastion" {
+resource "aws_security_group_rule" "allow_database_access_in_from_bastion" {
   description = "Allow access to database in from Bastion instance to lock database access into vpc"
 
   type      = "ingress"
@@ -191,4 +191,122 @@ esource "aws_security_group_rule" "allow_database_access_in_from_bastion" {
   source_security_group_id = "${aws_security_group.bastion.id}"
 
   security_group_id = "${aws_security_group.database.id}"
+}
+
+resource "aws_security_group_rule" "allow_web_group_egress_to_nat_instance" {
+  description = "Allow egress traffic from private subnet instances to NAT instance"
+
+  type      = "egress"
+  from_port = 80
+  to_port   = 80
+  protocol  = "all"
+
+  source_security_group_id = "${aws_security_group.nat_instance.id}"
+
+  security_group_id = "${aws_security_group.web_application.id}"
+}
+
+resource "aws_security_group_rule" "allow_web_group_secure_egress_to_nat_instance" {
+  description = "Allow egress traffic from private subnet instances to NAT instance"
+
+  type      = "egress"
+  from_port = 443
+  to_port   = 443
+  protocol  = "all"
+
+  source_security_group_id = "${aws_security_group.nat_instance.id}"
+
+  security_group_id = "${aws_security_group.web_application.id}"
+}
+
+resource "aws_security_group_rule" "allow_nat_instance_outgoing_traffic_to_internet" {
+  description = "Allow outbound access to the big scary internet from the NAT instance"
+
+  type      = "egress"
+  from_port = 80
+  to_port   = 80
+  protocol  = "all"
+
+  cidr_blocks = ["0.0.0.0/0"]
+
+  security_group_id = "${aws_security_group.nat_instance.id}"
+}
+
+resource "aws_security_group_rule" "allow_nat_instance_outgoing_traffic_to_ipv6_internet" {
+  description = "Allow outbound access to the big scary internet from the NAT instance"
+
+  type      = "egress"
+  from_port = 80
+  to_port   = 80
+  protocol  = "all"
+
+  ipv6_cidr_blocks = ["::/0"]
+
+  security_group_id = "${aws_security_group.nat_instance.id}"
+}
+
+resource "aws_security_group_rule" "allow_nat_instance_outgoing_secure_traffic_to_internet" {
+  description = "Allow outbound access to the big scary internet from the NAT instance on secure port"
+
+  type      = "egress"
+  from_port = 443
+  to_port   = 443
+  protocol  = "all"
+
+  cidr_blocks = ["0.0.0.0/0"]
+
+  security_group_id = "${aws_security_group.nat_instance.id}"
+}
+
+resource "aws_security_group_rule" "allow_nat_instance_outgoing_secure_traffic_to_ipv6_internet" {
+  description = "Allow outbound access to the big scary internet from the NAT instance on secure port"
+
+  type      = "egress"
+  from_port = 443
+  to_port   = 443
+  protocol  = "all"
+
+  ipv6_cidr_blocks = ["::/0"]
+
+  security_group_id = "${aws_security_group.nat_instance.id}"
+}
+
+resource "aws_security_group_rule" "allow_private_subnet_traffic_to_nat_instance" {
+  description = "Allow outbound access to the big scary internet via the NAT instance "
+
+  type      = "ingress"
+  from_port = 80
+  to_port   = 80
+  protocol  = "all"
+
+  cidr_blocks = [
+    "${aws_subnet.Private1a.cidr_block}",
+    "${aws_subnet.Private1b.cidr_block}",
+    "${aws_subnet.Private1c.cidr_block}",
+    "${aws_subnet.Private1d.cidr_block}",
+    "${aws_subnet.Private1e.cidr_block}",
+    "${aws_subnet.Private1f.cidr_block}",
+  ]
+
+  security_group_id = "${aws_security_group.nat_instance.id}"
+}
+
+resource "aws_security_group_rule" "allow_private_subnet_secure_traffic_to_nat_instance" {
+  description = "Allow outbound access to the big scary internet via the NAT instance on secure port"
+
+  type      = "ingress"
+  from_port = 443
+  to_port   = 443
+  protocol  = "all"
+
+  cidr_blocks = [
+    "${aws_subnet.Private1a.cidr_block}",
+    "${aws_subnet.Private1b.cidr_block}",
+    "${aws_subnet.Private1c.cidr_block}",
+    "${aws_subnet.Private1d.cidr_block}",
+    "${aws_subnet.Private1e.cidr_block}",
+    "${aws_subnet.Private1f.cidr_block}",
+  ]
+
+  security_group_id = "${aws_security_group.nat_instance.id}"
 }
