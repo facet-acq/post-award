@@ -57,11 +57,11 @@ resource "aws_route_table" "private" {
   vpc_id = "${aws_vpc.qa.id}"
 
   route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = "${aws_nat_gateway.nat.id}"
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = "${aws_nat_gateway.nat.id}"
   }
 
-  depends_on = ["${aws_nat_gateway.nat.id}"]
+  depends_on = ["aws_nat_gateway.nat"]
 
   tags {
     Name      = "Private Route Table"
@@ -72,7 +72,7 @@ resource "aws_route_table" "private" {
 
 resource "aws_main_route_table_association" "private" {
   vpc_id         = "${aws_vpc.qa.id}"
-  route_table_id = "${aws_route_table.private}"
+  route_table_id = "${aws_route_table.private.id}"
 }
 
 resource "aws_route_table_association" "Private1a" {
@@ -107,14 +107,17 @@ resource "aws_route_table_association" "Private1f" {
 
 resource "aws_eip" "nat_gatway" {
   vpc        = true
-  depends_on = ["${aws_internet_gateway.gw}"]
+  depends_on = ["aws_internet_gateway.gw"]
 }
 
 resource "aws_nat_gateway" "nat" {
-  allocation_id = "${aws_eip.nat_gatway}"
+  allocation_id = "${aws_eip.nat_gatway.id}"
   subnet_id     = "${aws_subnet.Public1e.id}"
 
-  depends_on = ["${aws_internet_gateway.gw}", "${aws_eip.nat_gatway}"]
+  depends_on = [
+    "aws_internet_gateway.gw",
+    "aws_eip.nat_gatway",
+  ]
 
   tags {
     Name      = "Private Network NAT"
