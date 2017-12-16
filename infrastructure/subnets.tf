@@ -78,7 +78,7 @@ resource "aws_subnet" "Public1f" {
 
 resource "aws_subnet" "Private1a" {
   vpc_id                  = "${aws_vpc.qa.id}"
-  cidr_block              = "10.101.11.0/24"
+  cidr_block              = "10.101.101.0/24"
   availability_zone       = "us-east-1a"
   map_public_ip_on_launch = false
 
@@ -91,7 +91,7 @@ resource "aws_subnet" "Private1a" {
 
 resource "aws_subnet" "Private1b" {
   vpc_id                  = "${aws_vpc.qa.id}"
-  cidr_block              = "10.101.12.0/24"
+  cidr_block              = "10.101.102.0/24"
   availability_zone       = "us-east-1b"
   map_public_ip_on_launch = false
 
@@ -104,7 +104,7 @@ resource "aws_subnet" "Private1b" {
 
 resource "aws_subnet" "Private1c" {
   vpc_id                  = "${aws_vpc.qa.id}"
-  cidr_block              = "10.101.13.0/24"
+  cidr_block              = "10.101.103.0/24"
   availability_zone       = "us-east-1c"
   map_public_ip_on_launch = false
 
@@ -117,7 +117,7 @@ resource "aws_subnet" "Private1c" {
 
 resource "aws_subnet" "Private1d" {
   vpc_id                  = "${aws_vpc.qa.id}"
-  cidr_block              = "10.101.14.0/24"
+  cidr_block              = "10.101.104.0/24"
   availability_zone       = "us-east-1d"
   map_public_ip_on_launch = false
 
@@ -130,7 +130,7 @@ resource "aws_subnet" "Private1d" {
 
 resource "aws_subnet" "Private1e" {
   vpc_id                  = "${aws_vpc.qa.id}"
-  cidr_block              = "10.101.15.0/24"
+  cidr_block              = "10.101.105.0/24"
   availability_zone       = "us-east-1e"
   map_public_ip_on_launch = false
 
@@ -143,7 +143,7 @@ resource "aws_subnet" "Private1e" {
 
 resource "aws_subnet" "Private1f" {
   vpc_id                  = "${aws_vpc.qa.id}"
-  cidr_block              = "10.101.16.0/24"
+  cidr_block              = "10.101.106.0/24"
   availability_zone       = "us-east-1f"
   map_public_ip_on_launch = false
 
