@@ -6,7 +6,8 @@ resource "aws_security_group_rule" "allow_internet_http_to_alb" {
   to_port   = 80
   protocol  = "tcp"
 
-  cidr_blocks = ["0.0.0.0/0"]
+  cidr_blocks      = ["0.0.0.0/0"]
+  ipv6_cidr_blocks = ["::/0"]
 
   security_group_id = "${aws_security_group.public_load_balancer.id}"
 }
@@ -19,32 +20,7 @@ resource "aws_security_group_rule" "allow_internet_https_to_alb" {
   to_port   = 443
   protocol  = "tcp"
 
-  cidr_blocks = ["0.0.0.0/0"]
-
-  security_group_id = "${aws_security_group.public_load_balancer.id}"
-}
-
-resource "aws_security_group_rule" "allow_internet6_http_to_alb" {
-  description = "Allow big scary internet IPv6 unencrypted traffic to the ALB for rerouting to secure"
-
-  type      = "ingress"
-  from_port = 80
-  to_port   = 80
-  protocol  = "tcp"
-
-  ipv6_cidr_blocks = ["::/0"]
-
-  security_group_id = "${aws_security_group.public_load_balancer.id}"
-}
-
-resource "aws_security_group_rule" "allow_internet6_https_to_alb" {
-  description = "Allow big scary internet IPv6 encrypted traffic to the ALB"
-
-  type      = "ingress"
-  from_port = 443
-  to_port   = 443
-  protocol  = "tcp"
-
+  cidr_blocks      = ["0.0.0.0/0"]
   ipv6_cidr_blocks = ["::/0"]
 
   security_group_id = "${aws_security_group.public_load_balancer.id}"
@@ -227,19 +203,7 @@ resource "aws_security_group_rule" "allow_nat_instance_outgoing_traffic_to_inter
   to_port   = 80
   protocol  = "all"
 
-  cidr_blocks = ["0.0.0.0/0"]
-
-  security_group_id = "${aws_security_group.nat_instance.id}"
-}
-
-resource "aws_security_group_rule" "allow_nat_instance_outgoing_traffic_to_ipv6_internet" {
-  description = "Allow outbound access to the big scary internet from the NAT instance"
-
-  type      = "egress"
-  from_port = 80
-  to_port   = 80
-  protocol  = "all"
-
+  cidr_blocks      = ["0.0.0.0/0"]
   ipv6_cidr_blocks = ["::/0"]
 
   security_group_id = "${aws_security_group.nat_instance.id}"
@@ -253,19 +217,7 @@ resource "aws_security_group_rule" "allow_nat_instance_outgoing_secure_traffic_t
   to_port   = 443
   protocol  = "all"
 
-  cidr_blocks = ["0.0.0.0/0"]
-
-  security_group_id = "${aws_security_group.nat_instance.id}"
-}
-
-resource "aws_security_group_rule" "allow_nat_instance_outgoing_secure_traffic_to_ipv6_internet" {
-  description = "Allow outbound access to the big scary internet from the NAT instance on secure port"
-
-  type      = "egress"
-  from_port = 443
-  to_port   = 443
-  protocol  = "all"
-
+  cidr_blocks      = ["0.0.0.0/0"]
   ipv6_cidr_blocks = ["::/0"]
 
   security_group_id = "${aws_security_group.nat_instance.id}"
