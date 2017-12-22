@@ -11,6 +11,12 @@ class AgreementTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function setUp()
+    {
+        parent::setUp();
+        $this->artisan('db:seed');
+    }
+
     /** @test */
     public function it_tracks_the_order_identifier()
     {
@@ -105,8 +111,8 @@ class AgreementTest extends TestCase
 
         $agreement->addBuyer($party);
 
-        $this->assertNotNull($agreement->buyer());
-        $this->assertEquals($party->uuid, $agreement->buyer->uuid);
+        $this->assertNotNull($agreement->buyer->first());
+        $this->assertEquals($party->uuid, $agreement->buyer->first()->uuid);
     }
 
     /** @test */
@@ -117,7 +123,20 @@ class AgreementTest extends TestCase
 
         $agreement->addSeller($party);
 
-        $this->assertNotNull($agreement->seller());
-        $this->assertEquals($party->uuid, $agreement->seller->uuid);
+        $this->assertNotNull($agreement->seller->first());
+        $this->assertEquals($party->uuid, $agreement->seller->first()->uuid);
+    }
+
+    /** @test */
+    public function it_identifies_the_right_buyer()
+    {
+        $buyerParty = factory(Party::class)->create();
+        $sellerParty = factory(Party::class)->create();
+
+        $agreement = factory(Agreement::class)->create()
+            ->addSeller($sellerParty)
+            ->addBuyer($buyerParty);
+
+            $this->assertEquals($buyerParty->uuid, $agreement->buyer->first()->uuid);
     }
 }

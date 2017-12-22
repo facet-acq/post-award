@@ -15,4 +15,9 @@ class Party extends Model
     * @var boolean
     */
     public $incrementing = false;
+
+    public function agreements()
+    {
+        return $this->belongsToMany('App\Agreement', 'party_assignments', 'party_uuid', 'agreement_uuid');
+    }
 }
