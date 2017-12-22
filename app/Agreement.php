@@ -1,6 +1,7 @@
 <?php
 namespace App;
 
+use \App\Role;
 use \App\Traits\IdentifyByUuid;
 use Illuminate\Database\Eloquent\Model;
 
@@ -27,27 +28,31 @@ class Agreement extends Model
      */
     public $incrementing = false;
 
-
-    public function addBuyer($buyer)
+    public function parties()
     {
-        $this->buyer()->associate($buyer);
-        $this->save();
-        return $this;
+        return $this->belongsToMany(Party::class, 'party_assignments', 'agreement_uuid', 'party_uuid')->withTimestamps();
     }
 
     public function buyer()
     {
-        return $this->belongsTo(Party::class);
+        return $this->parties()->wherePivot('role_uuid', Role::where('description', 'buyer')->first()->uuid);
     }
 
     public function seller()
     {
-        return $this->belongsTo(Party::class);
+        return $this->parties()->wherePivot('role_uuid', Role::where('description', 'seller')->first()->uuid);
+    }
+
+    public function addBuyer($buyer)
+    {
+        $this->parties()->attach($buyer, ['role_uuid' => Role::where('description', 'buyer')->first()->uuid]);
+        $this->save();
+        return $this;
     }
 
     public function addSeller($seller)
     {
-        $this->seller()->associate($seller);
+        $this->parties()->attach($seller, ['role_uuid' => Role::where('description', 'seller')->first()->uuid]);
         $this->save();
         return $this;
     }
