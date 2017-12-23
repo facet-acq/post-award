@@ -1,5 +1,6 @@
-FROM alpine:latest
+FROM alpine:3.7
 
+MAINTAINER "djfurman@gmail.com"
 LABEL maintainer="djfurman@gmail.com"
 
 RUN apk update && \
@@ -15,7 +16,7 @@ RUN apk update && \
 # Add secure DH exchange
 # Add SELinux
 
-ADD . /opt/facet/post-award
+COPY . /opt/facet/post-award
 
 # Setup Cron
 # Setup worker & supervisor
