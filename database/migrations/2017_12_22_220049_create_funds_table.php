@@ -15,6 +15,7 @@ class CreateFundsTable extends Migration
     {
         Schema::create('funds', function (Blueprint $table) {
             $table->uuid('uuid');
+            $table->morphs('accountable');
             $table->double('amount');
             $table->timestamps();
         });
