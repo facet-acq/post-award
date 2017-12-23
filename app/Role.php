@@ -2,17 +2,7 @@
 
 namespace App;
 
-use App\Traits\IdentifyByUuid;
-use Illuminate\Database\Eloquent\Model;
-
-class Role extends Model
+class Role extends UuidModel
 {
-    use IdentifyByUuid;
 
-    /**
-    * Inform the eloquent model that we are using UUID-4s not incrementing counts
-    *
-    * @var boolean
-    */
-    public $incrementing = false;
 }

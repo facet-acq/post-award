@@ -1,14 +1,8 @@
 <?php
 namespace App;
 
-use \App\Role;
-use \App\Traits\IdentifyByUuid;
-use Illuminate\Database\Eloquent\Model;
-
-class Agreement extends Model
+class Agreement extends UuidModel
 {
-    use IdentifyByUuid;
-
     /**
      * Documents Mass Assignment Properties
      *
@@ -20,13 +14,6 @@ class Agreement extends Model
         'effective_date',
         'total_value'
     ];
-
-    /**
-     * Inform the eloquent model that we are using UUID-4s not incrementing counts
-     *
-     * @var boolean
-     */
-    public $incrementing = false;
 
     public function parties()
     {
