@@ -5,7 +5,7 @@ namespace App;
 use \App\Traits\IdentifyByUuid;
 use Illuminate\Database\Eloquent\Model;
 
-class UuidModel extends Model
+abstract class UuidModel extends Model
 {
     use IdentifyByUuid;
 
