@@ -21,5 +21,16 @@ $factory->define(SloaAccountingLine::class, function (Faker $faker) {
         'security_cooperation' => $faker->countryISOAlpha3,
         'security_cooperation_implementing_agency_code' => $faker->randomElement(['B', 'D', 'P']),
         'security_cooperation_case_designator' => $faker->regexify('[A-Z0-9]{3,4}'),
+        'security_cooperation_case_line_item_identifier' => $faker->regexify('[0-9]{3}'),
+        'sub_allocation' => $faker->regexify('[0-9]{4}'),
+        'agency_disbursing_identifier_code' => $faker->regexify('[0-9]{4,8}'),
+        'agency_accounting_identifier' => $faker->regexify('[0-9]{6}'),
+        'funding_center_identifier' => $faker->regexify('[A-Z0-9]{16}'),
+        'cost_center_identifier' => $faker->regexify('[A-Z0-9]{16}'),
+        'project_identifier' => $faker->regexify('[A-Z0-9]{25}'),
+        'activity_identifier' => $faker->regexify('[A-Z0-9]{16}'),
+        'cost_element_code' => $faker->regexify('[A-Z0-9]{15}'),
+        'work_order_number' => $faker->regexify('[A-Z0-9]{16}'),
+        'functional_area' => $faker->regexify('[A-Z0-9]{16}'),
     ];
 });
