@@ -38,11 +38,38 @@ class SloaAccountingLineTest extends TestCase
     }
 
     /** @test */
+    public function it_allows_the_sub_class_to_be_null()
+    {
+        $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['sub_class' => null]);
+
+        $this->assertNull($sloaAccountingLine->sub_class);
+        $this->assertDatabaseHas('sloa_accounting_lines', ['sub_class' => null]);
+    }
+
+    /** @test */
     public function it_tracks_the_department_transfer()
     {
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['department_transfer' => '11']);
 
         $this->assertNotNull($sloaAccountingLine->department_transfer);
         $this->assertDatabaseHas('sloa_accounting_lines', ['department_transfer' => $sloaAccountingLine->department_transfer]);
+    }
+
+    /** @test */
+    public function it_allows_the_department_transfer_to_be_null()
+    {
+        $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['department_transfer' => null]);
+
+        $this->assertNull($sloaAccountingLine->department_transfer);
+        $this->assertDatabaseHas('sloa_accounting_lines', ['department_transfer' => null]);
+    }
+
+    /** @test */
+    public function it_tracks_the_department_regular()
+    {
+        $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
+
+        $this->assertNotNull($sloaAccountingLine->department_regular);
+        $this->assertDatabaseHas('sloa_accounting_lines', ['department_regular' => $sloaAccountingLine->department_regular]);
     }
 }
