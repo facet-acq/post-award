@@ -17,7 +17,10 @@ class CreateSloaFundsTable extends Migration
             $table->uuid('uuid');
             $table->string('sub_class', 2)
                 ->nullable()
-                ->comment('Grouping of a transaction type aka Sub-level Prefix');
+                ->comment('Grouping of a transaction type; a.k.a. Sub-level Prefix');
+            $table->string('department_transfer')
+                ->nullable()
+                ->comment('Transfer of obligation authority; a.k.a. Allocation Transfer Agency Identifier');
             $table->timestamps();
         });
     }

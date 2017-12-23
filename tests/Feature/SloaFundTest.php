@@ -12,6 +12,14 @@ class SloaFundTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function it_adds_a_guid_to_each_fund_as_the_id()
+    {
+        $fund = factory(SloaFund::class)->create();
+        $this->assertNotNull($fund->uuid);
+        $this->assertEquals(36, strlen($fund->uuid));
+    }
+
+    /** @test */
     public function it_tracks_the_sub_class()
     {
         $sloaFund = factory(SloaFund::class)->create(['sub_class' => '46']);
@@ -21,10 +29,11 @@ class SloaFundTest extends TestCase
     }
 
     /** @test */
-    public function it_adds_a_guid_to_each_fund_as_the_id()
+    public function it_tracks_the_department_transfer()
     {
-        $fund = factory(SloaFund::class)->create();
-        $this->assertNotNull($fund->uuid);
-        $this->assertEquals(36, strlen($fund->uuid));
+        $sloaFund = factory(SloaFund::class)->create(['department_transfer' => '11']);
+
+        $this->assertNotNull($sloaFund->department_transfer);
+        $this->assertDatabaseHas('sloa_funds', ['department_transfer' => $sloaFund->department_transfer]);
     }
 }
