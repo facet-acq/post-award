@@ -9,6 +9,9 @@ class CreateSloaAccountingLinesTable extends Migration
     /**
      * Run the migrations.
      *
+     * The descriptions for all of these fields have been taken directly from the SLOA memorandum openly available from DCMO
+     * The author does not attest to the relevancy of the descriptions themselves, but includes them instead to reduce reference materials required for database analysis
+     *
      * @return void
      */
     public function up()
@@ -60,6 +63,38 @@ class CreateSloaAccountingLinesTable extends Migration
             $table->string('security_cooperation_case_designator', 4)
                 ->nullable()
                 ->comment('Identifies the FMS or Security Cooperation contractual sales agreement between countries');
+            $table->string('security_cooperation_case_line_item_identifier', 3)
+                ->nullable()
+                ->comment('Security Cooperation (SC) Customer; Identifies a detailed line-item requirement');
+            $table->string('sub_allocation', 4)
+                ->nullable()
+                ->comment('Use of this data element is exclusive to sub-allocation purposes, useful for Financial Reporting');
+            $table->string('agency_disbursing_identifier_code', 8)
+                ->nullable()
+                ->comment('Synonymous with Treasury DSSN definitions for each disbursing office');
+            $table->string('agency_accounting_identifier', 6)
+                ->comment('Fiscal Station Number; Comptroller defined; Identifies the accounting system responsible for the accounting event');
+            $table->string('funding_center_identifier', 16)
+                ->nullable()
+                ->comment('Cost Object/Cost Accounting (CA) section in SFIS; Army = Funds Center, ASN; Air Force = OAC, OBAN; Navy = BCN');
+            $table->string('cost_center_identifier', 16)
+                ->nullable()
+                ->comment('CA section in SFIS; e.g., Army = Cost Center, ASN; Air Force = Resource Center/Cost Center (RC/CC); Navy = BCN');
+            $table->string('project_identifier', 25)
+                ->nullable()
+                ->comment('CA section in SFIS; e.g., Army = WBS; Air Force = Project; Navy = WBS (Cost Code)');
+            $table->string('activity_identifier', 16)
+                ->nullable()
+                ->comment('CA section in SFIS; e.g., Army = Activity/Network; Air Force = Activity or Special Project; Navy = Activity');
+            $table->string('cost_element_code', 15)
+                ->nullable()
+                ->comment('CA section in SFIS; e.g., Army = Commitment Item; Air Force = Element of Expense Investment Code (EEIC); Navy = Cost Element ');
+            $table->string('work_order_number', 16)
+                ->nullable()
+                ->comment('CCA section in SFIS; e.g., Army = Internal Order; Air Force = Job Order; Navy = Job Order (Cost Code)');
+            $table->string('functional_area', 16)
+                ->nullable()
+                ->comment('CA section in SFIS; e.g., Army = Functional Area; Air Force = Budget/Project');
             $table->timestamps();
         });
     }
