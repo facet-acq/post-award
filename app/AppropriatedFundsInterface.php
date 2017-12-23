@@ -8,7 +8,7 @@ interface AppropriatedFundsInterface
 
     public function expiresInFiscalYear();
 
-    public function accountingStation();
+    public function accountingSystemOfRecord();
 
     public function funds();
 }
