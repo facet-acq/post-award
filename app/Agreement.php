@@ -1,8 +1,6 @@
 <?php
 namespace App;
 
-use \App\Role;
-
 class Agreement extends UuidModel
 {
     /**
