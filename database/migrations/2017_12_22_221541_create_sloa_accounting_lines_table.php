@@ -18,9 +18,11 @@ class CreateSloaAccountingLinesTable extends Migration
             $table->string('sub_class', 2)
                 ->nullable()
                 ->comment('Grouping of a transaction type; a.k.a. Sub-level Prefix');
-            $table->string('department_transfer')
+            $table->string('department_transfer', 3)
                 ->nullable()
                 ->comment('Transfer of obligation authority; a.k.a. Allocation Transfer Agency Identifier');
+            $table->string('department_regular', 3)
+                ->comment('Congressional Appropriation Owner');
             $table->timestamps();
         });
     }
