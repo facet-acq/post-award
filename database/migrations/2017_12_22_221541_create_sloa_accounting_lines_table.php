@@ -18,6 +18,7 @@ class CreateSloaAccountingLinesTable extends Migration
     {
         Schema::create('sloa_accounting_lines', function (Blueprint $table) {
             $table->uuid('uuid');
+            $table->primary('uuid');
             $table->string('sub_class', 2)
                 ->nullable()
                 ->comment('Grouping of a transaction type; a.k.a. Sub-level Prefix');

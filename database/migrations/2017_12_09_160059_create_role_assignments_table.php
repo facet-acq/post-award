@@ -14,7 +14,6 @@ class CreateRoleAssignmentsTable extends Migration
     public function up()
     {
         Schema::create('party_assignments', function (Blueprint $table) {
-            $table->increments('id');
             $table->uuid('party_uuid');
             $table->uuid('agreement_uuid');
             $table->uuid('role_uuid');
