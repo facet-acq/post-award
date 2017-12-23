@@ -473,5 +473,14 @@ class SloaAccountingLineTest extends TestCase
         $this->assertDatabaseHas('sloa_accounting_lines', ['functional_area' => $sloaAccountingLine->functional_area]);
     }
 
+    /** @test */
+    public function it_returns_the_accounting_system_of_record()
+    {
+        $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
+
+        $this->assertNotNull($sloaAccountingLine->accountingSystemOfRecord());
+        $this->assertEquals($sloaAccountingLine->agency_accounting_identifier, $sloaAccountingLine->accountingSystemOfRecord());
+    }
+
     // TODO write a method that makes this thing a hat delimited string
 }

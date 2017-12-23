@@ -14,8 +14,8 @@ class SloaAccountingLine extends AccountingLine
         return null;
     }
 
-    public function accountingStation()
+    public function accountingSystemOfRecord()
     {
-        return null;
+        return $this->agency_accounting_identifier;
     }
 }
