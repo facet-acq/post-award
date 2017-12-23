@@ -482,5 +482,47 @@ class SloaAccountingLineTest extends TestCase
         $this->assertEquals($sloaAccountingLine->agency_accounting_identifier, $sloaAccountingLine->accountingSystemOfRecord());
     }
 
+    /** @test */
+    public function it_returns_the_treasury_data()
+    {
+        // Given a SLOA Working Capital Fund
+        $sloaWorkingCapitalAccountingLine = factory(SloaAccountingLine::class)->create([
+            'bpoa' => null,
+            'epoa' => null,
+            'availability_type' => 'X'
+        ]);
+
+        // The working capital fund should populate fiscal year as 'X' signifying perpetuality
+        $expectedWorkingCapitalTreasuryData = [
+            "department_regular" => $sloaWorkingCapitalAccountingLine->department_regular,
+            "department_transfer" => $sloaWorkingCapitalAccountingLine->department_transfer,
+            "fiscal_year" => "XXXXXXXX",
+            "main_account" => $sloaWorkingCapitalAccountingLine->main_account,
+            "sub_allocation" => $sloaWorkingCapitalAccountingLine->sub_allocation
+        ];
+
+        // When treasury data is requested
+        $treasuryData = $sloaWorkingCapitalAccountingLine->treasuryData();
+        // Then the expected treasury elements should be returned as an array
+        $this->assertEquals($expectedWorkingCapitalTreasuryData, $treasuryData);
+
+        // Given a SLOA General Appropriations Fund
+        $sloaGeneralAccountingLine = factory(SloaAccountingLine::class)->create();
+
+        // The general fund should populate fiscal year as a concatenation of beginning and ending years
+        $expectedGeneralAccountingTreasuryData = [
+            "department_regular" => $sloaGeneralAccountingLine->department_regular,
+            "department_transfer" => $sloaGeneralAccountingLine->department_transfer,
+            "fiscal_year" => $sloaGeneralAccountingLine->bpoa->year.$sloaGeneralAccountingLine->epoa->year,
+            "main_account" => $sloaGeneralAccountingLine->main_account,
+            "sub_allocation" => $sloaGeneralAccountingLine->sub_allocation
+        ];
+
+        // When treasury data is requested
+        $treasuryData = $sloaGeneralAccountingLine->treasuryData();
+        // Then the expected treasury elements should be returned as an array
+        $this->assertEquals($expectedGeneralAccountingTreasuryData, $treasuryData);
+    }
+
     // TODO write a method that makes this thing a hat delimited string
 }
