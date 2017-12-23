@@ -5,6 +5,7 @@ use Faker\Generator as Faker;
 
 $factory->define(SloaFund::class, function (Faker $faker) {
     return [
-        'sub_class' => null
+        'sub_class' => null,
+        'department_transfer' => null
     ];
 });
