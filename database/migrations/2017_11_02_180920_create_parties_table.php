@@ -15,6 +15,7 @@ class CreatePartiesTable extends Migration
     {
         Schema::create('parties', function (Blueprint $table) {
             $table->uuid('uuid');
+            $table->primary('uuid');
             $table->timestamps();
         });
     }
