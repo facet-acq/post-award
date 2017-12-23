@@ -4,13 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SloaAccountingLine extends UuidModel implements AppropriatedFundsInterface
+class SloaAccountingLine extends AccountingLine
 {
-    public function funds()
-    {
-        return $this->morphMany('App\Fund', 'accountable');
-    }
-
     public function treasuryData()
     {
         return null;
