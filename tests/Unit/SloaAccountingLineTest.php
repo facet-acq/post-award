@@ -175,127 +175,99 @@ class SloaAccountingLineTest extends TestCase
     }
 
     /** @test */
-    public function it_tracks_the_budget_line_item()
+    public function it_tracks_the_budget_line_item_and_allows_it_to_be_null()
     {
+        // Tracking
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
-
         $this->assertNotNull($sloaAccountingLine->budget_line_item);
         $this->assertDatabaseHas('sloa_accounting_lines', ['budget_line_item' => $sloaAccountingLine->budget_line_item]);
-    }
 
-    /** @test */
-    public function it_allows_the_budget_line_item_to_be_null()
-    {
+        // Nullable
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['budget_line_item' => null]);
-
         $this->assertNull($sloaAccountingLine->budget_line_item);
         $this->assertDatabaseHas('sloa_accounting_lines', ['budget_line_item' => $sloaAccountingLine->budget_line_item]);
     }
 
     /** @test */
-    public function it_tracks_the_security_cooperation()
+    public function it_tracks_the_security_cooperation_and_allows_it_to_be_null()
     {
+        // Tracking
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
-
         $this->assertNotNull($sloaAccountingLine->security_cooperation);
         $this->assertDatabaseHas('sloa_accounting_lines', ['security_cooperation' => $sloaAccountingLine->security_cooperation]);
-    }
 
-    /** @test */
-    public function it_allows_the_security_cooperation_to_be_null()
-    {
+        // Nullable
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['security_cooperation' => null]);
-
         $this->assertNull($sloaAccountingLine->security_cooperation);
         $this->assertDatabaseHas('sloa_accounting_lines', ['security_cooperation' => $sloaAccountingLine->security_cooperation]);
     }
 
     /** @test */
-    public function it_tracks_the_security_cooperation_implementing_agency_code()
+    public function it_tracks_the_security_cooperation_implementing_agency_code_and_allows_it_to_be_null()
     {
+        //Tracking
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
-
         $this->assertNotNull($sloaAccountingLine->security_cooperation_implementing_agency_code);
         $this->assertDatabaseHas('sloa_accounting_lines', ['security_cooperation_implementing_agency_code' => $sloaAccountingLine->security_cooperation_implementing_agency_code]);
-    }
 
-    /** @test */
-    public function it_allows_the_security_cooperation_implementing_agency_code_to_be_null()
-    {
+        // Nullable
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['security_cooperation_implementing_agency_code' => null]);
-
         $this->assertNull($sloaAccountingLine->security_cooperation_implementing_agency_code);
         $this->assertDatabaseHas('sloa_accounting_lines', ['security_cooperation_implementing_agency_code' => $sloaAccountingLine->security_cooperation_implementing_agency_code]);
     }
 
     /** @test */
-    public function it_tracks_the_security_cooperation_case_designator()
+    public function it_tracks_the_security_cooperation_case_designator_and_allows_it_to_be_null()
     {
+        // Tracking
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
-
         $this->assertNotNull($sloaAccountingLine->security_cooperation_case_designator);
         $this->assertDatabaseHas('sloa_accounting_lines', ['security_cooperation_case_designator' => $sloaAccountingLine->security_cooperation_case_designator]);
-    }
 
-    /** @test */
-    public function it_allows_the_security_cooperation_case_designator_to_be_null()
-    {
+        // Nullable
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['security_cooperation_case_designator' => null]);
-
         $this->assertNull($sloaAccountingLine->security_cooperation_case_designator);
         $this->assertDatabaseHas('sloa_accounting_lines', ['security_cooperation_case_designator' => $sloaAccountingLine->security_cooperation_case_designator]);
     }
 
     /** @test */
-    public function it_tracks_the_security_cooperation_case_line_item_identifier()
+    public function it_tracks_the_security_cooperation_case_line_item_identifier_and_allows_it_to_be_null()
     {
+        // Tracking
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
-
         $this->assertNotNull($sloaAccountingLine->security_cooperation_case_line_item_identifier);
         $this->assertDatabaseHas('sloa_accounting_lines', ['security_cooperation_case_line_item_identifier' => $sloaAccountingLine->security_cooperation_case_line_item_identifier]);
-    }
 
-    /** @test */
-    public function it_allows_the_security_cooperation_case_line_item_identifier_to_be_null()
-    {
+        // Nullable
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['security_cooperation_case_line_item_identifier' => null]);
-
         $this->assertNull($sloaAccountingLine->security_cooperation_case_line_item_identifier);
         $this->assertDatabaseHas('sloa_accounting_lines', ['security_cooperation_case_line_item_identifier' => $sloaAccountingLine->security_cooperation_case_line_item_identifier]);
     }
 
     /** @test */
-    public function it_tracks_the_sub_allocation()
+    public function it_tracks_the_sub_allocation_and_allow_it_to_be_null()
     {
+        // Tracking
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
-
         $this->assertNotNull($sloaAccountingLine->sub_allocation);
         $this->assertDatabaseHas('sloa_accounting_lines', ['sub_allocation' => $sloaAccountingLine->sub_allocation]);
-    }
 
-    /** @test */
-    public function it_allows_the_sub_allocation_to_be_null()
-    {
+        // Nullable
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['sub_allocation' => null]);
-
         $this->assertNull($sloaAccountingLine->sub_allocation);
         $this->assertDatabaseHas('sloa_accounting_lines', ['sub_allocation' => $sloaAccountingLine->sub_allocation]);
     }
 
     /** @test */
-    public function it_tracks_the_agency_disbursing_identifier_code()
+    public function it_tracks_the_agency_disbursing_identifier_code_and_allow_it_to_be_null()
     {
+        // Tracking
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
-
         $this->assertNotNull($sloaAccountingLine->agency_disbursing_identifier_code);
         $this->assertDatabaseHas('sloa_accounting_lines', ['agency_disbursing_identifier_code' => $sloaAccountingLine->agency_disbursing_identifier_code]);
-    }
 
-    /** @test */
-    public function it_allows_the_agency_disbursing_identifier_code_to_be_null()
-    {
+        // Nullable
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['agency_disbursing_identifier_code' => null]);
-
         $this->assertNull($sloaAccountingLine->agency_disbursing_identifier_code);
         $this->assertDatabaseHas('sloa_accounting_lines', ['agency_disbursing_identifier_code' => $sloaAccountingLine->agency_disbursing_identifier_code]);
     }
@@ -312,19 +284,15 @@ class SloaAccountingLineTest extends TestCase
     // TODO write a test to make sure this isn't null
 
     /** @test */
-    public function it_tracks_the_funding_center_identifier()
+    public function it_tracks_the_funding_center_identifier_and_allow_it_to_be_null()
     {
+        //Tracking
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
-
         $this->assertNotNull($sloaAccountingLine->funding_center_identifier);
         $this->assertDatabaseHas('sloa_accounting_lines', ['funding_center_identifier' => $sloaAccountingLine->funding_center_identifier]);
-    }
 
-    /** @test */
-    public function it_allows_the_funding_center_identifier_to_be_null()
-    {
+        // Nullable
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['funding_center_identifier' => null]);
-
         $this->assertNull($sloaAccountingLine->funding_center_identifier);
         $this->assertDatabaseHas('sloa_accounting_lines', ['funding_center_identifier' => $sloaAccountingLine->funding_center_identifier]);
     }
