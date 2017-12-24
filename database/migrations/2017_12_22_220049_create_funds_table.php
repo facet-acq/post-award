@@ -1,4 +1,4 @@
-<?php
+l<?php
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,7 +16,9 @@ class CreateFundsTable extends Migration
         Schema::create('funds', function (Blueprint $table) {
             $table->uuid('uuid');
             $table->primary('uuid');
-            $table->morphs('accountable');
+            $table->uuid('accountable_id');
+            $table->string('accountable_type');
+            $table->index(['accountable_id', 'accountable_type']);
             $table->timestamps();
         });
     }
