@@ -10,6 +10,5 @@ $factory->define(Fund::class, function (Faker $faker) {
     return [
         'accountable_type' => '\App\SloaAccountingLine',
         'accountable_id' => $sloaAccountingLine->uuid,
-        'amount' => $faker->randomFloat()
     ];
 });

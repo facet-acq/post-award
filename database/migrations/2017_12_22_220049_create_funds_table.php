@@ -17,7 +17,6 @@ class CreateFundsTable extends Migration
             $table->uuid('uuid');
             $table->primary('uuid');
             $table->morphs('accountable');
-            $table->double('amount');
             $table->timestamps();
         });
     }
