@@ -29,37 +29,29 @@ class SloaAccountingLineTest extends TestCase
     }
 
     /** @test */
-    public function it_tracks_the_sub_class()
+    public function it_tracks_the_sub_class_and_allows_it_to_be_null()
     {
+        // Tracking
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['sub_class' => '46']);
-
         $this->assertNotNull($sloaAccountingLine->sub_class);
         $this->assertDatabaseHas('sloa_accounting_lines', ['sub_class' => $sloaAccountingLine->sub_class]);
-    }
 
-    /** @test */
-    public function it_allows_the_sub_class_to_be_null()
-    {
+        // Nullable
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['sub_class' => null]);
-
         $this->assertNull($sloaAccountingLine->sub_class);
         $this->assertDatabaseHas('sloa_accounting_lines', ['sub_class' => null]);
     }
 
     /** @test */
-    public function it_tracks_the_department_transfer()
+    public function it_tracks_the_department_transfer_and_allows_it_to_be_null()
     {
+        // Tracking
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['department_transfer' => '11']);
-
         $this->assertNotNull($sloaAccountingLine->department_transfer);
         $this->assertDatabaseHas('sloa_accounting_lines', ['department_transfer' => $sloaAccountingLine->department_transfer]);
-    }
 
-    /** @test */
-    public function it_allows_the_department_transfer_to_be_null()
-    {
+        // Nullable
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['department_transfer' => null]);
-
         $this->assertNull($sloaAccountingLine->department_transfer);
         $this->assertDatabaseHas('sloa_accounting_lines', ['department_transfer' => null]);
     }
@@ -70,61 +62,49 @@ class SloaAccountingLineTest extends TestCase
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
 
         $this->assertNotNull($sloaAccountingLine->department_regular);
-        $this->assertDatabaseHas('sloa_accounting_lines', ['department_regular' => $sloaAccountingLine->department_regular]);
+        $this->assertDatabaseHas('sloa_accounting_lines', [
+            'department_regular' => $sloaAccountingLine->department_regular
+        ]);
     }
 
-    // TODO figure out how to assert that if you do pass null as department_regular an exception is thrown as an expected test
-
     /** @test */
-    public function it_tracks_the_beginning_period_of_availability_fiscal_year_date()
+    public function it_tracks_the_beginning_period_of_availability_fiscal_year_date_and_allows_it_to_be_null()
     {
+        // Tracking
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
-
         $this->assertNotNull($sloaAccountingLine->bpoa);
         $this->assertDatabaseHas('sloa_accounting_lines', ['bpoa' => $sloaAccountingLine->bpoa]);
-    }
 
-    /** @test */
-    public function it_allows_the_beginning_period_of_availability_fiscal_year_date_to_be_null()
-    {
+        // Nullable
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['bpoa' => null]);
-
         $this->assertNull($sloaAccountingLine->bpoa);
         $this->assertDatabaseHas('sloa_accounting_lines', ['bpoa' => $sloaAccountingLine->bpoa]);
     }
 
     /** @test */
-    public function it_tracks_the_ending_period_of_availability_fiscal_year_date()
+    public function it_tracks_the_ending_period_of_availability_fiscal_year_date_and_allows_it_to_be_null()
     {
+        // Tracking
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
-
         $this->assertNotNull($sloaAccountingLine->epoa);
         $this->assertDatabaseHas('sloa_accounting_lines', ['epoa' => $sloaAccountingLine->epoa]);
-    }
 
-    /** @test */
-    public function it_allows_the_ending_period_of_availability_fiscal_year_date_to_be_null()
-    {
+        // Nullable
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['epoa' => null]);
-
         $this->assertNull($sloaAccountingLine->epoa);
         $this->assertDatabaseHas('sloa_accounting_lines', ['epoa' => $sloaAccountingLine->epoa]);
     }
 
     /** @test */
-    public function it_tracks_the_availability_type()
+    public function it_tracks_the_availability_type_and_allows_it_to_be_null()
     {
+        // Tracking
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['availability_type' => 'X']);
-
         $this->assertNotNull($sloaAccountingLine->availability_type);
         $this->assertDatabaseHas('sloa_accounting_lines', ['availability_type' => $sloaAccountingLine->availability_type]);
-    }
 
-    /** @test */
-    public function it_allows_the_availability_type_to_be_null()
-    {
+        // Nullable
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['availability_type' => null]);
-
         $this->assertNull($sloaAccountingLine->availability_type);
         $this->assertDatabaseHas('sloa_accounting_lines', ['availability_type' => $sloaAccountingLine->availability_type]);
     }
@@ -139,73 +119,57 @@ class SloaAccountingLineTest extends TestCase
     }
 
     /** @test */
-    public function it_tracks_the_sub_account()
+    public function it_tracks_the_sub_account_and_allows_it_to_be_null()
     {
+        // Tracking
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
-
         $this->assertNotNull($sloaAccountingLine->sub_account);
         $this->assertDatabaseHas('sloa_accounting_lines', ['sub_account' => $sloaAccountingLine->sub_account]);
-    }
 
-    /** @test */
-    public function it_allows_the_sub_account_to_be_null()
-    {
+        // Nullable
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['sub_account' => null]);
-
         $this->assertNull($sloaAccountingLine->sub_account);
         $this->assertDatabaseHas('sloa_accounting_lines', ['sub_account' => $sloaAccountingLine->sub_account]);
     }
 
     /** @test */
-    public function it_tracks_the_business_event_type_code()
+    public function it_tracks_the_business_event_type_code_and_allows_it_to_be_null()
     {
+        // Tracking
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
-
         $this->assertNotNull($sloaAccountingLine->business_event_type_code);
         $this->assertDatabaseHas('sloa_accounting_lines', ['business_event_type_code' => $sloaAccountingLine->business_event_type_code]);
-    }
 
-    /** @test */
-    public function it_allows_the_business_event_type_code_to_be_null()
-    {
+        // Nullable
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['business_event_type_code' => null]);
-
         $this->assertNull($sloaAccountingLine->business_event_type_code);
         $this->assertDatabaseHas('sloa_accounting_lines', ['business_event_type_code' => $sloaAccountingLine->business_event_type_code]);
     }
 
     /** @test */
-    public function it_tracks_the_object_class()
+    public function it_tracks_the_object_class_and_allows_it_to_be_null()
     {
+        // Tracking
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
-
         $this->assertNotNull($sloaAccountingLine->object_class);
         $this->assertDatabaseHas('sloa_accounting_lines', ['object_class' => $sloaAccountingLine->object_class]);
-    }
 
-    /** @test */
-    public function it_allows_the_object_class_to_be_null()
-    {
+        // Nullable
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['object_class' => null]);
-
         $this->assertNull($sloaAccountingLine->object_class);
         $this->assertDatabaseHas('sloa_accounting_lines', ['object_class' => $sloaAccountingLine->object_class]);
     }
 
     /** @test */
-    public function it_tracks_the_reimbursable_flag()
+    public function it_tracks_the_reimbursable_flag_and_allows_it_to_be_null()
     {
+        // Tracking
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
-
         $this->assertNotNull($sloaAccountingLine->reimbursable_flag);
         $this->assertDatabaseHas('sloa_accounting_lines', ['reimbursable_flag' => $sloaAccountingLine->reimbursable_flag]);
-    }
 
-    /** @test */
-    public function it_allows_the_reimbursable_flag_to_be_null()
-    {
+        // Nullable
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create(['reimbursable_flag' => null]);
-
         $this->assertNull($sloaAccountingLine->reimbursable_flag);
         $this->assertDatabaseHas('sloa_accounting_lines', ['reimbursable_flag' => $sloaAccountingLine->reimbursable_flag]);
     }
@@ -486,42 +450,42 @@ class SloaAccountingLineTest extends TestCase
     public function it_returns_the_treasury_data()
     {
         // Given a SLOA Working Capital Fund
-        $sloaWorkingCapitalAccountingLine = factory(SloaAccountingLine::class)->create([
+        $workingCapitalLine = factory(SloaAccountingLine::class)->create([
             'bpoa' => null,
             'epoa' => null,
             'availability_type' => 'X'
         ]);
 
         // The working capital fund should populate fiscal year as 'X' signifying perpetuality
-        $expectedWorkingCapitalTreasuryData = [
-            "department_regular" => $sloaWorkingCapitalAccountingLine->department_regular,
-            "department_transfer" => $sloaWorkingCapitalAccountingLine->department_transfer,
+        $expectedTreasuryData = [
+            "department_regular" => $workingCapitalLine->department_regular,
+            "department_transfer" => $workingCapitalLine->department_transfer,
             "fiscal_year" => "XXXXXXXX",
-            "main_account" => $sloaWorkingCapitalAccountingLine->main_account,
-            "sub_allocation" => $sloaWorkingCapitalAccountingLine->sub_allocation
+            "main_account" => $workingCapitalLine->main_account,
+            "sub_allocation" => $workingCapitalLine->sub_allocation
         ];
 
         // When treasury data is requested
-        $treasuryData = $sloaWorkingCapitalAccountingLine->treasuryData();
+        $treasuryData = $workingCapitalLine->treasuryData();
         // Then the expected treasury elements should be returned as an array
-        $this->assertEquals($expectedWorkingCapitalTreasuryData, $treasuryData);
+        $this->assertEquals($expectedTreasuryData, $treasuryData);
 
         // Given a SLOA General Appropriations Fund
-        $sloaGeneralAccountingLine = factory(SloaAccountingLine::class)->create();
+        $generalFundsLine = factory(SloaAccountingLine::class)->create();
 
         // The general fund should populate fiscal year as a concatenation of beginning and ending years
-        $expectedGeneralAccountingTreasuryData = [
-            "department_regular" => $sloaGeneralAccountingLine->department_regular,
-            "department_transfer" => $sloaGeneralAccountingLine->department_transfer,
-            "fiscal_year" => $sloaGeneralAccountingLine->bpoa->year.$sloaGeneralAccountingLine->epoa->year,
-            "main_account" => $sloaGeneralAccountingLine->main_account,
-            "sub_allocation" => $sloaGeneralAccountingLine->sub_allocation
+        $expectedTreasuryData = [
+            "department_regular" => $generalFundsLine->department_regular,
+            "department_transfer" => $generalFundsLine->department_transfer,
+            "fiscal_year" => $generalFundsLine->bpoa->year . $generalFundsLine->epoa->year,
+            "main_account" => $generalFundsLine->main_account,
+            "sub_allocation" => $generalFundsLine->sub_allocation
         ];
 
         // When treasury data is requested
-        $treasuryData = $sloaGeneralAccountingLine->treasuryData();
+        $treasuryData = $generalFundsLine->treasuryData();
         // Then the expected treasury elements should be returned as an array
-        $this->assertEquals($expectedGeneralAccountingTreasuryData, $treasuryData);
+        $this->assertEquals($expectedTreasuryData, $treasuryData);
     }
 
     // TODO write a method that makes this thing a hat delimited string
