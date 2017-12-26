@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\SloaAccountingLine;
 use Illuminate\Support\ServiceProvider;
+use App\Observers\SloaAccountingLineObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        SloaAccountingLine::observe(SloaAccountingLineObserver::class);
     }
 
     /**
