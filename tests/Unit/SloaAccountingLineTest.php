@@ -7,6 +7,9 @@ use App\SloaAccountingLine;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveMethods)
+ */
 class SloaAccountingLineTest extends TestCase
 {
     use RefreshDatabase;
