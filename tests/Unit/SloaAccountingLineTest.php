@@ -25,7 +25,7 @@ class SloaAccountingLineTest extends TestCase
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
         $this->assertNotNull($sloaAccountingLine->funds);
         $this->assertCount(1, $sloaAccountingLine->funds);
-        $this->assertEquals(36, strlen($sloaAccountingLine->funds->first()->uuid));
+        $this->assertEquals($sloaAccountingLine->uuid, $sloaAccountingLine->funds->first()->accountable_id);
     }
 
     /** @test */
