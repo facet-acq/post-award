@@ -137,6 +137,6 @@ class AgreementTest extends TestCase
             ->addSeller($sellerParty)
             ->addBuyer($buyerParty);
 
-            $this->assertEquals($buyerParty->uuid, $agreement->buyer->first()->uuid);
+        $this->assertEquals($buyerParty->uuid, $agreement->buyer->first()->uuid);
     }
 }

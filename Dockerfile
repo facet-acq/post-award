@@ -20,10 +20,9 @@ COPY infrastructure/config/post_award.conf /etc/nginx/conf.d/default.conf
 
 # Add SELinux
 
-ADD . /opt/facet/post-award/
-
-RUN cd /opt/facet/post-award && \
-    composer install --no-ansi --no-dev --no-interaction --no-progress --optimize-autoloader && \
+COPY . /opt/facet/post-award/
+WORKDIR /opt/facet/post-award
+RUN composer install --no-ansi --no-dev --no-interaction --no-progress --optimize-autoloader && \
     mkdir -p /run/nginx && \
     rc-update add nginx default && \
     rc-update add php-fpm7 default
