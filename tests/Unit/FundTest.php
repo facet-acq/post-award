@@ -35,7 +35,6 @@ class FundTest extends TestCase
         $fund->obligate($amountTwo, $agreementTwo->uuid);
 
         $trialBalance = $fund->balance();
-        // dd($trialBalance);
         $this->assertEquals($amount + $amountTwo, $trialBalance['obligation']);
     }
 }

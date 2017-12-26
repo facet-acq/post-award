@@ -23,9 +23,9 @@ class SloaAccountingLineTest extends TestCase
     public function it_can_identify_its_supporting_fund()
     {
         $sloaAccountingLine = factory(SloaAccountingLine::class)->create();
-        $sloaAccountingLine->funds()->create();
         $this->assertNotNull($sloaAccountingLine->funds);
         $this->assertCount(1, $sloaAccountingLine->funds);
+        $this->assertEquals(36, strlen($sloaAccountingLine->funds->first()->uuid));
     }
 
     /** @test */
