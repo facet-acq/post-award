@@ -19,7 +19,7 @@ class FundsLedgerTest extends TestCase
         // Given an agreement and an accounting line
         $agreement = factory(Agreement::class)->create();
         $sloa = factory(SloaAccountingLine::class)->create();
-        $fund = $sloa->funds()->create();
+        $fund = $sloa->funds->first();
         $amount = 45000;
 
         $ledgerEntry = $fund->obligate($amount, $agreement->uuid);
