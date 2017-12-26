@@ -14,7 +14,7 @@ RUN apk update && \
 
 COPY infrastructure/config/www.conf /etc/php7/php-fpm.d/www.conf
 
-COPY infrastructure/config/post_award.conf /etc/nginx/conf.d/
+COPY infrastructure/config/post_award.conf /etc/nginx/conf.d/default.conf
 #  using http2
 # Add secure DH exchange
 
@@ -24,6 +24,7 @@ ADD . /opt/facet/post-award/
 
 RUN cd /opt/facet/post-award && \
     composer install --no-ansi --no-dev --no-interaction --no-progress --optimize-autoloader && \
+    mkdir -p /run/nginx && \
     rc-update add nginx default && \
     rc-update add php-fpm7 default
 
@@ -32,4 +33,4 @@ RUN cd /opt/facet/post-award && \
 
 EXPOSE 80
 
-CMD "nginx -g 'daemon off;'"
+CMD ["nginx", "-g", "daemon off;"]
