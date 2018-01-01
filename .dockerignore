@@ -13,9 +13,6 @@
 design/
 infrastructure/cloud/
 node_modules/
-phpunit.xml
-resources/assets/**
-tests/
 vendor/
 LICENSE.md
 readme.md
