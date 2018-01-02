@@ -460,7 +460,6 @@ class SloaAccountingLineTest extends TestCase
         $this->assertEquals($expectedTreasuryData, $treasuryData);
     }
 
-    // TODO write a method that makes this thing a hat delimited string
     /** @test */
     public function it_parses_the_hat_delimited_format()
     {
@@ -472,7 +471,7 @@ class SloaAccountingLineTest extends TestCase
             'sub_class' => null,
             'department_transfer' => null,
             'department_regular' => '097',
-            'bpoa' => Carbon::createFromDate(2018, 10, 01, 'America/New_York'),
+            'bpoa' => Carbon::createFromDate(2018, 10, 1, 'America/New_York'),
             'epoa' => Carbon::createFromDate(2020, 9, 30, 'America/New_York'),
             'availability_type' => null,
             'main_account' => '0400',
