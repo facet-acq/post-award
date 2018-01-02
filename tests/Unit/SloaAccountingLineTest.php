@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\SloaAccountingLine;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveMethods)
@@ -460,4 +461,40 @@ class SloaAccountingLineTest extends TestCase
     }
 
     // TODO write a method that makes this thing a hat delimited string
+    /** @test */
+    public function it_parses_the_hat_delimited_format()
+    {
+        $strSloaData = "^^^097^2018^2020^^0400^002^DISB^252^R^111^^^^^2504^1700^021001^^^^^^^";
+
+        $sloaAccountingLine = SloaAccountingLine::fromHatDelimiter($strSloaData);
+
+        $this->assertDatabaseHas('sloa_accounting_lines', [
+            'sub_class' => null,
+            'department_transfer' => null,
+            'department_regular' => '097',
+            'bpoa' => Carbon::createFromDate(2018, 10, 01, 'America/New_York'),
+            'epoa' => Carbon::createFromDate(2020, 9, 30, 'America/New_York'),
+            'availability_type' => null,
+            'main_account' => '0400',
+            'sub_account' => '002',
+            'business_event_type_code' => 'DISB',
+            'object_class' => '252',
+            'reimbursable_flag' => 'R',
+            'budget_line_item' => '111',
+            'security_cooperation' => null,
+            'security_cooperation_implementing_agency_code' => null,
+            'security_cooperation_case_designator' => null,
+            'security_cooperation_case_line_item_identifier' => null,
+            'sub_allocation' => '2504',
+            'agency_disbursing_identifier_code' =>'1700',
+            'agency_accounting_identifier' => '021001',
+            'funding_center_identifier' => null,
+            'cost_center_identifier' => null,
+            'project_identifier' => null,
+            'activity_identifier' => null,
+            'cost_element_code' => null,
+            'work_order_number' => null,
+            'functional_area' => null
+        ]);
+    }
 }
