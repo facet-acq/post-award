@@ -54,14 +54,13 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     php composer-setup.php --install-dir=bin --filename=composer &&\
     php -r "unlink('composer-setup.php');"
 
+# Cleanup
+RUN rm -rf /var/cache/apk/*
+
 # Setup the system permissions
 WORKDIR /opt/facet/post-award
 USER postAward
 RUN composer install --no-dev --no-interaction --no-progress --optimize-autoloader
-
-# Cleanup
-USER root
-RUN rm -rf /var/cache/apk/*
 
 # Run Time
 EXPOSE 80
