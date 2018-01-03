@@ -465,7 +465,7 @@ class SloaAccountingLineTest extends TestCase
     {
         $strSloaData = "^^^097^2018^2020^^0400^002^DISB^252^R^111^^^^^2504^1700^021001^^^^^^^";
 
-        $sloaAccountingLine = SloaAccountingLine::fromHatDelimiter($strSloaData);
+        SloaAccountingLine::fromHatDelimiter($strSloaData);
 
         $this->assertDatabaseHas('sloa_accounting_lines', [
             'sub_class' => null,
