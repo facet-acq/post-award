@@ -4,13 +4,12 @@ MAINTAINER "djfurman@gmail.com"
 LABEL maintainer="djfurman@gmail.com"
 
 # Basic System Patching
-RUN apk update &&\
-    apk upgrade
+RUN apk --no-cache upgrade
 
 # Dependencies
-RUN apk add supervisor
-RUN apk add nginx
-RUN apk add php7 \
+RUN apk add --no-cache supervisor
+RUN apk add --no-cache nginx
+RUN apk add --no-cache php7 \
         php7-curl \
         php7-fpm \
         php7-json \
@@ -21,9 +20,9 @@ RUN apk add php7 \
         php7-tokenizer \
         php7-xml \
         php7-zlib
-RUN apk add php7-pdo_pgsql
-#RUN apk add php7-pdo_mysql
-#RUN apk add php7-pdo_sqlite
+RUN apk add --no-cache php7-pdo_pgsql
+#RUN apk add --no-cache php7-pdo_mysql
+#RUN apk add --no-cache php7-pdo_sqlite
 
 # Supervisor Configuration
 COPY infrastructure/config/supervisord.conf /etc/supervisord.conf
@@ -31,12 +30,12 @@ RUN mkdir -p /var/log/supervisor &&\
     touch /var/log/supervisor/supervisord.log
 
 # PHP-FPM Configuration
-RUN addgroup -S postAward &&\
-    adduser -S -g postAward postAward &&\
-    touch /var/run/php-fpm.sock &&\
-    chown nginx:nginx /var/run/php-fpm.sock &&\
-    chmod 660 /var/run/php-fpm.sock &&\
-    chown postAward:postAward /var/log/php7
+RUN touch /run/php-fpm.sock &&\
+    chmod 660 /run/php-fpm.sock
+# RUN addgroup -S postAward &&\
+RUN adduser -S -g nginx postAward &&\
+    chown postAward:nginx /run/php-fpm.sock &&\
+    chown postAward:nginx /var/log/php7
 COPY infrastructure/config/php-fpm.conf /etc/php7/php-fpm.d/www.conf
 
 # NGINX Configuration
@@ -44,9 +43,8 @@ RUN mkdir /run/nginx &&\
     chown nginx:nginx /run/nginx
 COPY infrastructure/config/nginx-host.conf /etc/nginx/conf.d/default.conf
 
-# Copy the code in
-COPY . /opt/facet/post-award/
-RUN chown -R postAward:postAward /opt/facet/post-award
+# Cleanup
+RUN rm -rf /var/cache/apk/*
 
 # Get Composer Dependency manager
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&\
@@ -54,13 +52,11 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     php composer-setup.php --install-dir=bin --filename=composer &&\
     php -r "unlink('composer-setup.php');"
 
-# Cleanup
-RUN rm -rf /var/cache/apk/*
-
-# Setup the system permissions
+# Copy the code in
+COPY . /opt/facet/post-award/
 WORKDIR /opt/facet/post-award
-USER postAward
 RUN composer install --no-dev --no-interaction --no-progress --optimize-autoloader
+RUN chown -R postAward:nginx /opt/facet/post-award
 
 # Run Time
 EXPOSE 80
