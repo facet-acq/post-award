@@ -1,0 +1,99 @@
+---
+swagger: '2.0'
+info:
+  description: |
+    '
+    This is a sample document for the agreement resource
+    '
+  version: '0.1.0'
+  title: 'Agreement'
+  termsOfService: 'http://example.com'
+  contact:
+    email: djfurman@gmail.com
+  license:
+    name: 'BSD 3-Clause License'
+    url: 'https://raw.githubusercontent.com/facet-acq/post-award/develop/LICENSE.md'
+host: 'facet.danielfurman.net'
+basePath: '/api/v1'
+tags:
+  - name: 'agreement'
+    description: 'Create and modify agreements'
+    externalDocs:
+      description: 'Learn more!'
+      url: 'https://github.com/facet-acq/post-award/wiki/Getting-Started'
+  - name: 'invoice'
+    description: 'add this'
+    externalDocs:
+      description: 'Add here'
+      url: 'https://github.com/facet-acq/post-award/wiki/Getting-Started'
+schemes:
+  - 'http'
+paths:
+  /agreement:
+    post:
+      tags:
+        - 'agreement'
+      summary: 'Add a new agreement for the system to manage'
+      description: ''
+      operationId: 'AgreementController::create'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'The awarded agreement object that needs to be added to post award system for entitlement and/or management and execution'
+          required: true
+          schema: '#/definitions/Agreement'
+      responses:
+        201:
+          description: 'The provided agreement was successfully added to the post award system.'
+        400:
+          description: 'The provided agreement failed basic preconditions, please refer to API documentation for required data.'
+        401:
+          description: 'Agreements must be provided with appropriate authorization and will not be processed from unauthorized entities.'
+        409:
+          description: 'The provided agreement has already been processed by post award and is on file, this appears to be a duplicate. The client should use the PATCH endpoint to update an existing agreement'
+        415:
+          description: 'Agreements must be provided in appropriate application/json structure for real time processing. Other microservices may handle conversion of resources for conversion to this format and should be used instead.'
+        500:
+          description: 'Something went wrong server side, this is likely not a problem with the input and the server has not yet implemented appropriate handling for the condition created, administrators have been notified.'
+        503:
+          description: 'The server is temporarily unavailable retry in provided header duration, provided in seconds.'
+securityDefinitions:
+  facet_auth:
+    type: 'oauth2'
+    authorizationUrl: ''
+    flow: 'implicit'
+    scopes:
+      write:agreements: 'Add new agreements to post-award'
+definitions:
+  Agrement:
+    type: 'object'
+    properties:
+      agreement:
+        $ref: '#/definitions/agreement_details'
+      party_list:
+        $ref: '#/definitions/party_list'
+      fund_list:
+        type: 'array'
+        items:
+          type: 'object'
+          $ref: '#/definitions/fund'
+      reference_list:
+        $ref: '#/definitions/reference'
+      term_list:
+        $ref: '#/definitions/term'
+      item_list:
+        $ref: '#/definitions/item'
+  agreement_details:
+    type: 'object'
+    properties:
+      order_identifier:
+        type: 'string'
+      release_identifier:
+        type: 'string'
+      effective_date:
+        type: 'string'
+        format: 'date-time'
