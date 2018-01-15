@@ -111,7 +111,7 @@ class ProcessIncomingEdi extends Command
         return $parsed;
     }
 
-    protected function buildFacetAgreement($awardTransaction)
+    protected function buildFacetAgreement()
     {
         // Map the post body here
         // return [
@@ -139,22 +139,20 @@ class ProcessIncomingEdi extends Command
             $result = $this->client->post('award', $this->facetTransaction);
             $response = json_decode($result->getBody());
             if ($result->getStatusCode() == 201) {
-                $this->info('Successfully Processed agreement for EDI transaction '.$agreementUuid);
+                $this->info('Successfully Processed EDI transaction for agreement '.$response['agreement']['uuid']);
                 return $response['agreement']['uuid'];
-            } else {
-                $this->warn('EDI Transaction processed but was not accepted.');
-                Log::warning('Request: '.$result->getRequest());
-                Log::warning('Response: '.$result->getBody());
             }
+            // Report any issues
+            $this->warn('EDI Transaction processed but was not accepted.');
+            Log::warning('Request', ['request' => $result->getRequest()]);
+            Log::warning('Response', ['response' => $result->getBody()]);
         } catch (RequestException $exception) {
-            dd($exception);
             Log::critical('Cannot communicate with post-award server');
-            Log::critical('Request: '.$exception->getRequest());
+            Log::critical('Request', ['request' => $exception->getRequest()]);
             if ($exception->hasResponse()) {
-                Log::critical('Response: '.$exception->getBody());
+                Log::critical('Response', ['response' => $exception->getBody()]);
             }
         }
-
         return null;
     }
 }
