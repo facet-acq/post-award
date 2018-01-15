@@ -67,7 +67,7 @@ class ProcessIncomingEdi extends Command
             $ediTransaction = $this->parseEdiInterface($transaction);
 
             // Map the transaction to a Post Award Agreement
-            $this->facetTransaction = $this->buildFacetAgreement($transaction);
+            $this->facetTransaction = $this->buildFacetAgreement($ediTransaction);
 
             // Post the result for real time processing
             $agreementUuid = $this->postAnAward();
