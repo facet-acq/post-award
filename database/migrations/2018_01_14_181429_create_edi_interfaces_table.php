@@ -16,18 +16,34 @@ class CreateEdiInterfacesTable extends Migration
         Schema::create('edi_interfaces', function (Blueprint $table) {
             $table->uuid('uuid');
             $table->primary('uuid');
-            $table->uuid('agreement');
-            $table->string('file_size');
-            $table->string('file_name');
-            $table->string('file_type');
-            $table->dateTimeTz('file_at');
-            $table->string('interface_partner');
-            $table->string('interface_channel');
-            $table->string('interface_version');
-            $table->string('interface_source');
-            $table->string('interface_destination');
-            $table->bigInteger('interface_control_number');
-            $table->dateTimeTz('interface_at');
+            $table->uuid('agreement_uuid')
+                ->nullable()
+                ->comment('Foreign key reference to agreement created by the EDI transaction');
+            $table->string('file_size')
+                ->comment('Size in bytes of the EDI file');
+            $table->string('file_name')
+                ->comment('Original file name of the EDI file');
+            $table->string('file_type')
+                ->comment('Data type of the EDI file');
+            $table->dateTimeTz('file_at')
+                ->comment('File timestamp of the EDI file, always generated in UTC');
+            $table->string('interface_partner')
+                ->comment("Data owner of the EDI file's source");
+            $table->string('interface_channel')
+                ->comment('System in which the EDI file was generated');
+            $table->string('interface_version')
+                ->comment('Standard against which the EDI file was generated');
+            $table->string('interface_source')
+                ->nullable()
+                ->comment('EDI file declared generation source');
+            $table->string('interface_destination')
+                ->nullable()
+                ->comment('EDI file declared destination');
+            $table->bigInteger('interface_control_number')
+                ->nullable()
+                ->comment('Unique or identifying control number for the EDI file');
+            $table->dateTimeTz('interface_at')
+                ->comment('Timestamp at which the transaction interface was processed');
             $table->timestamps();
         });
     }

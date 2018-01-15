@@ -2,12 +2,13 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
+use App\EdiInterface;
+use GuzzleHttp\Client;
+use Illuminate\Console\Command;
 use \Illuminate\Support\Facades\Log;
 use \Illuminate\Support\Facades\Storage;
-use Illuminate\Console\Command;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Client;
-use Carbon\Carbon;
 
 class ProcessIncomingEdi extends Command
 {
@@ -43,7 +44,7 @@ class ProcessIncomingEdi extends Command
     {
         parent::__construct();
         $this->client = new Client([
-            'base_uri' => env('APP_URL').'/api/v1/'
+            'base_uri' => env('APP_URL') . '/api/v1/'
         ]);
     }
 
@@ -76,8 +77,8 @@ class ProcessIncomingEdi extends Command
             $archive = EdiInterface::create([
                 'agreement' => $agreementUuid,
                 'file_size' => Storage::disk('s3')->size($ediFile),
-                'file_name' => $path[sizeof($path)-1],
-                'file_type'=>  'x12', // todo identify a more reliable way to derive this than extension
+                'file_name' => $path[sizeof($path) - 1],
+                'file_type' => 'x12', // todo identify a more reliable way to derive this than extension
                 'file_at' => Carbon::createFromTimestamp(Storage::disk('s3')->lastModified($ediFile), 'America/New_York'),
                 'interface_partner' => 'test', // todo pull from s3 prefix
                 'interface_channel' => 'manual', // todo pull from s3 prefix
@@ -85,12 +86,12 @@ class ProcessIncomingEdi extends Command
                 'interface_source' => 'us defense forces', // todo pull from ISA06
                 'interface_destination' => 'facet', // todo pull from ISA08
                 'interface_control_number' => null, // todo pull from ISA13
-                'interface_at'=> null // todo pull from ISA Carbon::createFromFormat('ymdHi', ISA09.ISA10, 'UTC');
+                'interface_at' => null // todo pull from ISA Carbon::createFromFormat('ymdHi', ISA09.ISA10, 'UTC');
             ]);
 
             // Move the transaction to the archived bucket
             if (env(APP_ENV) != 'local') {
-                Storage::disk('s3')->move($ediFile, 'archive/'.$archive->uuid);
+                Storage::disk('s3')->move($ediFile, 'archive/' . $archive->uuid);
             }
             // AWS will hold it for n days, then archive to Glacier for 5 years based on the bucket's life-cycle rules
             // todo build this bucket creation and lifecycle rules in terraform
@@ -139,7 +140,7 @@ class ProcessIncomingEdi extends Command
             $result = $this->client->post('award', $this->facetTransaction);
             $response = json_decode($result->getBody());
             if ($result->getStatusCode() == 201) {
-                $this->info('Successfully Processed EDI transaction for agreement '.$response['agreement']['uuid']);
+                $this->info('Successfully Processed EDI transaction for agreement ' . $response['agreement']['uuid']);
                 return $response['agreement']['uuid'];
             }
             // Report any issues
@@ -150,7 +151,7 @@ class ProcessIncomingEdi extends Command
             Log::critical('Cannot communicate with post-award server');
             Log::critical('Request', ['request' => $exception->getRequest()]);
             if ($exception->hasResponse()) {
-                Log::critical('Response', ['response' => $exception->getBody()]);
+                Log::critical('Response', ['response' => $exception->getMessage()]);
             }
         }
         return null;
