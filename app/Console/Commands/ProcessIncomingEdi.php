@@ -7,6 +7,7 @@ use \Illuminate\Support\Facades\Storage;
 use Illuminate\Console\Command;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Client;
+use Carbon\Carbon;
 
 class ProcessIncomingEdi extends Command
 {
@@ -24,6 +25,11 @@ class ProcessIncomingEdi extends Command
      */
     protected $description = 'Processes all incoming EDI files in the bucket';
 
+    /**
+     * The HTTP client for reporting
+     *
+     * @var \GuzzleHttp\Client
+     */
     protected $client;
 
     protected $facetTransaction;
@@ -53,11 +59,11 @@ class ProcessIncomingEdi extends Command
 
         // Loop each file and parse it into a usable object
         foreach ($workList as $ediFile) {
-            // Generate a Uuid to tie this into
-            $uuid = (string) \Uuid::generate(4);
-
             // Get the transaction data
             $transaction = Storage::disk('s3')->get($ediFile);
+
+            // Parse EDI data into PHP object
+            $ediTransaction = $this->parseEdiInterface($transaction);
 
             // Map the transaction to a Post Award Agreement
             $this->facetTransaction = $this->buildFacetAgreement($transaction);
@@ -66,18 +72,28 @@ class ProcessIncomingEdi extends Command
             $agreementUuid = $this->postAnAward();
 
             // extract original file data and save to trading partners table
-            // Insert the:
-            // file metadata
-            // $agreementUuid
-            // trading partner info
-            // channel info
-            // archive file UUID
-            // file type
-            // EDI version
+            $path = explode('/', $ediFile);
+            $archive = EdiInterface::create([
+                'agreement' => $agreementUuid,
+                'file_size' => Storage::disk('s3')->size($ediFile),
+                'file_name' => $path[sizeof($path)-1],
+                'file_type'=>  'x12', // todo identify a more reliable way to derive this than extension
+                'file_at' => Carbon::createFromTimestamp(Storage::disk('s3')->lastModified($ediFile), 'America/New_York'),
+                'interface_partner' => 'test', // todo pull from s3 prefix
+                'interface_channel' => 'manual', // todo pull from s3 prefix
+                'interface_version' => '003050', // todo pull from GS08
+                'interface_source' => 'us defense forces', // todo pull from ISA06
+                'interface_destination' => 'facet', // todo pull from ISA08
+                'interface_control_number' => null, // todo pull from ISA13
+                'interface_at'=> null // todo pull from ISA Carbon::createFromFormat('ymdHi', ISA09.ISA10, 'UTC');
+            ]);
 
             // Move the transaction to the archived bucket
-            // Storage::disk('s3')->move($ediFile, 'archive/s3/path/'.$uuid);
+            if (env(APP_ENV) != 'local') {
+                Storage::disk('s3')->move($ediFile, 'archive/'.$archive->uuid);
+            }
             // AWS will hold it for n days, then archive to Glacier for 5 years based on the bucket's life-cycle rules
+            // todo build this bucket creation and lifecycle rules in terraform
             // Transactions are intentionally stored without meaningful extensions or identifying information
         }
     }
@@ -89,12 +105,15 @@ class ProcessIncomingEdi extends Command
      */
     protected function parseEdiInterface($interfaceFile)
     {
-        $parsed = $interfaceFile; // ToDo call the parser or build it here
+        $parsed = $interfaceFile;
+        // ToDo call the parser or build it here
+        // Return the resulting object
         return $parsed;
     }
 
     protected function buildFacetAgreement($awardTransaction)
     {
+        // Map the post body here
         // return [
         //     'agreement_details' => [
         //         'order_identifier' => 'acb123',
