@@ -35,6 +35,13 @@ class EdiInterfaceTest extends TestCase
     }
 
     /** @test */
+    public function it_may_have_a_null_interface_version()
+    {
+        factory(EdiInterface::class)->create(['interface_version' => null]);
+        $this->assertCount(1, EdiInterface::all());
+    }
+
+    /** @test */
     public function it_may_have_a_null_interface_source_and_destination()
     {
         factory(EdiInterface::class)->create([
@@ -52,10 +59,24 @@ class EdiInterfaceTest extends TestCase
     }
 
     /** @test */
-    public function it_may_not_have_a_null_interface_at_timestamp()
+    public function it_may_have_a_null_interface_at_timestamp()
+    {
+        factory(EdiInterface::class)->create(['interface_at' => null]);
+        $this->assertCount(1, EdiInterface::all());
+    }
+
+    /** @test */
+    public function it_may_not_have_a_null_queued_at_timestamp()
     {
         $this->expectException(QueryException::class);
-        factory(EdiInterface::class)->create(['interface_at' => null]);
+        factory(EdiInterface::class)->create(['queued_at' => null]);
         $this->assertCount(0, EdiInterface::all());
+    }
+
+    /** @test */
+    public function it_may_have_a_null_processed_at_timestamp()
+    {
+        factory(EdiInterface::class)->create(['processed_at' => null]);
+        $this->assertCount(1, EdiInterface::all());
     }
 }

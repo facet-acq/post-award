@@ -32,6 +32,7 @@ class CreateEdiInterfacesTable extends Migration
             $table->string('interface_channel')
                 ->comment('System in which the EDI file was generated');
             $table->string('interface_version')
+                ->nullable()
                 ->comment('Standard against which the EDI file was generated');
             $table->string('interface_source')
                 ->nullable()
@@ -43,7 +44,13 @@ class CreateEdiInterfacesTable extends Migration
                 ->nullable()
                 ->comment('Unique or identifying control number for the EDI file');
             $table->dateTimeTz('interface_at')
-                ->comment('Timestamp at which the transaction interface was processed');
+                ->nullable()
+                ->comment('Timestamp at which the transaction interface was created in the file payload');
+            $table->dateTimeTz('queued_at')
+                ->comment('Timestamp at which the file was queued for processing supporting metrics');
+            $table->dateTimeTz('processed_at')
+                ->nullable()
+                ->comment('Timestamp at which the file was processed from the queue');
             $table->timestamps();
         });
     }

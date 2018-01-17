@@ -16,6 +16,21 @@ class EdiInterface extends UuidModel
         'interface_source',
         'interface_destination',
         'interface_control_number',
-        'interface_at'
+        'interface_at',
+        'queued_at',
+        'processed_at'
     ];
+
+    /**
+     * Returns the S3 prefix to grab files from AWS S3
+     */
+    public function path()
+    {
+        return implode('/', [
+            $this->interface_partner,
+            $this->interface_channel,
+            $this->file_type,
+            $this->file_name
+        ]);
+    }
 }
