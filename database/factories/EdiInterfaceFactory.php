@@ -18,6 +18,8 @@ $factory->define(EdiInterface::class, function (Faker $faker) {
         'interface_source' => $faker->randomElement(['CONWRITE', 'TEST', 'S00001']),
         'interface_destination' => $faker->randomElement(['MOCAS', 'FACET', 'NONSENSE']),
         'interface_control_number' => $faker->numberBetween(10000000, 999999999),
-        'interface_at' => Carbon::now()
+        'interface_at' => null,
+        'queued_at' => Carbon::now(),
+        'processed_at' => null
     ];
 });
