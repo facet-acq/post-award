@@ -3,12 +3,16 @@
 namespace App\Jobs;
 
 use App\EdiInterface;
+use GuzzleHttp\Psr7;
 use GuzzleHttp\Client;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use GuzzleHttp\Exception\ClientException;
 
 class ProcessEdiFile implements ShouldQueue
 {
@@ -22,13 +26,6 @@ class ProcessEdiFile implements ShouldQueue
     protected $interfaceFile;
 
     /**
-     * The HTTP client for reporting
-     *
-     * @var \GuzzleHttp\Client
-     */
-    protected $client;
-
-    /**
      * Create a new job instance.
      *
      * @return void
@@ -36,9 +33,6 @@ class ProcessEdiFile implements ShouldQueue
     public function __construct(EdiInterface $file)
     {
         $this->interfaceFile = $file;
-        $this->client = new Client([
-            'base_uri' => env('APP_URL') . '/api/v1/'
-        ]);
     }
 
     /**
@@ -49,7 +43,7 @@ class ProcessEdiFile implements ShouldQueue
     public function handle()
     {
         // Parse EDI data into PHP object
-        $ediTransaction = $this->parseEdiInterface($transaction);
+        $ediTransaction = $this->parseEdiInterface();
 
         // Todo handle for multiple transactions per interface
 
@@ -59,6 +53,8 @@ class ProcessEdiFile implements ShouldQueue
 
         // Post the result for real time processing
         $agreementUuid = $this->postAnAward($facetTransaction);
+
+        // $this->interfaceFile->agreements()->attach($agreementUuid);
 
         // Move the transaction to the archived bucket
         $this->archiveProcessedFile($this->interfaceFile->path());
@@ -71,8 +67,8 @@ class ProcessEdiFile implements ShouldQueue
      */
     protected function parseEdiInterface()
     {
-        $file = Storage::disk('s3')->get($this->interfaceFile->path());
-        $parsed = $file;
+        $file = Storage::get($this->interfaceFile->path());
+        $parsed = [$file];
         // ToDo call the parser or build it here
         // Return the resulting object
         return $parsed;
@@ -101,24 +97,27 @@ class ProcessEdiFile implements ShouldQueue
 
     protected function postAnAward($facetTransaction)
     {
+        $client = new Client([
+            'base_uri' => env('APP_URL') . '/api/v1/'
+        ]);
         try {
             // Post transformed data to processing endpoint
-            $result = $this->client->post('award', $facetTransaction);
+            $result = $client->post('award', $facetTransaction);
             $response = json_decode($result->getBody());
             if ($result->getStatusCode() == 201) {
-                $this->info('Successfully Processed EDI transaction for agreement ' . $response['agreement']['uuid']);
+                Log::info('Successfully Processed EDI transaction for agreement'. $response['agreement']['uuid']);
+                $this->logApiResult($result);
                 return $response['agreement']['uuid'];
             }
             // Report any issues
-            $this->warn('EDI Transaction processed but was not accepted.');
-            Log::warning('Request', ['request' => $result->getRequest()]);
-            Log::warning('Response', ['response' => $result->getBody()]);
-        } catch (RequestException $exception) {
+            Log::warning('EDI Transaction processed but was not accepted for '.$this->interfaceFile->uuid);
+            $this->logApiResult($result);
+        } catch (RequestException $e) {
             Log::critical('Cannot communicate with post-award server');
-            Log::critical('Request', ['request' => $exception->getRequest()]);
-            if ($exception->hasResponse()) {
-                Log::critical('Response', ['response' => $exception->getMessage()]);
-            }
+            $this->logApiResult($e, 'Post Award Request failed');
+        } catch (ClientException $c) {
+            Log::critical('Guzzle Client Error');
+            $this->logApiResult($c, 'Post Award Request failed');
         }
 
         return null;
@@ -131,12 +130,23 @@ class ProcessEdiFile implements ShouldQueue
      */
     protected function archiveProcessedFile($ediFileWithPrefix)
     {
-        if (env(APP_ENV) != 'local') {
-            Storage::disk('s3')->move($ediFileWithPrefix, 'archive/' . $this->interfaceFile->uuid);
+        if (env('APP_ENV') != 'local') {
+            Storage::move($ediFileWithPrefix, 'archive/' . $this->interfaceFile->uuid);
         }
 
         // AWS will hold it for n days, then archive to Glacier for 5 years based on the bucket's life-cycle rules
         // todo build this bucket creation and lifecycle rules in terraform
         // Transactions are intentionally stored without meaningful extensions or identifying information
+    }
+
+    protected function logApiResult($result, $message = "Api Request")
+    {
+        Log::debug($message, [
+            'request' => Psr7\str($result->getRequest()),
+            'response' => $result->hasResponse() ? Psr7\str($result->getResponse()): null,
+            // 'headers' => $result->getHeaders(),
+            // 'status_code' => $result->getStatusCode(),
+            // 'message' => $result->getReasonPhrase()
+        ]);
     }
 }

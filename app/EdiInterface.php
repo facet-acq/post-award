@@ -33,4 +33,9 @@ class EdiInterface extends UuidModel
             $this->file_name
         ]);
     }
+
+    public function agreements()
+    {
+        return $this->hasMany('App\Agreement', 'agreement_uuid', 'uuid');
+    }
 }

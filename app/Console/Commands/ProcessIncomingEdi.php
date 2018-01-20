@@ -47,7 +47,7 @@ class ProcessIncomingEdi extends Command
     public function handle()
     {
         // List all files on the drive
-        $workList = Storage::disk('s3')->allFiles();
+        $workList = Storage::allFiles();
 
         // Loop each file and parse it into a usable object
         foreach ($workList as $ediFile) {
@@ -62,10 +62,10 @@ class ProcessIncomingEdi extends Command
         // extract original file data and save to trading partners table
         $path = explode('/', $file);
         $fileToProcess = EdiInterface::create([
-            'file_size' => Storage::disk('s3')->size($file),
+            'file_size' => Storage::size($file),
             'file_name' => $path[3],
             'file_type' => $path[2],
-            'file_at' => Carbon::createFromTimestamp(Storage::disk('s3')->lastModified($file), 'America/New_York'),
+            'file_at' => Carbon::createFromTimestamp(Storage::lastModified($file), 'America/New_York'),
             'interface_partner' => $path[0],
             'interface_channel' => $path[1],
             'queued_at' => Carbon::now(),
