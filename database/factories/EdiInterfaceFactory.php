@@ -7,7 +7,6 @@ use App\Agreement;
 
 $factory->define(EdiInterface::class, function (Faker $faker) {
     return [
-        'agreement_uuid' => factory(Agreement::class)->create()->uuid,
         'file_size' => $faker->numberBetween(120, 10000000),
         'file_name' => $faker->word.'.edi',
         'file_type' => $faker->randomElement(['x12', 'edifact', 'xml', 'json']),

@@ -16,9 +16,6 @@ class CreateEdiInterfacesTable extends Migration
         Schema::create('edi_interfaces', function (Blueprint $table) {
             $table->uuid('uuid');
             $table->primary('uuid');
-            $table->uuid('agreement_uuid')
-                ->nullable()
-                ->comment('Foreign key reference to agreement created by the EDI transaction');
             $table->string('file_size')
                 ->comment('Size in bytes of the EDI file');
             $table->string('file_name')

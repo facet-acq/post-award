@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\EdiInterface;
 use Illuminate\Database\QueryException;
 use PDOException;
+use App\Agreement;
 
 class EdiInterfaceTest extends TestCase
 {
@@ -24,13 +25,6 @@ class EdiInterfaceTest extends TestCase
     public function it_can_handle_zero_size_files()
     {
         factory(EdiInterface::class)->create(['file_size' => 0]);
-        $this->assertCount(1, EdiInterface::all());
-    }
-
-    /** @test */
-    public function it_may_have_a_null_agreement()
-    {
-        factory(EdiInterface::class)->create(['agreement_uuid' => null]);
         $this->assertCount(1, EdiInterface::all());
     }
 
