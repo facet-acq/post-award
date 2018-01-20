@@ -52,9 +52,9 @@ class ProcessEdiFile implements ShouldQueue
         $facetTransaction = $this->buildFacetAgreement($ediTransaction);
 
         // Post the result for real time processing
-        $agreementUuid = $this->postAnAward($facetTransaction);
+        $this->postAnAward($facetTransaction);
 
-        // $this->interfaceFile->agreements()->attach($agreementUuid);
+        // todo draw the association between the EdiInterface file and the transactions of any type which it generated
 
         // Move the transaction to the archived bucket
         $this->archiveProcessedFile($this->interfaceFile->path());

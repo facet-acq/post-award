@@ -3,7 +3,6 @@
 use Faker\Generator as Faker;
 use Carbon\Carbon;
 use App\EdiInterface;
-use App\Agreement;
 
 $factory->define(EdiInterface::class, function (Faker $faker) {
     return [
