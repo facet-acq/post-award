@@ -20,7 +20,7 @@ trait IdentifyByUuid
     /**
     * Setup route model binding for UUID
     *
-    * @return void
+    * @return string
     */
     public function getRouteKeyName()
     {
@@ -30,7 +30,7 @@ trait IdentifyByUuid
     /**
     * Getter to integrate uuid value into Eloquent functionality
     *
-    * @return void
+    * @return string
     */
     public function getKeyName()
     {

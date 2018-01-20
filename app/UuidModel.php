@@ -15,4 +15,23 @@ abstract class UuidModel extends Model
     * @var boolean
     */
     public $incrementing = false;
+
+    public function getIncrementing()
+    {
+        return false;
+    }
+
+    /**
+     * Sets the name of the primary key for Eloquent
+     *
+     * @var string
+     */
+    protected $primaryKey = 'uuid';
+
+    /**
+     * Sets the type of the key for Eloquent
+     *
+     * @var string
+     */
+    protected $keyType = 'uuid';
 }
