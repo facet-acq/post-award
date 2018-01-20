@@ -5,7 +5,6 @@ namespace App;
 class EdiInterface extends UuidModel
 {
     protected $fillable = [
-        'agreement_uuid',
         'file_size',
         'file_name',
         'file_type',
