@@ -105,7 +105,6 @@ class ProcessEdiFile implements ShouldQueue
             $result = $client->post('award', $facetTransaction);
             $response = json_decode($result->getBody());
             if ($result->getStatusCode() == 201) {
-                Log::info('Successfully Processed EDI transaction for agreement'. $response['agreement']['uuid']);
                 $this->logApiResult($result);
                 return $response['agreement']['uuid'];
             }
@@ -116,8 +115,7 @@ class ProcessEdiFile implements ShouldQueue
             Log::critical('Cannot communicate with post-award server');
             $this->logApiResult($e, 'Post Award Request failed');
         } catch (ClientException $c) {
-            Log::critical('Guzzle Client Error');
-            $this->logApiResult($c, 'Post Award Request failed');
+            $this->logClientException($c, 'Post Award Request failed');
         }
 
         return null;
@@ -135,18 +133,28 @@ class ProcessEdiFile implements ShouldQueue
         }
 
         // AWS will hold it for n days, then archive to Glacier for 5 years based on the bucket's life-cycle rules
-        // todo build this bucket creation and lifecycle rules in terraform
+        // todo build this bucket creation and life-cycle rules in terraform
         // Transactions are intentionally stored without meaningful extensions or identifying information
     }
 
-    protected function logApiResult($result, $message = "Api Request")
+    protected function logApiSuccess($result)
     {
-        Log::debug($message, [
+        Log::info('Successfully Processed EDI transaction');
+        Log::debug('Transaction successfully posted', [
+            'status_code' => $result->getStatusCode()
+        ]);
+    }
+
+    /**
+     * Logs an HTTP Request Client Exception
+     *
+     * @var \GuzzleHttp\Exception\ClientException
+     */
+    protected function logClientException($exception)
+    {
+        Log::error('Guzzle Client Error', [
             'request' => Psr7\str($result->getRequest()),
-            'response' => $result->hasResponse() ? Psr7\str($result->getResponse()): null,
-            // 'headers' => $result->getHeaders(),
-            // 'status_code' => $result->getStatusCode(),
-            // 'message' => $result->getReasonPhrase()
+            'response' => $result->hasResponse() ? Psr7\str($result->getResponse()): null
         ]);
     }
 }
