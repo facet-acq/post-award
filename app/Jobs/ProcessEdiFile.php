@@ -6,12 +6,13 @@ use App\EdiInterface;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Client;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
+
 use GuzzleHttp\Exception\ClientException;
 
 class ProcessEdiFile implements ShouldQueue
@@ -61,7 +62,7 @@ class ProcessEdiFile implements ShouldQueue
     }
 
     /**
-     * For each incoming file
+     * For each incoming file parse it and return all transactions for processing
      *
      * @return array
      */
@@ -74,27 +75,22 @@ class ProcessEdiFile implements ShouldQueue
         return $parsed;
     }
 
+    /**
+     * Process the Pedi object into an Agreement object
+     *
+     * @return array
+     */
     protected function buildFacetAgreement($ediTransaction)
     {
         // Map the post body here into multi-dimensional array
-        // return [
-        //     'agreement_details' => [
-        //         'order_identifier' => 'acb123',
-        //         'release_identifier' => null,
-        //         'total_amount' => 200
-        //     ],
-        //     'fund_list' => [
-        //         [],
-        //         []
-        //     ],
-        //     'item_list' => [
-        //         [],
-        //         []
-        //     ]
-        // ];
         return $ediTransaction;
     }
 
+    /**
+     * Submits the Post-Award compliant agreement data to the post-award REST endpoint for processing
+     *
+     * @return string
+     */
     protected function postAnAward($facetTransaction)
     {
         $client = new Client([
@@ -105,15 +101,12 @@ class ProcessEdiFile implements ShouldQueue
             $result = $client->post('award', $facetTransaction);
             $response = json_decode($result->getBody());
             if ($result->getStatusCode() == 201) {
-                $this->logApiResult($result);
+                // todo log the actual request and response at the debug level
                 return $response['agreement']['uuid'];
             }
             // Report any issues
             Log::warning('EDI Transaction processed but was not accepted for '.$this->interfaceFile->uuid);
             $this->logApiResult($result);
-        } catch (RequestException $e) {
-            Log::critical('Cannot communicate with post-award server');
-            $this->logApiResult($e, 'Post Award Request failed');
         } catch (ClientException $c) {
             $this->logClientException($c, 'Post Award Request failed');
         }
@@ -124,7 +117,8 @@ class ProcessEdiFile implements ShouldQueue
     /**
      * Moves the processed EDI file to archive
      *
-     * @param string $ediFileWithPrefix
+     * @param string
+     * @return void
      */
     protected function archiveProcessedFile($ediFileWithPrefix)
     {
@@ -137,18 +131,11 @@ class ProcessEdiFile implements ShouldQueue
         // Transactions are intentionally stored without meaningful extensions or identifying information
     }
 
-    protected function logApiSuccess($result)
-    {
-        Log::info('Successfully Processed EDI transaction');
-        Log::debug('Transaction successfully posted', [
-            'status_code' => $result->getStatusCode()
-        ]);
-    }
-
     /**
      * Logs an HTTP Request Client Exception
      *
-     * @var \GuzzleHttp\Exception\ClientException
+     * @var GuzzleHttp\Exception\ClientException
+     * @return void
      */
     protected function logClientException($exception)
     {

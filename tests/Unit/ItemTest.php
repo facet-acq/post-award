@@ -2,12 +2,12 @@
 
 namespace Tests\Unit;
 
+use App\Fund;
 use App\Item;
 use Tests\TestCase;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Fund;
-use Illuminate\Database\QueryException;
 
 class ItemTest extends TestCase
 {

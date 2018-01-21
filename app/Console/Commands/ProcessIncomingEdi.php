@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use Carbon\Carbon;
 use App\EdiInterface;
-use GuzzleHttp\Client;
 use App\Jobs\ProcessEdiFile;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
@@ -26,8 +25,6 @@ class ProcessIncomingEdi extends Command
      * @var string
      */
     protected $description = 'Queue all incoming EDI files in the bucket';
-
-    protected $facetTransaction;
 
     /**
      * Create a new command instance.
