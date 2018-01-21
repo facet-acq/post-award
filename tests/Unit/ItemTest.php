@@ -56,7 +56,8 @@ class ItemTest extends TestCase
     public function it_cannot_exist_outside_of_an_agreement()
     {
         $this->expectException(QueryException::class);
-        $item = factory(Item::class)->create(['agreement_uuid' => null]);
+        factory(Item::class)->create(['agreement_uuid' => null]);
+        $this->assertCount(0, Item::all());
     }
 
     /** @test */
