@@ -16,7 +16,7 @@ class Item extends UuidModel
             ->withTimestamps();
     }
 
-    public function total_funded()
+    public function totalFunded()
     {
         return $this->funds()->sum('amount');
     }
