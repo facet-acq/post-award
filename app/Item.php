@@ -20,4 +20,9 @@ class Item extends UuidModel
     {
         return $this->funds()->sum('amount');
     }
+
+    public function totalCost()
+    {
+        return $this->quantity * $this->unit_cost;
+    }
 }
