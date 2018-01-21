@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\EdiInterface;
 use GuzzleHttp\Psr7;
+use App\EdiInterface;
 use GuzzleHttp\Client;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Log;
@@ -140,8 +140,8 @@ class ProcessEdiFile implements ShouldQueue
     protected function logClientException($exception)
     {
         Log::error('Guzzle Client Error', [
-            'request' => Psr7\str($result->getRequest()),
-            'response' => $result->hasResponse() ? Psr7\str($result->getResponse()): null
+            'request' => Psr7\str($exception->getRequest()),
+            'response' => $exception->hasResponse() ? Psr7\str($exception->getResponse()): null
         ]);
     }
 }
