@@ -16,10 +16,8 @@ class CreateFundItemAssignmentTable extends Migration
         Schema::create('fund_item_assignment', function (Blueprint $table) {
             $table->increments('id');
             $table->uuid('fund_uuid')
-                ->index()
                 ->comment('Lookup key for a fund');
             $table->uuid('item_uuid')
-                ->index()
                 ->comment('Lookup key for an item within an agreement');
             $table->double('amount')
                 ->comment('Amount of a fund attached to the referenced line item as a do not exceed threshold');
