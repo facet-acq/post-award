@@ -7,6 +7,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Fund;
+use Illuminate\Database\QueryException;
 
 class ItemTest extends TestCase
 {
@@ -52,6 +53,13 @@ class ItemTest extends TestCase
     }
 
     /** @test */
+    public function it_cannot_exist_outside_of_an_agreement()
+    {
+        $this->expectException(QueryException::class);
+        $item = factory(Item::class)->create(['agreement_uuid' => null]);
+    }
+
+    /** @test */
     public function it_tracks_which_fund_funded_the_item()
     {
         $amount = 100;
@@ -66,5 +74,42 @@ class ItemTest extends TestCase
 
         $this->assertEquals($item->funds()->first()->uuid, $fund->uuid);
         $this->assertEquals($item->totalFunded(), $amount);
+    }
+
+    /** @test */
+    public function it_can_have_multiple_funds()
+    {
+        $amountOne = 50;
+        $amountTwo = 75;
+
+        $item = factory(Item::class)->create([
+            'quantity' => 1,
+            'unit_cost' => $amountOne + $amountTwo
+        ]);
+
+        $fundOne = factory(Fund::class)->create();
+        $fundOne->obligate($amountOne, $item->agreement()->first()->uuid);
+
+        $fundTwo = factory(Fund::class)->create();
+        $fundTwo->obligate($amountTwo, $item->agreement()->first()->uuid);
+
+        $item->funds()->attach($fundOne, ['amount' => $amountOne]);
+        $item->funds()->attach($fundTwo, ['amount' => $amountTwo]);
+
+        $this->assertCount(2, $item->funds);
+        $this->assertEquals($item->totalFunded(), $amountOne + $amountTwo);
+    }
+
+    /** @test */
+    public function it_knows_its_total_cost()
+    {
+        $unitCost = 100;
+        $quantity = 20;
+        $item = factory(Item::class)->create([
+            'quantity' => $quantity,
+            'unit_cost' => $unitCost
+        ]);
+
+        $this->assertEquals($unitCost * $quantity, $item->totalCost());
     }
 }
