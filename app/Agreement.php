@@ -15,6 +15,11 @@ class Agreement extends UuidModel
         'total_value'
     ];
 
+    public function items()
+    {
+        return $this->hasMany('App\Item', 'uuid');
+    }
+
     public function parties()
     {
         return $this->belongsToMany(Party::class, 'party_assignments', 'agreement_uuid', 'party_uuid')->withTimestamps();

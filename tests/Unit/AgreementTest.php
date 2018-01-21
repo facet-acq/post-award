@@ -139,4 +139,11 @@ class AgreementTest extends TestCase
 
         $this->assertEquals($buyerParty->uuid, $agreement->buyer->first()->uuid);
     }
+
+    /** @test */
+    public function it_can_list_its_items()
+    {
+        $agreement = factory(Agreement::class)->create();
+        $this->assertNotNull($agreement->items());
+    }
 }
