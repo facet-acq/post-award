@@ -18,16 +18,22 @@ class CreateLedgerEntriesTable extends Migration
             $table->primary('uuid');
             $table->uuid('fund_uuid')
                 ->comment('Pointer to the Fund impacted by the ledger entry');
+            $table->foreign('fund_uuid')
+                ->references('uuid')
+                ->on('funds');
             $table->uuid('agreement_uuid')
                 ->comment('Pointer to the Agreement impacted by the ledger entry');
-            $table->index(['fund_uuid', 'agreement_uuid']);
+            $table->foreign('agreement_uuid')
+                ->references('uuid')
+                ->on('agreements');
             $table->uuid('item_uuid')
                 ->nullable()
                 ->comment('Pointer to the item impacted by the ledger entry');
             $table->uuid('voucher_uuid')
                 ->nullable()
                 ->comment('Pointer to the voucher impacted by the ledger entry');
-            $table->string('description');
+            $table->string('description')
+                ->comment('Reason for which the ledger entry was added');
             $table->double('obligation')
                 ->default(0)
                 ->comment('Amount of capital obligated for payment to a vendor in return for a good or service');
