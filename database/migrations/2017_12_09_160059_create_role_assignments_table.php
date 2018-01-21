@@ -15,8 +15,11 @@ class CreateRoleAssignmentsTable extends Migration
     {
         Schema::create('party_assignments', function (Blueprint $table) {
             $table->uuid('party_uuid');
+            $table->foreign('party_uuid')->references('uuid')->on('parties');
             $table->uuid('agreement_uuid');
+            $table->foreign('agreement_uuid')->references('uuid')->on('agreements');
             $table->uuid('role_uuid');
+            $table->foreign('role_uuid')->references('uuid')->on('roles');
             $table->unique(['role_uuid', 'agreement_uuid']);
             $table->timestamps();
         });
