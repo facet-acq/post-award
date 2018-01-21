@@ -6,6 +6,9 @@ use Illuminate\Support\Carbon;
 
 class SloaAccountingLine extends AccountingLine
 {
+    /**
+     * Sets fields available for mass assignment
+     */
     protected $fillable = [
         'sub_class',
         'department_transfer',
@@ -35,6 +38,11 @@ class SloaAccountingLine extends AccountingLine
         'functional_area'
     ];
 
+    /**
+     * Returns the Treasury reportable data
+     *
+     * @returns array
+     */
     public function treasuryData()
     {
         $issueYear = 'XXXX';
@@ -62,16 +70,35 @@ class SloaAccountingLine extends AccountingLine
         ];
     }
 
+    /**
+     * Returns fiscal year in which funds expire
+     */
     public function expiresInFiscalYear()
     {
+        if (is_null($this->availability_type)) {
+            if (!isset($this->epoa)) {
+                throw new Exception("EPOA is not provided");
+            }
+            return $this->epoa->addYear(5);
+        }
         return null;
     }
 
+    /**
+     * Identifies the accounting system of record referenced by the accounting line
+     *
+     * @return string
+     */
     public function accountingSystemOfRecord()
     {
         return $this->agency_accounting_identifier;
     }
 
+    /**
+     * Creates a SLOA Accounting Line from the hat delimited string
+     *
+     * @return App\SloaAccountingLine
+     */
     public static function fromHatDelimiter($strSloaData)
     {
         $sloa = (new static);
@@ -108,6 +135,11 @@ class SloaAccountingLine extends AccountingLine
         ]);
     }
 
+    /**
+     * Parses hat delimited string of values into data elements
+     *
+     * @return array
+     */
     protected function parseSloaDelimited($strSloaData)
     {
         /*
@@ -138,6 +170,9 @@ class SloaAccountingLine extends AccountingLine
         return $delimited;
     }
 
+    /**
+     * Gracefully handle delimited string values with actual null elements
+     */
     protected function swapZeroLengthStringWithNull($element)
     {
         if ($element === '') {
