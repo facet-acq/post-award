@@ -65,6 +65,6 @@ class ItemTest extends TestCase
         $item->funds()->attach($fund, ['amount' => $amount]);
 
         $this->assertEquals($item->funds()->first()->uuid, $fund->uuid);
-        $this->assertEquals($item->total_funded(), $amount);
+        $this->assertEquals($item->totalFunded(), $amount);
     }
 }
