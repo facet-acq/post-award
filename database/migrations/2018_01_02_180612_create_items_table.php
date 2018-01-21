@@ -16,6 +16,8 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->uuid('uuid');
             $table->primary('uuid');
+            $table->uuid('agreement_uuid')->comment('UUID identifier for the agreement to which the item belongs');
+            $table->foreign('agreement_uuid')->references('uuid')->on('agreements');
             $table->string('item_identifier');
             $table->float('quantity');
             $table->float('unit_cost');

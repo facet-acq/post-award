@@ -34,4 +34,11 @@ class Fund extends UuidModel
             'disbursement' => $ledgerData->sum('disbursement')
         ]);
     }
+
+    public function items()
+    {
+        return $this->belongsToMany('App\Item', 'fund_item_assignment', 'fund_uuid', 'item_uuid')
+            ->withPivot('amount')
+            ->withTimestamps();
+    }
 }

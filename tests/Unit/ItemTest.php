@@ -6,6 +6,7 @@ use App\Item;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Fund;
 
 class ItemTest extends TestCase
 {
@@ -41,5 +42,29 @@ class ItemTest extends TestCase
         $item = factory(Item::class)->create();
         $this->assertNotNull($item->unit_cost);
         $this->assertDatabaseHas('items', ['unit_cost' => $item->unit_cost]);
+    }
+
+    /** @test */
+    public function it_belongs_to_an_agreement()
+    {
+        $item = factory(Item::class)->create();
+        $this->assertNotNull($item->agreement()->first());
+    }
+
+    /** @test */
+    public function it_tracks_which_fund_funded_the_item()
+    {
+        $amount = 100;
+        $item = factory(Item::class)->create([
+            'quantity' => 1,
+            'unit_cost' => $amount
+        ]);
+        $fund = factory(Fund::class)->create();
+        $fund->obligate($amount, $item->agreement()->first()->uuid);
+
+        $item->funds()->attach($fund, ['amount' => $amount]);
+
+        $this->assertEquals($item->funds()->first()->uuid, $fund->uuid);
+        $this->assertEquals($item->total_funded(), $amount);
     }
 }
