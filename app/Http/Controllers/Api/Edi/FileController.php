@@ -42,10 +42,9 @@ class FileController extends ApiController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
         $guardResult = $this->filePathGuard();
         if (get_class($guardResult) === 'Illuminate\Http\JsonResponse') {
@@ -88,7 +87,7 @@ class FileController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
         return $this->respondThisIsAnApi();
     }
@@ -96,11 +95,10 @@ class FileController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
         return $this->respondNotImplemented('This is a work in process');
     }
