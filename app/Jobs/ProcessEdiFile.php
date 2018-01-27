@@ -43,6 +43,8 @@ class ProcessEdiFile implements ShouldQueue
      */
     public function handle()
     {
+        Log::info('Invoked for '.$this->interfaceFile->file_name);
+
         // Parse EDI data into PHP object
         $ediTransaction = $this->parseEdiInterface();
 
@@ -53,7 +55,7 @@ class ProcessEdiFile implements ShouldQueue
         $facetTransaction = $this->buildFacetAgreement($ediTransaction);
 
         // Post the result for real time processing
-        $this->postAnAward($facetTransaction);
+        // $this->postAnAward($facetTransaction);
 
         // todo draw the association between the EdiInterface file and the transactions of any type which it generated
 
@@ -94,7 +96,7 @@ class ProcessEdiFile implements ShouldQueue
     protected function postAnAward($facetTransaction)
     {
         $client = new Client([
-            'base_uri' => env('APP_URL') . '/api/v1/'
+            'base_uri' => config('post-award.edi.file_processing.url')
         ]);
         try {
             // Post transformed data to processing endpoint

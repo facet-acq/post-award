@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Carbon\Carbon;
 use App\EdiInterface;
 use App\Jobs\ProcessEdiFile;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -48,7 +50,10 @@ class ProcessIncomingEdi extends Command
 
         // Loop each file and parse it into a usable object
         foreach ($workList as $ediFile) {
-            $this->enqueueEdiFile($ediFile);
+            $path = explode('/', $ediFile);
+            if (sizeof($path) === 4 && $path[0] != 'archive') {
+                $this->enqueueEdiFile($ediFile);
+            }
         }
 
         $this->info('Enqueue complete');
@@ -56,20 +61,21 @@ class ProcessIncomingEdi extends Command
 
     protected function enqueueEdiFile($file)
     {
-        // extract original file data and save to trading partners table
-        $path = explode('/', $file);
-        if (sizeof($path) === 4 && $path[0] != 'archive') {
-            $fileToProcess = EdiInterface::create([
-                'file_size' => Storage::size($file),
-                'file_name' => $path[3],
-                'file_type' => $path[2],
-                'file_at' => Carbon::createFromTimestamp(Storage::lastModified($file), 'America/New_York'),
-                'interface_partner' => $path[0],
-                'interface_channel' => $path[1],
-                'queued_at' => Carbon::now(),
-                'processed_at' => null
-            ]);
-            ProcessEdiFile::dispatch($fileToProcess);
+        $client = new Client();
+        $headers = ['Content-Type' => 'application/json'];
+        $body = json_encode(['file' => [$file]]);
+
+        $request = new Request('POST', $this->getFileUrl(), $headers, $body);
+        $response = $client->send($request);
+
+        if ($response->getStatusCode() == 201) {
+            $responseBody = json_decode($response->getBody()->read(2048), true);
+            return $responseBody['result'];
         }
+    }
+
+    protected function getFileUrl()
+    {
+        return config('post-award.edi.file_processing.url') . 'interface/file';
     }
 }
