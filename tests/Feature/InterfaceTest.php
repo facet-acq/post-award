@@ -33,7 +33,7 @@ class InterfaceTest extends TestCase
 
         Bus::fake();
 
-        $response = $this->post('api/v1/interface/file', ['file' => [$path]])
+        $this->post('api/v1/interface/file', ['file' => [$path]])
             ->assertStatus(201)
             ->assertJsonStructure([
                 'result' => [
