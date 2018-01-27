@@ -95,23 +95,23 @@ class FileController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function update($id)
     {
-        return $this->respondNotImplemented('This is a work in process');
+        return $this->respondNotImplemented($id.' called, but this is a work in process');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        return $this->respondNotImplemented('This is a work in process');
+        return $this->respondNotImplemented($id.' called, but this is a work in process');
     }
 
     /**
