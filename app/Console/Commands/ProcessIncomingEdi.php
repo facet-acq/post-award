@@ -59,6 +59,12 @@ class ProcessIncomingEdi extends Command
         $this->info('Enqueue complete');
     }
 
+    /**
+     * Wraps the POST action of an interface file to the REST endpoint for processing
+     *
+     * @param string $file
+     * @return array
+     */
     protected function enqueueEdiFile($file)
     {
         $client = new Client();
@@ -74,6 +80,11 @@ class ProcessIncomingEdi extends Command
         }
     }
 
+    /**
+     * Retrieves the file processing endpoint URL from config file
+     *
+     * @return string
+     */
     protected function getFileUrl()
     {
         return config('post-award.edi.file_processing.url') . 'interface/file';
