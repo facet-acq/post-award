@@ -14,7 +14,6 @@ addons:
 install:
   - composer self-update
   - cp .env.travis .env
-  - pear install pear/PHP_CodeSniffer
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
   - phpenv rehash
 
@@ -25,7 +24,6 @@ before_script:
 script:
   - vendor/bin/phpunit --coverage-clover clover.xml
   - php artisan dusk
-  - phpcs --ignore=app/Http/Controllers/Auth,app/Http/Controllers/Controller.php app/Http/Controllers
 
 after_script:
   - php vendor/bin/codacycoverage clover clover.xml
