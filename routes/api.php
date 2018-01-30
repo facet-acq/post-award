@@ -17,5 +17,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('v1/interface/file', 'Api\Edi\FileController@store');
-Route::get('v1/interface/file/{uuid}', 'Api\Edi\FileController@show');
+Route::group(['namespace' => 'Api'], function () {
+    Route::group([
+        'prefix' => 'v1',
+        'namespace' => 'V1'
+    ], function () {
+        Route::group([
+            'prefix' => 'interface',
+            'namespace' => 'Edi'
+        ], function () {
+            Route::post('file', 'FileController@store');
+            Route::get('file/{uuid}', 'FileController@show');
+        });
+    });
+});
