@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Edi;
+namespace App\Http\Controllers\Api\V1\Edi;
 
 use App\EdiInterface;
 use Illuminate\Http\Request;
