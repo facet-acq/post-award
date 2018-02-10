@@ -20,6 +20,6 @@ if (pusherKey) {
 }
 
 window.Echo.channel('system-notification')
-  .listen('SystemWideNotification', message => {
+  .listen('SystemWideNotification', (message) => {
     window.flash(message);
   });

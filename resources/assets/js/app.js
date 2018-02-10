@@ -1,6 +1,6 @@
-require('./axios');
-require('./echo');
-require('typeface-fira-sans');
+import './axios';
+import './echo';
+import 'typeface-fira-sans';
 
 /**
  * Setup Vue for the project
@@ -10,7 +10,7 @@ window.Vue = Vue;
 window.eventHub = new Vue();
 window.flash = function (message) {
   window.eventHub.$emit('flash', message);
-}
+};
 
 /**
  * Setup Vue Router
@@ -28,7 +28,7 @@ const router = new VueRouter({
  * Basic App Setup
  */
 import App from './components/App.vue';
-const app = new Vue({
+new Vue({
   components: { App },
   router
 }).$mount('#app');
