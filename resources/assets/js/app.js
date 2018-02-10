@@ -1,25 +1,34 @@
-/**
- * Setup basic Axios AJAX headers and settings
- */
-import axios from 'axios';
-window.axios = axios;
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-// Setup CSRF token
-let token = document.head.querySelector('meta[name="csrf-token"]');
-if (token) {
-  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-}
+require('./axios');
+require('./echo');
+require('typeface-fira-sans');
 
 /**
  * Setup Vue for the project
  */
 import Vue from 'vue';
 window.Vue = Vue;
+window.eventHub = new Vue();
+window.flash = function (message) {
+  window.eventHub.$emit('flash', message);
+}
 
-// Vue Component
-const FacetLandingPage = Vue.component('facet-landing-page', require('./components/FacetLandingPage.vue'));
+/**
+ * Setup Vue Router
+ */
+import VueRouter from 'vue-router';
+import routes from './routes';
+Vue.use(VueRouter);
+const router = new VueRouter({
+  mode: 'history',
+  routes,
+  linkActiveClass: 'is-active'
+});
 
+/**
+ * Basic App Setup
+ */
+import App from './components/App.vue';
 const app = new Vue({
-  component: { FacetLandingPage }
+  components: { App },
+  router
 }).$mount('#app');

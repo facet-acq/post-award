@@ -6,9 +6,20 @@
 
 import Echo from 'laravel-echo';
 
-window.Pusher = require('pusher-js');
+import Pusher from 'pusher-js';
+window.Pusher = Pusher;
 
-window.Echo = new Echo({
-  broadcaster: 'pusher',
-  key: 'cbe2c59b3fc935cf832b'
-});
+let pusherKey = document.head.querySelector('meta[name="pusher-public-key"]');
+if (pusherKey) {
+  window.Echo = new Echo({
+    broadcaster: 'pusher',
+    cluster: 'us2',
+    encrypted: true,
+    key: pusherKey.content
+  });
+}
+
+window.Echo.channel('system-notification')
+  .listen('SystemWideNotification', message => {
+    window.flash(message);
+  });
