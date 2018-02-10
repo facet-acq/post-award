@@ -13,7 +13,13 @@ let mix = require('laravel-mix');
 
 mix.js('resources/assets/js/app.js', 'public/js')
   .sass('resources/assets/sass/app.scss', 'public/css')
-  .extract(['vue', 'axios']);
+  .extract([
+    'axios',
+    'typeface-fira-sans',
+    'moment',
+    'pusher-js',
+    'vue'
+  ]);
 
 if (mix.inProduction()) {
   mix.version();
