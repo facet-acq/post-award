@@ -18,7 +18,7 @@
     externalDocs:
       description: 'Learn more!'
       url: 'https://github.com/facet-acq/post-award/wiki/Getting-Started'
-  - name: 'invoice'
+  - name: 'contract'
     description: 'add this'
     externalDocs:
       description: 'Add here'
@@ -76,51 +76,46 @@
             description: 'The server is temporarily unavailable retry in provided header duration, provided in seconds.'
   definitions:
     Agreement:
-      type: 'object'
+      type: object
       properties:
         agreement_details:
-          type: 'object'
+          type: object
           properties:
             order_identifier:
-              type: 'string'
+              type: string
             release_identifier:
-              type: 'string'
+              type: string
             effective_date:
-              type: 'string'
+              type: string
               format: 'date-time'
             total_value:
-              type: 'number'
-              format: 'double'
+              type: number
+              format: double
         party_list:
-          type: 'array'
+          type: array
           items:
-            type: 'object'
             $ref: '#/definitions/party'
         fund_list:
-          type: 'array'
+          type: array
           items:
-            type: 'object'
             $ref: '#/definitions/fund'
         reference_list:
-          type: 'array'
+          type: array
           items:
-            type: 'object'
             $ref: '#/definitions/reference'
         term_list:
-          type: 'array'
+          type: array
           items:
-            type: 'object'
             $ref: '#/definitions/term'
         item_list:
-          type: 'array'
+          type: array
           items:
-            type: 'object'
             $ref: '#/definitions/item'
     fund:
-      type: 'object'
+      type: object
       properties:
         funding_type:
-          type: 'string'
+          type: string
           description: Supported funding types
           default: SloaAccountingLine
           enum:
@@ -132,13 +127,13 @@
       required:
         - funding_type
     party:
-      type: 'object'
+      type: object
       properties:
         office_code:
-          type: 'string'
+          type: string
           description: Shorthand code identifying the office itself in one of the several systems of record for authoritative locations
         office_type:
-          type: 'string'
+          type: string
           description: Identifier for which official code system to which the pointer belongs
           enum:
             - CAGE
@@ -146,50 +141,50 @@
             - DUNS
             - 'DUNS+4'
     reference:
-      type: 'object'
+      type: object
       properties:
         reference_type:
-          type: 'string'
+          type: string
           description: Pointer to which reference source the data pretains
         reference_value:
-          type: 'string'
+          type: string
           description: Detail data
     term:
-      type: 'object'
+      type: object
       properties:
         term_source:
-          type: 'string'
+          type: string
           description: From what authority does the term derive
         term_identifier:
-          type: 'string'
+          type: string
           description: Pointer to the term itself
     item:
-      type: 'object'
+      type: object
       properties:
         identifier:
-          type: 'string'
+          type: string
           description: Line item identifier
           example: '0001AA'
     ErrorResponse:
       description: The error response object
       allOf:
       - $ref: '#/definitions/docs'
-      - type: 'object'
+      - type: object
         properties:
           errors:
-            type: 'array'
+            type: array
             items:
-              type: 'string'
+              type: string
               description: Message about the error
     docs:
       description: Relevant documentation that may be of use to the requestor
       type: array
       items:
-        type: 'object'
+        type: object
         properties:
           purpose:
-            type: 'string'
+            type: string
             description: To what this document pretains
           link:
-            type: 'string'
+            type: string
             description: URI pointer to the documentation
