@@ -22,6 +22,7 @@ Route::group(['namespace' => 'Api'], function () {
         'prefix' => 'v1',
         'namespace' => 'V1'
     ], function () {
+        Route::post('notifications', 'SystemNotificationController@create');
         Route::group([
             'prefix' => 'interface',
             'namespace' => 'Edi'
