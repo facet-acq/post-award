@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ app()->getLocale() }}" class="has-navbar-fixed-top">
+<html lang="{{ app()->getLocale() }}">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
     </head>
 
-    <body>
+    <body class="theme-page">
         <!-- Entry Point for Vue SPA -->
         <div id="app">
             <app></app>

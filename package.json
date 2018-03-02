@@ -23,5 +23,8 @@
         "vue": "^2.1.10",
         "vue-router": "^3.0.1"
     },
-    "dependencies": {}
+    "dependencies": {
+        "bulmaswatch": "^0.6.2",
+        "font-awesome": "^4.7.0"
+    }
 }

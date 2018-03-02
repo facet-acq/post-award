@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div id="wrapper">
     <h1>Temp</h1>
 
-    <span @click="count += 1;">Count is {{count}}</span>
+    <button class="button is-primary" @click="count += 1;">Count is {{count}}</button>
   </div>
 </template>
 
@@ -16,3 +16,11 @@ export default {
 }
 </script>
 
+<style>
+body {
+  padding-top:60px;
+}
+#wrapper {
+  height:100vh;
+}
+</style>
