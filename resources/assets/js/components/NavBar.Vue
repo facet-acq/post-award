@@ -54,21 +54,6 @@
           </div>
         </div>
       </nav>
-  <!-- <nav class="navbar is-primary is-fixed-top" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <a href="https://github.com/facet-acq" class="navbar-item">
-         <img src="images/facet.svg" alt="FACET Acquistion a fractal  to ">
-        </a>
-    </div>
-
-    <button class="button navbar-burger">
-        <router-link v-for="item in menu" :to="item.link" :key="item.label"><span>{{item.label}}</span></router-link>
-    </button>
-
-      <div class="navbar-menu">
-
-      </div>
-</nav> -->
 </template>
 
 <script>

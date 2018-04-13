@@ -12,9 +12,11 @@
     "devDependencies": {
         "axios": "^0.16.2",
         "bulma": "^0.6.0",
+        "bulmaswatch": "^0.6.2",        
         "cross-env": "^5.0.1",
         "eslint": "^4.10.0",
         "eslint-plugin-vue": "^3.14.0",
+        "font-awesome": "^4.7.0",        
         "laravel-echo": "^1.3.5",
         "laravel-mix": "^1.0",
         "moment": "^2.20.1",
@@ -22,9 +24,5 @@
         "typeface-fira-sans": "^0.0.54",
         "vue": "^2.1.10",
         "vue-router": "^3.0.1"
-    },
-    "dependencies": {
-        "bulmaswatch": "^0.6.2",
-        "font-awesome": "^4.7.0"
     }
 }
