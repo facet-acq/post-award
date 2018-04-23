@@ -3749,6 +3749,74 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -3772,27 +3840,110 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container is-fluid" }, [
-      _c("h1", [_vm._v("FACET")]),
+    return _c("div", [
+      _c("section", { staticClass: "hero is-primary is-large is-bold" }, [
+        _c("div", { staticClass: "hero-body" }, [
+          _c("div", { staticClass: "container has-text-centered" }, [
+            _c("h1", { staticClass: "title" }, [
+              _vm._v("\n        FACET - Post Award\n      ")
+            ]),
+            _vm._v(" "),
+            _c("h2", { staticClass: "subtitle" }, [
+              _vm._v(
+                "\n        Post Award is contract entitlement and administration system designed arond the federated microservices computing model and built from the ground up for cloud-based computuing and microdeployments as needed.\n      "
+              )
+            ])
+          ])
+        ])
+      ]),
       _vm._v(" "),
-      _c("section", [
-        _c("h1", [_vm._v("Getting Started Guide")]),
-        _vm._v(" "),
-        _c("h2", [_vm._v("FACET Post Award")]),
-        _vm._v(" "),
-        _c("p", [
+      _c("div", { staticClass: "box cta" }, [
+        _c("p", { staticClass: "has-text-centered" }, [
+          _c("span", { staticClass: "tag is-primary" }, [_vm._v("New")]),
           _vm._v(
-            "Post Award is contract entitlement and administration system designed arond the federated microservices computing model and built from the ground up for cloud-based computuing and microdeployments as needed."
-          )
-        ]),
-        _vm._v(" "),
-        _c("h2", [_vm._v("Technologies")]),
-        _vm._v(" "),
-        _c("p", [
-          _vm._v(
-            "This system is built on powerful open source frameworks leveraging each for its core strengths and handing off defined contacts between system segments."
+            " \n        This system is built on powerful open source frameworks leveraging each for its core strengths and handing off defined contacts between system segments.\n    "
           )
         ])
+      ]),
+      _vm._v(" "),
+      _c("section", { staticClass: "container" }, [
+        _c("div", { staticClass: "columns features" }, [
+          _c("div", { staticClass: "column is-4" }, [
+            _c("div", { staticClass: "card" }, [
+              _c("div", { staticClass: "card-image has-text-centered" }, [
+                _c("i", { staticClass: "fa fa-paw" })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-content" }, [
+                _c("div", { staticClass: "content" }, [
+                  _c("h4", [_vm._v("Tristique senectus et netus et. ")]),
+                  _vm._v(" "),
+                  _c("p", [
+                    _vm._v(
+                      "Purus semper eget duis at tellus at urna condimentum mattis. Non blandit massa enim nec. Integer enim neque volutpat ac tincidunt vitae semper quis. Accumsan tortor posuere ac ut consequat semper viverra nam."
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("p", [
+                    _c("a", { attrs: { href: "#" } }, [_vm._v("Learn more")])
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "column is-4" }, [
+            _c("div", { staticClass: "card" }, [
+              _c("div", { staticClass: "card-image has-text-centered" }, [
+                _c("i", { staticClass: "fa fa-id-card-o" })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-content" }, [
+                _c("div", { staticClass: "content" }, [
+                  _c("h4", [_vm._v("Tempor orci dapibus ultrices in.")]),
+                  _vm._v(" "),
+                  _c("p", [
+                    _vm._v(
+                      "Ut venenatis tellus in metus vulputate. Amet consectetur adipiscing elit pellentesque. Sed arcu non odio euismod lacinia at quis risus. Faucibus turpis in eu mi bibendum neque egestas cmonsu songue. Phasellus vestibulum lorem sed risus."
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("p", [
+                    _c("a", { attrs: { href: "#" } }, [_vm._v("Learn more")])
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "column is-4" }, [
+            _c("div", { staticClass: "card" }, [
+              _c("div", { staticClass: "card-image has-text-centered" }, [
+                _c("i", { staticClass: "fa fa-rocket" })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-content" }, [
+                _c("div", { staticClass: "content" }, [
+                  _c("h4", [
+                    _vm._v(" Leo integer malesuada nunc vel risus.  ")
+                  ]),
+                  _vm._v(" "),
+                  _c("p", [
+                    _vm._v(
+                      "Imperdiet dui accumsan sit amet nulla facilisi morbi. Fusce ut placerat orci nulla pellentesque dignissim enim. Libero id faucibus nisl tincidunt eget nullam. Commodo viverra maecenas accumsan lacus vel facilisis."
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("p", [
+                    _c("a", { attrs: { href: "#" } }, [_vm._v("Learn more")])
+                  ])
+                ])
+              ])
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", [_c("span", [_vm._v(" ")])])
       ])
     ])
   }
@@ -3812,6 +3963,10 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(235)
+}
 var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(206)
@@ -3820,7 +3975,7 @@ var __vue_template__ = __webpack_require__(207)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -3887,12 +4042,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { attrs: { id: "wrapper" } }, [
     _c("h1", [_vm._v("Temp")]),
     _vm._v(" "),
     _c(
-      "span",
+      "button",
       {
+        staticClass: "button is-primary",
         on: {
           click: function($event) {
             _vm.count += 1
@@ -4075,6 +4231,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4120,17 +4280,17 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("p", [
-      _c("i", [
-        _vm._v("FACET-Acq is an open source community project managed via "),
-        _c(
-          "a",
-          { attrs: { href: "https://github.com/facet-acq/post-award" } },
-          [_vm._v("GitHub")]
-        ),
-        _vm._v(" and "),
-        _c("strong", [_vm._v("not")]),
-        _vm._v(" an official organizaiton of the US government.")
-      ])
+      _c("strong", [_vm._v("FACET-Acq")]),
+      _vm._v(" is an open source community project managed via "),
+      _c("a", { attrs: { href: "https://github.com/facet-acq/post-award" } }, [
+        _vm._v("GitHub \n        "),
+        _c("span", { staticClass: "icon" }, [
+          _c("i", { staticClass: "fa fa-github" })
+        ])
+      ]),
+      _vm._v(" and "),
+      _c("strong", [_vm._v("not")]),
+      _vm._v(" an official organizaiton of the US government.\n      ")
     ])
   }
 ]
@@ -4216,6 +4376,61 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -4234,50 +4449,109 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "nav",
-    {
-      staticClass: "navbar is-primary is-fixed-top",
-      attrs: { role: "navigation", "aria-label": "main navigation" }
-    },
-    [
-      _vm._m(0),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "button navbar-burger" },
-        _vm._l(_vm.menu, function(item) {
-          return _c(
-            "router-link",
-            { key: item.label, attrs: { to: item.link } },
-            [_c("span", [_vm._v(_vm._s(item.label))])]
-          )
-        })
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "navbar-menu" })
-    ]
-  )
+  return _vm._m(0)
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "navbar-brand" }, [
-      _c(
-        "a",
-        {
-          staticClass: "navbar-item",
-          attrs: { href: "https://github.com/facet-acq" }
-        },
-        [
-          _c("img", {
-            attrs: { src: "", alt: "FACET Acquistion a fractal approach to " }
-          })
-        ]
-      )
-    ])
+    return _c(
+      "nav",
+      {
+        staticClass: "navbar is-fixed-top",
+        attrs: { role: "navigation", "aria-label": "main navigation" }
+      },
+      [
+        _c("div", { staticClass: "container" }, [
+          _c("div", { staticClass: "navbar-brand" }, [
+            _c("a", { staticClass: "navbar-item" }, [
+              _c("img", { attrs: { src: "images/facet.svg", alt: "Logo" } })
+            ]),
+            _vm._v(" "),
+            _c(
+              "span",
+              {
+                staticClass: "navbar-burger burger",
+                attrs: { "data-target": "navbarMenuHero2" }
+              },
+              [_c("span"), _vm._v(" "), _c("span"), _vm._v(" "), _c("span")]
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "navbar-menu", attrs: { id: "navbarMenuHero2" } },
+            [
+              _c("div", { staticClass: "navbar-end" }, [
+                _c("a", { staticClass: "navbar-item is-active" }, [
+                  _vm._v("\n                Home\n              ")
+                ]),
+                _vm._v(" "),
+                _c("a", { staticClass: "navbar-item" }, [
+                  _vm._v("\n                Examples\n              ")
+                ]),
+                _vm._v(" "),
+                _c("a", { staticClass: "navbar-item" }, [
+                  _vm._v("\n                Documentation\n              ")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "navbar-item has-dropdown is-hoverable" },
+                  [
+                    _c("div", { staticClass: "navbar-link" }, [
+                      _vm._v("\n                    More\n                  ")
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "navbar-dropdown ",
+                        attrs: { id: "moreDropdown" }
+                      },
+                      [
+                        _c(
+                          "a",
+                          { staticClass: "navbar-item ", attrs: { href: "#" } },
+                          [
+                            _c("div", { staticClass: "level is-mobile" }, [
+                              _c("div", { staticClass: "level-left" }, [
+                                _c("div", { staticClass: "level-item" }, [
+                                  _c("p", [
+                                    _c("strong", [_vm._v("Extensions")]),
+                                    _vm._v(" "),
+                                    _c("br"),
+                                    _vm._v(" "),
+                                    _c("small", [
+                                      _vm._v("Side projects to enhance Bulma")
+                                    ])
+                                  ])
+                                ])
+                              ])
+                            ])
+                          ]
+                        )
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("span", { staticClass: "navbar-item" }, [
+                  _c("a", { staticClass: "button is-primary is-inverted" }, [
+                    _c("span", { staticClass: "icon" }, [
+                      _c("i", { staticClass: "fa fa-github" })
+                    ]),
+                    _vm._v(" "),
+                    _c("span", [_vm._v("Download")])
+                  ])
+                ])
+              ])
+            ]
+          )
+        ])
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -4765,8 +5039,6 @@ var render = function() {
     [
       _c("facet-navigation"),
       _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
       _c("router-view"),
       _vm._v(" "),
       _c("flash-message"),
@@ -4776,24 +5048,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("section", { staticClass: "hero is-light is-bold" }, [
-      _c("div", { staticClass: "hero-body" }, [
-        _c("div", { staticClass: "container" }, [
-          _c("h1", { staticClass: "title" }, [_vm._v("Welcome to FACET")]),
-          _vm._v(" "),
-          _c("h2", { staticClass: "subtitle" }, [
-            _vm._v("This is the Post-Award Module")
-          ])
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -4809,6 +5064,48 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 235:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(236);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(221)("6455caac", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-cab24aea\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Temp.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-cab24aea\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Temp.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 236:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(14)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\nbody {\n  padding-top:60px;\n}\n#wrapper {\n  height:100vh;\n}\n", ""]);
+
+// exports
+
 
 /***/ })
 

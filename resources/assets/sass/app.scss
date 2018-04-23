@@ -1,2 +1,25 @@
-@import './_variables';
-@import 'node_modules/bulma/bulma';
+//@import './_variables';
+// @import 'node_modules/bulma/bulma';
+
+
+$fa-font-path: "~font-awesome/fonts" !default;
+@import '~font-awesome/scss/font-awesome.scss';
+
+
+@import '~bulmaswatch/pulse/bulmaswatch.scss';
+
+
+.card-image > .fa {
+    font-size: 8rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    color: #8e44ad;
+  }
+  .card-content .content {
+    font-size: 14px;
+    margin: 1rem 1rem;
+  }
+  .card-content .content h4 {
+    font-size: 16px;
+    font-weight: 700;
+  }
