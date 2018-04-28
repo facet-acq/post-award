@@ -1,0 +1,1 @@
+variable "contact_info" {}
