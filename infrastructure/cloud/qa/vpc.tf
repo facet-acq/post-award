@@ -5,5 +5,6 @@ resource "aws_vpc" "qa" {
     Name      = "FacetQaVpc"
     CreatedBy = "Terraform"
     Contact   = "${var.contact_info}"
+    Supports  = "FACET"
   }
 }
