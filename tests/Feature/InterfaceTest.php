@@ -25,7 +25,7 @@ class InterfaceTest extends TestCase
         $path = $directory . '/' . $fileName;
 
         if (!Storage::exists($directory)) {
-            Storage::makeDirectory('usgov/contract/x12');
+            Storage::makeDirectory($directory);
         }
         if (!Storage::exists($path)) {
             Storage::put($path, $this->fakeX12);
