@@ -1,39 +1,28 @@
 webpackJsonp([1],{
 
-/***/ 139:
+/***/ 140:
 /***/ (function(module, exports, __webpack_require__) {
 
-<<<<<<< Updated upstream
-__webpack_require__(136);
-module.exports = __webpack_require__(226);
-=======
-__webpack_require__(140);
-module.exports = __webpack_require__(245);
->>>>>>> Stashed changes
+__webpack_require__(141);
+module.exports = __webpack_require__(232);
 
 
 /***/ }),
 
-/***/ 140:
+/***/ 141:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__axios__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__echo__ = __webpack_require__(160);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_typeface_fira_sans__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__axios__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__echo__ = __webpack_require__(161);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_typeface_fira_sans__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_typeface_fira_sans___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_typeface_fira_sans__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue__);
-<<<<<<< Updated upstream
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_router__ = __webpack_require__(200);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__routes__ = __webpack_require__(201);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_App_vue__ = __webpack_require__(208);
-=======
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_router__ = __webpack_require__(204);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__routes__ = __webpack_require__(205);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_App_vue__ = __webpack_require__(229);
->>>>>>> Stashed changes
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_router__ = __webpack_require__(205);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__routes__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_App_vue__ = __webpack_require__(216);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_App_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_App_vue__);
 
 
@@ -72,11 +61,11 @@ new __WEBPACK_IMPORTED_MODULE_3_vue___default.a({
 
 /***/ }),
 
-/***/ 141:
+/***/ 142:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 
 
@@ -91,13 +80,242 @@ if (token) {
 
 /***/ }),
 
-/***/ 160:
+/***/ 16:
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
+
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
+}
+
+var listToStyles = __webpack_require__(213)
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+var options = null
+var ssrIdKey = 'data-vue-ssr-id'
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction, _options) {
+  isProduction = _isProduction
+
+  options = _options || {}
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[' + ssrIdKey + '~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+  if (options.ssrId) {
+    styleElement.setAttribute(ssrIdKey, obj.id)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
+
+/***/ }),
+
+/***/ 161:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_echo__ = __webpack_require__(161);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_echo__ = __webpack_require__(162);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_laravel_echo__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_pusher_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_pusher_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_pusher_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_pusher_js__);
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -126,7 +344,7 @@ window.Echo.channel('system-notification').listen('SystemWideNotification', func
 
 /***/ }),
 
-/***/ 161:
+/***/ 162:
 /***/ (function(module, exports) {
 
 var asyncGenerator = function () {
@@ -1175,7 +1393,7 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 
-/***/ 204:
+/***/ 205:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3806,21 +4024,14 @@ if (inBrowser && window.Vue) {
 
 /***/ }),
 
-/***/ 205:
+/***/ 206:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_FacetLandingPage__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_FacetLandingPage__ = __webpack_require__(207);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_FacetLandingPage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_FacetLandingPage__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Temp__ = __webpack_require__(209);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Temp__ = __webpack_require__(210);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Temp___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_Temp__);
-<<<<<<< Updated upstream
-=======
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Saar2875__ = __webpack_require__(212);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Saar2875___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Saar2875__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_WorkflowInbox__ = __webpack_require__(223);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_WorkflowInbox___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_WorkflowInbox__);
->>>>>>> Stashed changes
 // Vue Component
 
 
@@ -3837,15 +4048,15 @@ if (inBrowser && window.Vue) {
 
 /***/ }),
 
-/***/ 206:
+/***/ 207:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(207)
+var __vue_script__ = __webpack_require__(208)
 /* template */
-var __vue_template__ = __webpack_require__(208)
+var __vue_template__ = __webpack_require__(209)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -3885,7 +4096,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 207:
+/***/ 208:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3962,29 +4173,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        console.log('Root component mounted.');
-    }
+  mounted: function mounted() {
+    console.log("Root component mounted.");
+  }
 });
 
 /***/ }),
 
-/***/ 208:
+/***/ 209:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -4117,19 +4315,19 @@ if (false) {
 
 /***/ }),
 
-/***/ 209:
+/***/ 210:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(235)
+  __webpack_require__(211)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(210)
+var __vue_script__ = __webpack_require__(214)
 /* template */
-var __vue_template__ = __webpack_require__(211)
+var __vue_template__ = __webpack_require__(215)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -4153,8 +4351,6 @@ if (false) {(function () {
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), false)
   if (!hotAPI.compatible) return
-<<<<<<< Updated upstream
-=======
   module.hot.accept()
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-cab24aea", Component.options)
@@ -4171,61 +4367,29 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 210:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      count: 0
-    };
-  }
-});
-
-/***/ }),
-
 /***/ 211:
 /***/ (function(module, exports, __webpack_require__) {
 
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("h1", [_vm._v("Temp")]),
-    _vm._v(" "),
-    _c(
-      "span",
-      {
-        on: {
-          click: function($event) {
-            _vm.count += 1
-          }
-        }
-      },
-      [_vm._v("Count is " + _vm._s(_vm.count))]
-    )
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-cab24aea", module.exports)
-  }
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(212);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(16)("6455caac", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-cab24aea\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Temp.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-cab24aea\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Temp.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
 }
 
 /***/ }),
@@ -4233,4214 +4397,53 @@ if (false) {
 /***/ 212:
 /***/ (function(module, exports, __webpack_require__) {
 
-var disposed = false
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(213)
-/* template */
-var __vue_template__ = __webpack_require__(222)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/Saar2875.vue"
+exports = module.exports = __webpack_require__(4)(false);
+// imports
 
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-c6e82a4c", Component.options)
-  } else {
-    hotAPI.reload("data-v-c6e82a4c", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
-module.exports = Component.exports
+// module
+exports.push([module.i, "\nbody {\n  padding-top:60px;\n}\n#wrapper {\n  height:100vh;\n}\n", ""]);
+
+// exports
 
 
 /***/ }),
 
 /***/ 213:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SignOff_vue__ = __webpack_require__(216);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__SignOff_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__SignOff_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__SaarProvisioning_vue__ = __webpack_require__(219);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__SaarProvisioning_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__SaarProvisioning_vue__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      request: {
-        type: "",
-        date: __WEBPACK_IMPORTED_MODULE_0_moment___default()().format(),
-        system: {
-          name: "FACET-Acq Post Award",
-          location: "Anywhere you need it"
-        }
-      },
-      identification: {
-        ldap: "",
-        mfa_token: "",
-        name: {
-          given: "",
-          sur: "",
-          middle_initial: ""
-        },
-        organization: "",
-        department: "",
-        phone: "",
-        email: "",
-        job: {
-          title: "",
-          rank: ""
-        },
-        mailing_address: {
-          street: "",
-          line_two: "",
-          city: "",
-          state: "",
-          postal: "",
-          country: "United States",
-          planet: "Earth"
-        },
-        citizenship: {
-          us: false,
-          fn: false,
-          other: false
-        },
-        designation: ''
-      },
-      training: {
-        information_assurance: {
-          complete: false,
-          date_completed: ""
-        }
-      },
-      justification: {
-        reason: "",
-        type: {
-          authorized: false,
-          privileged: false
-        },
-        classification: {
-          unclassified: true,
-          classified: false,
-          category: "",
-          other: false,
-          other_description: ""
-        },
-        need_to_know: true,
-        expiration: {
-          contract_number: "",
-          contract_company_name: "",
-          date: ""
-        },
-        additional_details: "This section intentionally left blank"
-      },
-      investigation: {
-        type: "",
-        date: "",
-        clearance: "",
-        it_designation: {
-          level_1: false,
-          level_2: false,
-          level_3: false
-        }
-      },
-      attestation: {
-        applicant: false,
-        supervisor: false,
-        information_owner: false,
-        iao: false,
-        security_manager: false
-      },
-      groups: {
-        assigned: [],
-        available: [],
-        requested: []
-      },
-      preSaar: true
-    };
-  },
-
-
-  computed: {
-    applicant_name: function applicant_name() {
-      var applicant = this.identification.name;
-      if (applicant.sur.length && applicant.given.length && applicant.middle_initial.length) {
-        return applicant.sur + ", " + applicant.given + ", " + applicant.middle_initial + ".";
-      }
-      return '';
-    },
-    groups_assigned: function groups_assigned() {
-      return this.groups.assigned.join(', ');
-    },
-    groups_requested: function groups_requested() {
-      return this.groups.requested.join(', ');
-    },
-    saar_complete: function saar_complete() {
-      var signOffs = this.attestation;
-      if (signOffs.applicant && signOffs.supervisor && signOffs.information_owner && signOffs.iao && signOffs.security_manager) {
-        return true;
-      }
-      return false;
+/**
+ * Translates the list format produced by css-loader into something
+ * easier to manipulate.
+ */
+module.exports = function listToStyles (parentId, list) {
+  var styles = []
+  var newStyles = {}
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i]
+    var id = item[0]
+    var css = item[1]
+    var media = item[2]
+    var sourceMap = item[3]
+    var part = {
+      id: parentId + ':' + i,
+      css: css,
+      media: media,
+      sourceMap: sourceMap
     }
-  },
-
-  methods: {
-    sendToSupervisor: function sendToSupervisor() {
-      this.attestation.applicant = true;
-      var payload = this.$data;
-      // this should be a method call to sign with the NON-EMAIL cert, then remit that value to the server
-      window.axios.post("/api/v1/access/request", payload).then(function () {
-        window.flash("Your request has been successfully submitted to your supervisor");
-      }).catch(function () {
-        window.flash("Your request failed to post");
-      });
-    },
-    fetchAccessTypes: function fetchAccessTypes() {
-      var _this = this;
-
-      window.axios.get("/api/v1/access/types").then(function (result) {
-        _this.groups.available = result.data.result;
-      }).catch(function () {
-        window.flash("Access types could not be loaded");
-      });
-    },
-    moveToSaar: function moveToSaar() {
-      this.preSaar = false;
-    }
-  },
-
-  created: function created() {
-    this.fetchAccessTypes();
-  },
-
-
-  components: {
-    SaarProvisioning: __WEBPACK_IMPORTED_MODULE_2__SaarProvisioning_vue___default.a,
-    SignOff: __WEBPACK_IMPORTED_MODULE_1__SignOff_vue___default.a
-  }
-});
-
-/***/ }),
-
-/***/ 216:
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(217)
-/* template */
-var __vue_template__ = __webpack_require__(218)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/SignOff.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-b16894ea", Component.options)
-  } else {
-    hotAPI.reload("data-v-b16894ea", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-
-/***/ 217:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['role'],
-
-  created: function created() {
-    if (this.role) {
-      this.role_name = this.role;
-    }
-
-    // todo pull name & email from active PKI
-  },
-
-
-  computed: {
-    signed: function signed() {
-      if (this.sign_date) {
-        return true;
-      }
-
-      return false;
-    }
-  },
-
-  data: function data() {
-    return {
-      department: '',
-      email: '',
-      name: {
-        given: '',
-        middle_initial: '',
-        sur: ''
-      },
-      organization: '',
-      phone: '',
-      role_name: '',
-      sign_date: ''
-    };
-  },
-
-
-  methods: {
-    reject: function reject() {
-      // todo add something to get a reason
-      // todo post to server that this is killed and why
-      // todo notify upstream approvers (including applicant) why it was rejected
-      window.flash(this.rejectMessage);
-    },
-    rejectMessage: function rejectMessage() {
-      return 'This has been rejected';
-    },
-    sign: function sign() {
-      // todo digitally sign with the PKI and include current state of parent
-      // todo post this signed JSON to server
-      this.sign_date = __WEBPACK_IMPORTED_MODULE_0_moment___default()().format();
-      // todo send signature to the server
-      window.flash(this.signMessage());
-      // todo handle server error
-    },
-    signMessage: function signMessage() {
-      return this.role.replace("_", " ").toUpperCase() + ' has successfully signed';
-    }
-  }
-});
-
-/***/ }),
-
-/***/ 218:
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("section", { staticClass: "section" }, [
-    _c("div", { staticClass: "columns" }, [
-      _c("div", { staticClass: "column" }, [
-        _c("h3", { staticClass: "subtitle" }, [
-          _vm._v(_vm._s(_vm.role) + " Endorsement")
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "columns" }, [
-      _c("div", { staticClass: "column is-one-third" }, [
-        _c("div", { staticClass: "columns" }, [
-          _c("div", { staticClass: "column is-one-third" }, [
-            _c("label", { staticClass: "label" }, [
-              _vm._v("Last Name (Surname)")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.name.sur,
-                  expression: "name.sur"
-                }
-              ],
-              staticClass: "input",
-              attrs: { type: "text", placeholder: "Last Name or Surname" },
-              domProps: { value: _vm.name.sur },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.name, "sur", $event.target.value)
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "column is-one-third" }, [
-            _c("label", { staticClass: "label" }, [
-              _vm._v("First Name (Given)")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.name.given,
-                  expression: "name.given"
-                }
-              ],
-              staticClass: "input",
-              attrs: { type: "text", placeholder: "First or Given name" },
-              domProps: { value: _vm.name.given },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.name, "given", $event.target.value)
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "column is-one-third" }, [
-            _c("label", { staticClass: "label" }, [_vm._v("Middle Initial")]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.name.middle_initial,
-                  expression: "name.middle_initial"
-                }
-              ],
-              staticClass: "input",
-              attrs: { type: "text", placeholder: "Middle Initial" },
-              domProps: { value: _vm.name.middle_initial },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.name, "middle_initial", $event.target.value)
-                }
-              }
-            })
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "column is-one-third" }, [
-        _c("label", { staticClass: "label" }, [_vm._v("Signature")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.signed,
-              expression: "signed"
-            }
-          ],
-          attrs: { type: "checkbox", disabled: "true" },
-          domProps: {
-            checked: Array.isArray(_vm.signed)
-              ? _vm._i(_vm.signed, null) > -1
-              : _vm.signed
-          },
-          on: {
-            change: function($event) {
-              var $$a = _vm.signed,
-                $$el = $event.target,
-                $$c = $$el.checked ? true : false
-              if (Array.isArray($$a)) {
-                var $$v = null,
-                  $$i = _vm._i($$a, $$v)
-                if ($$el.checked) {
-                  $$i < 0 && (_vm.signed = $$a.concat([$$v]))
-                } else {
-                  $$i > -1 &&
-                    (_vm.signed = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
-                }
-              } else {
-                _vm.signed = $$c
-              }
-            }
-          }
-        }),
-        _vm._v(" Signed\n    ")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "column is-one-third" }, [
-        _c("label", { staticClass: "label" }, [_vm._v("Signature Date")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.sign_date,
-              expression: "sign_date"
-            }
-          ],
-          staticClass: "input",
-          attrs: { type: "text", disabled: "true" },
-          domProps: { value: _vm.sign_date },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.sign_date = $event.target.value
-            }
-          }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "columns is-grouped" }, [
-      _c("div", { staticClass: "column is-one-third" }, [
-        _c("div", { staticClass: "columns" }, [
-          _c("div", { staticClass: "column is-half" }, [
-            _c("label", { staticClass: "label" }, [_vm._v("Organization")]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.organization,
-                  expression: "organization"
-                }
-              ],
-              staticClass: "input",
-              attrs: { type: "text" },
-              domProps: { value: _vm.organization },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.organization = $event.target.value
-                }
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "column is-half" }, [
-            _c("label", { staticClass: "label" }, [_vm._v("Department")]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.department,
-                  expression: "department"
-                }
-              ],
-              staticClass: "input",
-              attrs: { type: "text" },
-              domProps: { value: _vm.department },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.department = $event.target.value
-                }
-              }
-            })
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "column is-one-third" }, [
-        _c("label", { staticClass: "label" }, [_vm._v("Email Address")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.email,
-              expression: "email"
-            }
-          ],
-          staticClass: "input",
-          attrs: { type: "email" },
-          domProps: { value: _vm.email },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.email = $event.target.value
-            }
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "column is-one-third" }, [
-        _c("label", { staticClass: "label" }, [_vm._v("Phone Number")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.phone,
-              expression: "phone"
-            }
-          ],
-          staticClass: "input",
-          attrs: { type: "tel" },
-          domProps: { value: _vm.phone },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.phone = $event.target.value
-            }
-          }
-        })
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "columns" }, [
-      _c("div", { staticClass: "field is-grouped" }, [
-        _c("p", { staticClass: "control" }, [
-          _c(
-            "button",
-            {
-              staticClass: "button is-success is-rounded",
-              on: {
-                click: function($event) {
-                  _vm.sign()
-                }
-              }
-            },
-            [_vm._v("Sign")]
-          )
-        ]),
-        _vm._v(" "),
-        _c("p", { staticClass: "control" }, [
-          _c(
-            "button",
-            {
-              staticClass: "button is-danger is-rounded",
-              on: {
-                click: function($event) {
-                  _vm.reject()
-                }
-              }
-            },
-            [_vm._v("Reject")]
-          )
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-b16894ea", module.exports)
-  }
-}
-
-/***/ }),
-
-/***/ 219:
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(220)
-/* template */
-var __vue_template__ = __webpack_require__(221)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/SaarProvisioning.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2df7b87a", Component.options)
-  } else {
-    hotAPI.reload("data-v-2df7b87a", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-
-/***/ 220:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  created: function created() {
-    this.section_label = this.section;
-    this.section_value = this.value;
-    this.code_label = this.code;
-    this.code_value_value = this.code_value;
-  },
-  data: function data() {
-    return {
-      section_label: '',
-      section_value: '',
-      code_label: '',
-      code_value_value: ''
-    };
-  },
-
-
-  props: {
-    section: {
-      type: String,
-      default: ''
-    },
-    value: {
-      type: String,
-      default: ''
-    },
-    code: {
-      type: String,
-      default: 'Account Code'
-    },
-    code_value: {
-      type: String,
-      default: ''
-    }
-  }
-});
-
-/***/ }),
-
-/***/ 221:
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "columns" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "column" }, [
-      _c("label", { staticClass: "label" }, [
-        _vm._v(_vm._s(_vm.section_label))
-      ]),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.section_value,
-            expression: "section_value"
-          }
-        ],
-        staticClass: "input",
-        attrs: { type: "text", disabled: "true" },
-        domProps: { value: _vm.section_value },
-        on: {
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.section_value = $event.target.value
-          }
-        }
-      })
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "column" }, [
-      _c("label", { staticClass: "label" }, [_vm._v(_vm._s(_vm.code_label))]),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.code_value_value,
-            expression: "code_value_value"
-          }
-        ],
-        staticClass: "input",
-        attrs: { type: "text", disabled: "true" },
-        domProps: { value: _vm.code_value_value },
-        on: {
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.code_value_value = $event.target.value
-          }
-        }
-      })
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "column is-one-fifth" }, [
-      _c("label", { staticClass: "label" }, [_vm._v("Title")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "input",
-        attrs: { type: "text", disabled: "true" }
-      })
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-2df7b87a", module.exports)
-  }
-}
-
-/***/ }),
-
-/***/ 222:
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container", attrs: { id: "dd2875" } }, [
-    _vm.preSaar
-      ? _c("section", { staticClass: "section" }, [
-          _c("h1", { staticClass: "title is-centered" }, [
-            _vm._v("Access Needs")
-          ]),
-          _vm._v(" "),
-          _c("label", { staticClass: "label" }, [_vm._v("User Role")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "columns" }, [
-            _c("div", { staticClass: "column" }, [
-              _c("div", { staticClass: "field control" }, [
-                _c("div", { staticClass: "select is-multiple" }, [
-                  _c(
-                    "select",
-                    {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.groups.requested,
-                          expression: "groups.requested"
-                        }
-                      ],
-                      attrs: { multiple: "", size: "groups.available.length" },
-                      on: {
-                        change: function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.$set(
-                            _vm.groups,
-                            "requested",
-                            $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          )
-                        }
-                      }
-                    },
-                    _vm._l(_vm.groups.available, function(permission) {
-                      return _c(
-                        "option",
-                        {
-                          key: permission.name,
-                          domProps: { value: permission.name }
-                        },
-                        [_vm._v(_vm._s(permission.name))]
-                      )
-                    })
-                  )
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "column" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "button is-primary",
-                  on: { click: _vm.moveToSaar }
-                },
-                [_vm._v("Submit")]
-              )
-            ])
-          ])
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    !_vm.preSaar
-      ? _c("div", [
-          _vm._m(0),
-          _vm._v(" "),
-          _vm._m(1),
-          _vm._v(" "),
-          _c("section", { staticClass: "section", attrs: { id: "request" } }, [
-            _c("div", { staticClass: "columns" }, [
-              _vm._m(2),
-              _vm._v(" "),
-              _c("div", { staticClass: "column" }, [
-                _c("div", { staticClass: "field" }, [
-                  _c("div", { staticClass: "control" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.request.type,
-                          expression: "request.type"
-                        }
-                      ],
-                      attrs: {
-                        type: "radio",
-                        name: "request_type",
-                        value: "initial"
-                      },
-                      domProps: {
-                        checked: _vm._q(_vm.request.type, "initial")
-                      },
-                      on: {
-                        change: function($event) {
-                          _vm.$set(_vm.request, "type", "initial")
-                        }
-                      }
-                    }),
-                    _vm._v(" Initial\n              "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.request.type,
-                          expression: "request.type"
-                        }
-                      ],
-                      attrs: {
-                        type: "radio",
-                        name: "request_type",
-                        value: "modification"
-                      },
-                      domProps: {
-                        checked: _vm._q(_vm.request.type, "modification")
-                      },
-                      on: {
-                        change: function($event) {
-                          _vm.$set(_vm.request, "type", "modification")
-                        }
-                      }
-                    }),
-                    _vm._v(" Modification\n              "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.request.type,
-                          expression: "request.type"
-                        }
-                      ],
-                      attrs: {
-                        type: "radio",
-                        name: "request_type",
-                        value: "deactivate"
-                      },
-                      domProps: {
-                        checked: _vm._q(_vm.request.type, "deactivate")
-                      },
-                      on: {
-                        change: function($event) {
-                          _vm.$set(_vm.request, "type", "deactivate")
-                        }
-                      }
-                    }),
-                    _vm._v(" Deactivate\n            ")
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "column" }, [
-                _vm.request.type != "initial"
-                  ? _c("div", { staticClass: "field" }, [
-                      _c("label", { staticClass: "label" }, [
-                        _vm._v("User Id")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "control" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.identification.ldap,
-                              expression: "identification.ldap"
-                            }
-                          ],
-                          staticClass: "input",
-                          attrs: { type: "text", placeholder: "User ID here" },
-                          domProps: { value: _vm.identification.ldap },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.identification,
-                                "ldap",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ])
-                    ])
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "column" }, [
-                _c("div", { staticClass: "field" }, [
-                  _c("label", { staticClass: "label" }, [_vm._v("Date")]),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.request.date,
-                        expression: "request.date"
-                      }
-                    ],
-                    staticClass: "input",
-                    attrs: { type: "text", disabled: "true" },
-                    domProps: { value: _vm.request.date },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.request, "date", $event.target.value)
-                      }
-                    }
-                  })
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "columns" }, [
-              _c("div", { staticClass: "column is-two-thirds" }, [
-                _c("div", { staticClass: "field" }, [
-                  _c("label", { staticClass: "label" }, [
-                    _vm._v("System Name (Platform or Applications)")
-                  ]),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.request.system.name,
-                        expression: "request.system.name"
-                      }
-                    ],
-                    staticClass: "input",
-                    attrs: { type: "text", disabled: "true" },
-                    domProps: { value: _vm.request.system.name },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.request.system,
-                          "name",
-                          $event.target.value
-                        )
-                      }
-                    }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "column is-one-third" }, [
-                _c("div", { staticClass: "field" }, [
-                  _c("label", { staticClass: "label" }, [
-                    _vm._v("Location (Physical Location of System)")
-                  ]),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.request.system.location,
-                        expression: "request.system.location"
-                      }
-                    ],
-                    staticClass: "input",
-                    attrs: { type: "text", disabled: "true" },
-                    domProps: { value: _vm.request.system.location },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.request.system,
-                          "location",
-                          $event.target.value
-                        )
-                      }
-                    }
-                  })
-                ])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "section",
-            { staticClass: "section", attrs: { id: "identification" } },
-            [
-              _vm._m(3),
-              _vm._v(" "),
-              _c("div", { staticClass: "columns" }, [
-                _c("div", { staticClass: "column" }, [
-                  _c("div", { staticClass: "field" }, [
-                    _c("label", { staticClass: "label" }, [
-                      _vm._v("Name (Last, First, Middle Initial)")
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "columns" }, [
-                      _c("div", { staticClass: "column field" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.identification.name.sur,
-                              expression: "identification.name.sur"
-                            }
-                          ],
-                          staticClass: "input",
-                          attrs: {
-                            type: "text",
-                            placeholder: "Last Name or Surname"
-                          },
-                          domProps: { value: _vm.identification.name.sur },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.identification.name,
-                                "sur",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "column field" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.identification.name.given,
-                              expression: "identification.name.given"
-                            }
-                          ],
-                          staticClass: "input",
-                          attrs: {
-                            type: "text",
-                            placeholder: "First or Given Name"
-                          },
-                          domProps: { value: _vm.identification.name.given },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.identification.name,
-                                "given",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "column field" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.identification.name.middle_initial,
-                              expression: "identification.name.middle_initial"
-                            }
-                          ],
-                          staticClass: "input",
-                          attrs: {
-                            type: "text",
-                            placeholder: "Middle Initial"
-                          },
-                          domProps: {
-                            value: _vm.identification.name.middle_initial
-                          },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.identification.name,
-                                "middle_initial",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ])
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "column" }, [
-                  _c("div", { staticClass: "field" }, [
-                    _c("label", { staticClass: "label" }, [
-                      _vm._v("Organization")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.identification.organization,
-                          expression: "identification.organization"
-                        }
-                      ],
-                      staticClass: "input",
-                      attrs: {
-                        type: "text",
-                        placeholder: "Agency or Department Name"
-                      },
-                      domProps: { value: _vm.identification.organization },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.identification,
-                            "organization",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "columns" }, [
-                _c("div", { staticClass: "column" }, [
-                  _c("div", { staticClass: "field" }, [
-                    _c("label", { staticClass: "label" }, [
-                      _vm._v("Office Symbol/Department")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.identification.department,
-                          expression: "identification.department"
-                        }
-                      ],
-                      staticClass: "input",
-                      attrs: {
-                        type: "text",
-                        placeholder: "Organization Symbol e.g., J6"
-                      },
-                      domProps: { value: _vm.identification.department },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.identification,
-                            "department",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "column" }, [
-                  _c("div", { staticClass: "field" }, [
-                    _c("label", { staticClass: "label" }, [_vm._v("Phone")]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.identification.phone,
-                          expression: "identification.phone"
-                        }
-                      ],
-                      staticClass: "input",
-                      attrs: { type: "tel", placeholder: "202-867-5309" },
-                      domProps: { value: _vm.identification.phone },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.identification,
-                            "phone",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "columns" }, [
-                _c("div", { staticClass: "column" }, [
-                  _c("div", { staticClass: "field" }, [
-                    _c("label", { staticClass: "label" }, [
-                      _vm._v("Official E-Mail Address")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.identification.email,
-                          expression: "identification.email"
-                        }
-                      ],
-                      staticClass: "input",
-                      attrs: {
-                        type: "email",
-                        placeholder: "firstName.lastName@mail.mil"
-                      },
-                      domProps: { value: _vm.identification.email },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.identification,
-                            "email",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "column" }, [
-                  _c("div", { staticClass: "columns" }, [
-                    _c("div", { staticClass: "column" }, [
-                      _c("div", { staticClass: "field" }, [
-                        _c("label", { staticClass: "label" }, [
-                          _vm._v("Job Title")
-                        ]),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.identification.job.title,
-                              expression: "identification.job.title"
-                            }
-                          ],
-                          staticClass: "input",
-                          attrs: {
-                            type: "text",
-                            placeholder: "e.g., Contract Technician"
-                          },
-                          domProps: { value: _vm.identification.job.title },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.identification.job,
-                                "title",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "column" }, [
-                      _c("div", { staticClass: "field" }, [
-                        _c("label", { staticClass: "label" }, [
-                          _vm._v("Grade/Rank")
-                        ]),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.identification.job.rank,
-                              expression: "identification.job.rank"
-                            }
-                          ],
-                          staticClass: "input",
-                          attrs: {
-                            type: "text",
-                            placeholder: "e.g., GS-4, Lt. Col."
-                          },
-                          domProps: { value: _vm.identification.job.rank },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.identification.job,
-                                "rank",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ])
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "columns" }, [
-                _c("div", { staticClass: "column" }, [
-                  _c("label", { staticClass: "label" }, [
-                    _vm._v("Official Mailing Address")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "field" }, [
-                    _c("div", { staticClass: "control" }, [
-                      _c(
-                        "label",
-                        { staticClass: "label", attrs: { for: "line_1" } },
-                        [_vm._v("Street Address")]
-                      ),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.identification.mailing_address.street,
-                            expression: "identification.mailing_address.street"
-                          }
-                        ],
-                        staticClass: "input",
-                        attrs: {
-                          id: "line_1",
-                          type: "text",
-                          placeholder: "1600 Pennsylvania Ave"
-                        },
-                        domProps: {
-                          value: _vm.identification.mailing_address.street
-                        },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.identification.mailing_address,
-                              "street",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "label",
-                        { staticClass: "label", attrs: { for: "line_2" } },
-                        [_vm._v("Location")]
-                      ),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.identification.mailing_address.line_two,
-                            expression:
-                              "identification.mailing_address.line_two"
-                          }
-                        ],
-                        staticClass: "input",
-                        attrs: {
-                          id: "line_2",
-                          type: "text",
-                          placeholder: "Chief of Staff"
-                        },
-                        domProps: {
-                          value: _vm.identification.mailing_address.line_two
-                        },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.identification.mailing_address,
-                              "line_two",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "columns" }, [
-                        _c(
-                          "div",
-                          { staticClass: "column field is-one-third" },
-                          [
-                            _c(
-                              "label",
-                              { staticClass: "label", attrs: { for: "city" } },
-                              [_vm._v("City")]
-                            ),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value:
-                                    _vm.identification.mailing_address.city,
-                                  expression:
-                                    "identification.mailing_address.city"
-                                }
-                              ],
-                              staticClass: "input",
-                              attrs: {
-                                type: "text",
-                                id: "city",
-                                placeholder: "Washington"
-                              },
-                              domProps: {
-                                value: _vm.identification.mailing_address.city
-                              },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.identification.mailing_address,
-                                    "city",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "column field is-one-third" },
-                          [
-                            _c(
-                              "label",
-                              { staticClass: "label", attrs: { for: "state" } },
-                              [_vm._v("State")]
-                            ),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value:
-                                    _vm.identification.mailing_address.state,
-                                  expression:
-                                    "identification.mailing_address.state"
-                                }
-                              ],
-                              staticClass: "input",
-                              attrs: {
-                                type: "text",
-                                id: "state",
-                                placeholder: "DC"
-                              },
-                              domProps: {
-                                value: _vm.identification.mailing_address.state
-                              },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.identification.mailing_address,
-                                    "state",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "column field is-one-third" },
-                          [
-                            _c(
-                              "label",
-                              {
-                                staticClass: "label",
-                                attrs: { for: "postal" }
-                              },
-                              [_vm._v("Postal Code")]
-                            ),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value:
-                                    _vm.identification.mailing_address.postal,
-                                  expression:
-                                    "identification.mailing_address.postal"
-                                }
-                              ],
-                              staticClass: "input",
-                              attrs: {
-                                type: "text",
-                                id: "postal",
-                                placeholder: "20500"
-                              },
-                              domProps: {
-                                value: _vm.identification.mailing_address.postal
-                              },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.identification.mailing_address,
-                                    "postal",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            })
-                          ]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "columns" }, [
-                        _c("div", { staticClass: "column field is-half" }, [
-                          _c(
-                            "label",
-                            { staticClass: "label", attrs: { for: "country" } },
-                            [_vm._v("Country")]
-                          ),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value:
-                                  _vm.identification.mailing_address.country,
-                                expression:
-                                  "identification.mailing_address.country"
-                              }
-                            ],
-                            staticClass: "input",
-                            attrs: {
-                              type: "text",
-                              id: "country",
-                              placeholder: "United States"
-                            },
-                            domProps: {
-                              value: _vm.identification.mailing_address.country
-                            },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.identification.mailing_address,
-                                  "country",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "column field is-half" }, [
-                          _c(
-                            "label",
-                            { staticClass: "label", attrs: { for: "planet" } },
-                            [_vm._v("Planet")]
-                          ),
-                          _vm._v(" "),
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value:
-                                  _vm.identification.mailing_address.planet,
-                                expression:
-                                  "identification.mailing_address.planet"
-                              }
-                            ],
-                            staticClass: "input",
-                            attrs: {
-                              type: "text",
-                              id: "planet",
-                              placeholder: "Earth"
-                            },
-                            domProps: {
-                              value: _vm.identification.mailing_address.planet
-                            },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.identification.mailing_address,
-                                  "planet",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ])
-                      ])
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "column" }, [
-                  _c("label", { staticClass: "label" }, [
-                    _vm._v("Citizenship")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "columns" }, [
-                    _c("div", { staticClass: "column" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.identification.citizenship,
-                            expression: "identification.citizenship"
-                          }
-                        ],
-                        attrs: {
-                          type: "radio",
-                          name: "id_citizenship",
-                          value: "US"
-                        },
-                        domProps: {
-                          checked: _vm._q(_vm.identification.citizenship, "US")
-                        },
-                        on: {
-                          change: function($event) {
-                            _vm.$set(_vm.identification, "citizenship", "US")
-                          }
-                        }
-                      }),
-                      _vm._v(" US\n              "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.identification.citizenship,
-                            expression: "identification.citizenship"
-                          }
-                        ],
-                        attrs: {
-                          type: "radio",
-                          name: "id_citizenship",
-                          value: "FN"
-                        },
-                        domProps: {
-                          checked: _vm._q(_vm.identification.citizenship, "FN")
-                        },
-                        on: {
-                          change: function($event) {
-                            _vm.$set(_vm.identification, "citizenship", "FN")
-                          }
-                        }
-                      }),
-                      _vm._v(" FN\n              "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.identification.citizenship,
-                            expression: "identification.citizenship"
-                          }
-                        ],
-                        attrs: {
-                          type: "radio",
-                          name: "id_citizenship",
-                          value: "Other"
-                        },
-                        domProps: {
-                          checked: _vm._q(
-                            _vm.identification.citizenship,
-                            "Other"
-                          )
-                        },
-                        on: {
-                          change: function($event) {
-                            _vm.$set(_vm.identification, "citizenship", "Other")
-                          }
-                        }
-                      }),
-                      _vm._v(" Other\n            ")
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "column" }, [
-                  _c("label", { staticClass: "label" }, [
-                    _vm._v("Designation of Person")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "columns" }, [
-                    _c("div", { staticClass: "column" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.identification.designation,
-                            expression: "identification.designation"
-                          }
-                        ],
-                        attrs: {
-                          type: "radio",
-                          name: "id_designation",
-                          value: "Military"
-                        },
-                        domProps: {
-                          checked: _vm._q(
-                            _vm.identification.designation,
-                            "Military"
-                          )
-                        },
-                        on: {
-                          change: function($event) {
-                            _vm.$set(
-                              _vm.identification,
-                              "designation",
-                              "Military"
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(" Military\n              "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.identification.designation,
-                            expression: "identification.designation"
-                          }
-                        ],
-                        attrs: {
-                          type: "radio",
-                          name: "id_designation",
-                          value: "Civilian"
-                        },
-                        domProps: {
-                          checked: _vm._q(
-                            _vm.identification.designation,
-                            "Civilian"
-                          )
-                        },
-                        on: {
-                          change: function($event) {
-                            _vm.$set(
-                              _vm.identification,
-                              "designation",
-                              "Civilian"
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(" Civilian\n              "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.identification.designation,
-                            expression: "identification.designation"
-                          }
-                        ],
-                        attrs: {
-                          type: "radio",
-                          name: "id_designation",
-                          value: "Contractor"
-                        },
-                        domProps: {
-                          checked: _vm._q(
-                            _vm.identification.designation,
-                            "Contractor"
-                          )
-                        },
-                        on: {
-                          change: function($event) {
-                            _vm.$set(
-                              _vm.identification,
-                              "designation",
-                              "Contractor"
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(" Contractor\n            ")
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "column" }, [
-                _c("label", { staticClass: "label" }, [
-                  _vm._v(
-                    "IA Training and Awareness Certification Requirements (Complete as required for user or functional level access.)"
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "columns" }, [
-                  _c("div", { staticClass: "column" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.training.information_assurance.complete,
-                          expression: "training.information_assurance.complete"
-                        }
-                      ],
-                      attrs: { type: "checkbox" },
-                      domProps: {
-                        checked: Array.isArray(
-                          _vm.training.information_assurance.complete
-                        )
-                          ? _vm._i(
-                              _vm.training.information_assurance.complete,
-                              null
-                            ) > -1
-                          : _vm.training.information_assurance.complete
-                      },
-                      on: {
-                        change: function($event) {
-                          var $$a = _vm.training.information_assurance.complete,
-                            $$el = $event.target,
-                            $$c = $$el.checked ? true : false
-                          if (Array.isArray($$a)) {
-                            var $$v = null,
-                              $$i = _vm._i($$a, $$v)
-                            if ($$el.checked) {
-                              $$i < 0 &&
-                                _vm.$set(
-                                  _vm.training.information_assurance,
-                                  "complete",
-                                  $$a.concat([$$v])
-                                )
-                            } else {
-                              $$i > -1 &&
-                                _vm.$set(
-                                  _vm.training.information_assurance,
-                                  "complete",
-                                  $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                )
-                            }
-                          } else {
-                            _vm.$set(
-                              _vm.training.information_assurance,
-                              "complete",
-                              $$c
-                            )
-                          }
-                        }
-                      }
-                    }),
-                    _vm._v(
-                      " I have completed Annual Information Awareness Training.\n          "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "column" }, [
-                    _c("div", { staticClass: "field" }, [
-                      _c(
-                        "label",
-                        { staticClass: "label", attrs: { for: "ia_date" } },
-                        [_vm._v("Date")]
-                      ),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value:
-                              _vm.training.information_assurance.date_completed,
-                            expression:
-                              "training.information_assurance.date_completed"
-                          }
-                        ],
-                        staticClass: "input",
-                        attrs: { id: "ia_date", type: "date" },
-                        domProps: {
-                          value:
-                            _vm.training.information_assurance.date_completed
-                        },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.training.information_assurance,
-                              "date_completed",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ])
-                  ])
-                ])
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          !_vm.attestation.applicant
-            ? _c("div", { staticClass: "columns" }, [
-                _c("div", { staticClass: "column" }, [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "button is-primary",
-                      on: { click: _vm.sendToSupervisor }
-                    },
-                    [_vm._v("Submit for Supervisor Review")]
-                  )
-                ])
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.attestation.applicant
-            ? _c(
-                "section",
-                { staticClass: "section", attrs: { id: "endorsement" } },
-                [
-                  _c("div", { staticClass: "columns" }, [
-                    _c("div", { staticClass: "column" }, [
-                      _vm._m(4),
-                      _vm._v(" "),
-                      _vm.identification.designation == "Contractor"
-                        ? _c("span", { staticClass: "content" }, [
-                            _vm._v(
-                              "If individual is a contractor - provide company name, contract number, and date of contract expiration."
-                            )
-                          ])
-                        : _vm._e()
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "columns" }, [
-                    _c("div", { staticClass: "column field" }, [
-                      _c("label", { staticClass: "label" }, [
-                        _vm._v("Justification for Access")
-                      ]),
-                      _vm._v(" "),
-                      _c("textarea", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.justification.reason,
-                            expression: "justification.reason"
-                          }
-                        ],
-                        staticClass: "textarea",
-                        attrs: {
-                          placeholder:
-                            "As a [role] in order to [function] for [customer], I need [access level] access to Post-Award"
-                        },
-                        domProps: { value: _vm.justification.reason },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.justification,
-                              "reason",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "columns" }, [
-                    _c("div", { staticClass: "column field is-grouped" }, [
-                      _c("label", { staticClass: "label" }, [
-                        _vm._v("Type of Access Required:")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.justification.type.authorized,
-                            expression: "justification.type.authorized"
-                          }
-                        ],
-                        staticClass: "checkbox",
-                        attrs: { type: "checkbox", disabled: "true" },
-                        domProps: {
-                          checked: Array.isArray(
-                            _vm.justification.type.authorized
-                          )
-                            ? _vm._i(_vm.justification.type.authorized, null) >
-                              -1
-                            : _vm.justification.type.authorized
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.justification.type.authorized,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.justification.type,
-                                    "authorized",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.justification.type,
-                                    "authorized",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(
-                                _vm.justification.type,
-                                "authorized",
-                                $$c
-                              )
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" Authorized\n          "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.justification.type.privileged,
-                            expression: "justification.type.privileged"
-                          }
-                        ],
-                        staticClass: "checkbox",
-                        attrs: { type: "checkbox", disabled: "true" },
-                        domProps: {
-                          checked: Array.isArray(
-                            _vm.justification.type.privileged
-                          )
-                            ? _vm._i(_vm.justification.type.privileged, null) >
-                              -1
-                            : _vm.justification.type.privileged
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.justification.type.privileged,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.justification.type,
-                                    "privileged",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.justification.type,
-                                    "privileged",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(
-                                _vm.justification.type,
-                                "privileged",
-                                $$c
-                              )
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" Privileged\n        ")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "is-grouped" }, [
-                    _c("div", { staticClass: "columns" }, [
-                      _c("div", { staticClass: "column field" }, [
-                        _c("div", { staticClass: "label" }, [
-                          _vm._v("User requires access to:")
-                        ]),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value:
-                                _vm.justification.classification.unclassified,
-                              expression:
-                                "justification.classification.unclassified"
-                            }
-                          ],
-                          staticClass: "checkbox",
-                          attrs: { type: "checkbox" },
-                          domProps: {
-                            checked: Array.isArray(
-                              _vm.justification.classification.unclassified
-                            )
-                              ? _vm._i(
-                                  _vm.justification.classification.unclassified,
-                                  null
-                                ) > -1
-                              : _vm.justification.classification.unclassified
-                          },
-                          on: {
-                            change: function($event) {
-                              var $$a =
-                                  _vm.justification.classification.unclassified,
-                                $$el = $event.target,
-                                $$c = $$el.checked ? true : false
-                              if (Array.isArray($$a)) {
-                                var $$v = null,
-                                  $$i = _vm._i($$a, $$v)
-                                if ($$el.checked) {
-                                  $$i < 0 &&
-                                    _vm.$set(
-                                      _vm.justification.classification,
-                                      "unclassified",
-                                      $$a.concat([$$v])
-                                    )
-                                } else {
-                                  $$i > -1 &&
-                                    _vm.$set(
-                                      _vm.justification.classification,
-                                      "unclassified",
-                                      $$a
-                                        .slice(0, $$i)
-                                        .concat($$a.slice($$i + 1))
-                                    )
-                                }
-                              } else {
-                                _vm.$set(
-                                  _vm.justification.classification,
-                                  "unclassified",
-                                  $$c
-                                )
-                              }
-                            }
-                          }
-                        }),
-                        _vm._v(" Unclassified\n            "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value:
-                                _vm.justification.classification.classified,
-                              expression:
-                                "justification.classification.classified"
-                            }
-                          ],
-                          staticClass: "checkbox",
-                          attrs: { type: "checkbox" },
-                          domProps: {
-                            checked: Array.isArray(
-                              _vm.justification.classification.classified
-                            )
-                              ? _vm._i(
-                                  _vm.justification.classification.classified,
-                                  null
-                                ) > -1
-                              : _vm.justification.classification.classified
-                          },
-                          on: {
-                            change: function($event) {
-                              var $$a =
-                                  _vm.justification.classification.classified,
-                                $$el = $event.target,
-                                $$c = $$el.checked ? true : false
-                              if (Array.isArray($$a)) {
-                                var $$v = null,
-                                  $$i = _vm._i($$a, $$v)
-                                if ($$el.checked) {
-                                  $$i < 0 &&
-                                    _vm.$set(
-                                      _vm.justification.classification,
-                                      "classified",
-                                      $$a.concat([$$v])
-                                    )
-                                } else {
-                                  $$i > -1 &&
-                                    _vm.$set(
-                                      _vm.justification.classification,
-                                      "classified",
-                                      $$a
-                                        .slice(0, $$i)
-                                        .concat($$a.slice($$i + 1))
-                                    )
-                                }
-                              } else {
-                                _vm.$set(
-                                  _vm.justification.classification,
-                                  "classified",
-                                  $$c
-                                )
-                              }
-                            }
-                          }
-                        }),
-                        _vm._v(" Classified\n            "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.justification.classification.category,
-                              expression:
-                                "justification.classification.category"
-                            }
-                          ],
-                          staticClass: "input",
-                          attrs: {
-                            type: "text",
-                            placeholder: "Specify Category"
-                          },
-                          domProps: {
-                            value: _vm.justification.classification.category
-                          },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.justification.classification,
-                                "category",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "columns" }, [
-                      _c("div", { staticClass: "column field" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.justification.classification.other,
-                              expression: "justification.classification.other"
-                            }
-                          ],
-                          staticClass: "checkbox",
-                          attrs: { type: "checkbox" },
-                          domProps: {
-                            checked: Array.isArray(
-                              _vm.justification.classification.other
-                            )
-                              ? _vm._i(
-                                  _vm.justification.classification.other,
-                                  null
-                                ) > -1
-                              : _vm.justification.classification.other
-                          },
-                          on: {
-                            change: function($event) {
-                              var $$a = _vm.justification.classification.other,
-                                $$el = $event.target,
-                                $$c = $$el.checked ? true : false
-                              if (Array.isArray($$a)) {
-                                var $$v = null,
-                                  $$i = _vm._i($$a, $$v)
-                                if ($$el.checked) {
-                                  $$i < 0 &&
-                                    _vm.$set(
-                                      _vm.justification.classification,
-                                      "other",
-                                      $$a.concat([$$v])
-                                    )
-                                } else {
-                                  $$i > -1 &&
-                                    _vm.$set(
-                                      _vm.justification.classification,
-                                      "other",
-                                      $$a
-                                        .slice(0, $$i)
-                                        .concat($$a.slice($$i + 1))
-                                    )
-                                }
-                              } else {
-                                _vm.$set(
-                                  _vm.justification.classification,
-                                  "other",
-                                  $$c
-                                )
-                              }
-                            }
-                          }
-                        }),
-                        _vm._v(" Other\n            "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value:
-                                _vm.justification.classification
-                                  .other_description,
-                              expression:
-                                "justification.classification.other_description"
-                            }
-                          ],
-                          staticClass: "input",
-                          attrs: { type: "text" },
-                          domProps: {
-                            value:
-                              _vm.justification.classification.other_description
-                          },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.justification.classification,
-                                "other_description",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "columns" }, [
-                    _c("div", { staticClass: "column is-half" }, [
-                      _c("div", { staticClass: "field" }, [
-                        _c("label", { staticClass: "label" }, [
-                          _vm._v("Verification of Need to Know")
-                        ]),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.justification.need_to_know,
-                              expression: "justification.need_to_know"
-                            }
-                          ],
-                          staticClass: "checkbox",
-                          attrs: { type: "checkbox" },
-                          domProps: {
-                            checked: Array.isArray(
-                              _vm.justification.need_to_know
-                            )
-                              ? _vm._i(_vm.justification.need_to_know, null) >
-                                -1
-                              : _vm.justification.need_to_know
-                          },
-                          on: {
-                            change: function($event) {
-                              var $$a = _vm.justification.need_to_know,
-                                $$el = $event.target,
-                                $$c = $$el.checked ? true : false
-                              if (Array.isArray($$a)) {
-                                var $$v = null,
-                                  $$i = _vm._i($$a, $$v)
-                                if ($$el.checked) {
-                                  $$i < 0 &&
-                                    _vm.$set(
-                                      _vm.justification,
-                                      "need_to_know",
-                                      $$a.concat([$$v])
-                                    )
-                                } else {
-                                  $$i > -1 &&
-                                    _vm.$set(
-                                      _vm.justification,
-                                      "need_to_know",
-                                      $$a
-                                        .slice(0, $$i)
-                                        .concat($$a.slice($$i + 1))
-                                    )
-                                }
-                              } else {
-                                _vm.$set(_vm.justification, "need_to_know", $$c)
-                              }
-                            }
-                          }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "column is-half" }, [
-                      _c("div", { staticClass: "field" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass: "label",
-                            attrs: { for: "expire_date" }
-                          },
-                          [_vm._v("Access Expiration Date")]
-                        ),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.justification.expiration.date,
-                              expression: "justification.expiration.date"
-                            }
-                          ],
-                          staticClass: "input",
-                          attrs: { id: "expire_date", type: "date" },
-                          domProps: {
-                            value: _vm.justification.expiration.date
-                          },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.justification.expiration,
-                                "date",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _vm.identification.designation.contractor
-                          ? _c("div", { attrs: { id: "contractors_only" } }, [
-                              _c("label", { staticClass: "label" }, [
-                                _vm._v(
-                                  "Contractors must specify Company Name, Contract Number and Expiration Date"
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("label", { staticClass: "label" }, [
-                                _vm._v("Contract Number")
-                              ]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value:
-                                      _vm.justification.expiration
-                                        .contract_number,
-                                    expression:
-                                      "justification.expiration.contract_number"
-                                  }
-                                ],
-                                staticClass: "input",
-                                attrs: {
-                                  type: "text",
-                                  placeholder: "BCD123-18-A-0001"
-                                },
-                                domProps: {
-                                  value:
-                                    _vm.justification.expiration.contract_number
-                                },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.justification.expiration,
-                                      "contract_number",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              }),
-                              _vm._v(" "),
-                              _c("label", { staticClass: "label" }, [
-                                _vm._v("Contractor Company Name")
-                              ]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value:
-                                      _vm.justification.expiration
-                                        .contract_company_name,
-                                    expression:
-                                      "justification.expiration.contract_company_name"
-                                  }
-                                ],
-                                staticClass: "input",
-                                attrs: {
-                                  type: "text",
-                                  placeholder: "Acme, Inc."
-                                },
-                                domProps: {
-                                  value:
-                                    _vm.justification.expiration
-                                      .contract_company_name
-                                },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      _vm.justification.expiration,
-                                      "contract_company_name",
-                                      $event.target.value
-                                    )
-                                  }
-                                }
-                              })
-                            ])
-                          : _vm._e()
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _vm.attestation.applicant &&
-                  !_vm.attestation.information_owner
-                    ? _c("sign-off", { attrs: { role: "Supervisor" } })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.attestation.supervisor && !_vm.attestation.iao
-                    ? _c("sign-off", { attrs: { role: "Information Owner" } })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.attestation.information_owner && !_vm.attestation.iao
-                    ? _c("sign-off", { attrs: { role: "IAO" } })
-                    : _vm._e()
-                ],
-                1
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _c("section", { staticClass: "section" }, [
-            _c("div", { staticClass: "columns" }, [
-              _c("div", { staticClass: "column" }, [
-                _c("label", { staticClass: "label" }, [_vm._v("Name")]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.applicant_name,
-                      expression: "applicant_name"
-                    }
-                  ],
-                  staticClass: "input",
-                  attrs: { type: "text", disabled: "true" },
-                  domProps: { value: _vm.applicant_name },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.applicant_name = $event.target.value
-                    }
-                  }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "columns" }, [
-              _c("div", { staticClass: "column" }, [
-                _c("label", { staticClass: "label" }, [
-                  _vm._v("Optional Information")
-                ]),
-                _vm._v(" "),
-                _c("textarea", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.justification.additional_details,
-                      expression: "justification.additional_details"
-                    }
-                  ],
-                  staticClass: "textarea",
-                  attrs: { disabled: "true", rows: "10" },
-                  domProps: { value: _vm.justification.additional_details },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(
-                        _vm.justification,
-                        "additional_details",
-                        $event.target.value
-                      )
-                    }
-                  }
-                })
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "section",
-            { staticClass: "section" },
-            [
-              _vm._m(5),
-              _vm._v(" "),
-              _c("div", { staticClass: "columns" }, [
-                _c("div", { staticClass: "column" }, [
-                  _c("div", { staticClass: "columns" }, [
-                    _c("div", { staticClass: "column is-half" }, [
-                      _c("label", { staticClass: "label" }, [
-                        _vm._v("Type of Investigation")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.investigation.type,
-                            expression: "investigation.type"
-                          }
-                        ],
-                        staticClass: "input",
-                        attrs: { type: "text" },
-                        domProps: { value: _vm.investigation.type },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.investigation,
-                              "type",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "column is-half" }, [
-                      _c("label", { staticClass: "label" }, [
-                        _vm._v("Date of Investigation")
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.investigation.date,
-                            expression: "investigation.date"
-                          }
-                        ],
-                        staticClass: "input",
-                        attrs: { type: "text" },
-                        domProps: { value: _vm.investigation.date },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.investigation,
-                              "date",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      })
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "columns" }, [
-                _c("div", { staticClass: "column is-half" }, [
-                  _c("label", { staticClass: "label" }, [
-                    _vm._v("Clearance Level")
-                  ]),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.investigation.clearance,
-                        expression: "investigation.clearance"
-                      }
-                    ],
-                    staticClass: "input",
-                    attrs: { type: "text" },
-                    domProps: { value: _vm.investigation.clearance },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.investigation,
-                          "clearance",
-                          $event.target.value
-                        )
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "column is-half" }, [
-                  _c("label", { staticClass: "label" }, [
-                    _vm._v("IT Level Designation")
-                  ]),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.investigation.it_designation.level_1,
-                        expression: "investigation.it_designation.level_1"
-                      }
-                    ],
-                    attrs: { type: "checkbox" },
-                    domProps: {
-                      checked: Array.isArray(
-                        _vm.investigation.it_designation.level_1
-                      )
-                        ? _vm._i(
-                            _vm.investigation.it_designation.level_1,
-                            null
-                          ) > -1
-                        : _vm.investigation.it_designation.level_1
-                    },
-                    on: {
-                      change: function($event) {
-                        var $$a = _vm.investigation.it_designation.level_1,
-                          $$el = $event.target,
-                          $$c = $$el.checked ? true : false
-                        if (Array.isArray($$a)) {
-                          var $$v = null,
-                            $$i = _vm._i($$a, $$v)
-                          if ($$el.checked) {
-                            $$i < 0 &&
-                              _vm.$set(
-                                _vm.investigation.it_designation,
-                                "level_1",
-                                $$a.concat([$$v])
-                              )
-                          } else {
-                            $$i > -1 &&
-                              _vm.$set(
-                                _vm.investigation.it_designation,
-                                "level_1",
-                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                              )
-                          }
-                        } else {
-                          _vm.$set(
-                            _vm.investigation.it_designation,
-                            "level_1",
-                            $$c
-                          )
-                        }
-                      }
-                    }
-                  }),
-                  _vm._v(" Level I\n          "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.investigation.it_designation.level_2,
-                        expression: "investigation.it_designation.level_2"
-                      }
-                    ],
-                    attrs: { type: "checkbox" },
-                    domProps: {
-                      checked: Array.isArray(
-                        _vm.investigation.it_designation.level_2
-                      )
-                        ? _vm._i(
-                            _vm.investigation.it_designation.level_2,
-                            null
-                          ) > -1
-                        : _vm.investigation.it_designation.level_2
-                    },
-                    on: {
-                      change: function($event) {
-                        var $$a = _vm.investigation.it_designation.level_2,
-                          $$el = $event.target,
-                          $$c = $$el.checked ? true : false
-                        if (Array.isArray($$a)) {
-                          var $$v = null,
-                            $$i = _vm._i($$a, $$v)
-                          if ($$el.checked) {
-                            $$i < 0 &&
-                              _vm.$set(
-                                _vm.investigation.it_designation,
-                                "level_2",
-                                $$a.concat([$$v])
-                              )
-                          } else {
-                            $$i > -1 &&
-                              _vm.$set(
-                                _vm.investigation.it_designation,
-                                "level_2",
-                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                              )
-                          }
-                        } else {
-                          _vm.$set(
-                            _vm.investigation.it_designation,
-                            "level_2",
-                            $$c
-                          )
-                        }
-                      }
-                    }
-                  }),
-                  _vm._v(" Level II\n          "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.investigation.it_designation.level_3,
-                        expression: "investigation.it_designation.level_3"
-                      }
-                    ],
-                    attrs: { type: "checkbox" },
-                    domProps: {
-                      checked: Array.isArray(
-                        _vm.investigation.it_designation.level_3
-                      )
-                        ? _vm._i(
-                            _vm.investigation.it_designation.level_3,
-                            null
-                          ) > -1
-                        : _vm.investigation.it_designation.level_3
-                    },
-                    on: {
-                      change: function($event) {
-                        var $$a = _vm.investigation.it_designation.level_3,
-                          $$el = $event.target,
-                          $$c = $$el.checked ? true : false
-                        if (Array.isArray($$a)) {
-                          var $$v = null,
-                            $$i = _vm._i($$a, $$v)
-                          if ($$el.checked) {
-                            $$i < 0 &&
-                              _vm.$set(
-                                _vm.investigation.it_designation,
-                                "level_3",
-                                $$a.concat([$$v])
-                              )
-                          } else {
-                            $$i > -1 &&
-                              _vm.$set(
-                                _vm.investigation.it_designation,
-                                "level_3",
-                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                              )
-                          }
-                        } else {
-                          _vm.$set(
-                            _vm.investigation.it_designation,
-                            "level_3",
-                            $$c
-                          )
-                        }
-                      }
-                    }
-                  }),
-                  _vm._v(" Level III\n        ")
-                ])
-              ]),
-              _vm._v(" "),
-              _c("sign-off", { attrs: { role: "Security Manager" } })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("section", { staticClass: "section" }, [
-            _vm._m(6),
-            _vm._v(" "),
-            _vm.saar_complete
-              ? _c(
-                  "div",
-                  { staticClass: "container" },
-                  [
-                    _c("saar-provisioning", {
-                      attrs: { section: "System", value: "FACET" }
-                    }),
-                    _vm._v(" "),
-                    _c("saar-provisioning", {
-                      attrs: { section: "Domain", value: _vm.groups_requested }
-                    }),
-                    _vm._v(" "),
-                    _c("saar-provisioning", {
-                      attrs: { section: "Server", value: "N/A" }
-                    }),
-                    _vm._v(" "),
-                    _c("saar-provisioning", {
-                      attrs: { section: "Application", value: "Post Award" }
-                    }),
-                    _vm._v(" "),
-                    _c("saar-provisioning", {
-                      attrs: { section: "Directories", value: "N/A" }
-                    }),
-                    _vm._v(" "),
-                    _c("saar-provisioning", {
-                      attrs: { section: "Files", value: "N/A" }
-                    }),
-                    _vm._v(" "),
-                    _c("saar-provisioning", {
-                      attrs: { section: "Datasets", value: _vm.groups_assigned }
-                    }),
-                    _vm._v(" "),
-                    _c("saar-provisioning", {
-                      attrs: {
-                        section: "Processed By",
-                        value: "FACET Online Information Assurance",
-                        code: "Date",
-                        code_value: "moment()"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("saar-provisioning", {
-                      attrs: {
-                        section: "Revalidated By",
-                        value: "N/A",
-                        code: "Date"
-                      }
-                    })
-                  ],
-                  1
-                )
-              : _vm._e()
-          ])
-        ])
-      : _vm._e()
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("section", { staticClass: "section" }, [
-      _c("h1", { staticClass: "title is-centered" }, [
-        _vm._v("SYSTEM AUTHORIZATION ACCESS REQUEST (SAAR)")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("section", { staticClass: "section" }, [
-      _c("h2", { staticClass: "subtitle is-centered" }, [
-        _vm._v("Privacy Act Statement")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "columns" }, [
-        _c("div", { staticClass: "column is-one-quarter" }, [
-          _c("h3", [_vm._v("Authority")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "column" }, [
-          _c("div", { staticClass: "content" }, [
-            _vm._v(
-              "Executive Order 10450, 9397; and Public Law 99-474, the Computer Fraud and Abuse Act."
-            )
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "columns" }, [
-        _c("div", { staticClass: "column is-one-quarter" }, [
-          _c("h2", [_vm._v("Principle Purpose")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "column" }, [
-          _c("div", { staticClass: "content" }, [
-            _vm._v(
-              "To record names, signatures and other identifiers for the purpose of validating the trustworthiness of individuals requesting access to Department of Defense (DoD) systems and information. Note: Records may be maintained in both electronic and/or paper form."
-            )
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "columns" }, [
-        _c("div", { staticClass: "column is-one-quarter" }, [
-          _c("h3", [_vm._v("Disclosure")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "column" }, [
-          _c("div", { staticClass: "content" }, [
-            _vm._v(
-              "Disclosure of this information is voluntary; however, failure to provide the requested information may impede, delay or prevent further processing of this request."
-            )
-          ])
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "column is-one-fifth" }, [
-      _c("h3", { staticClass: "subtitle" }, [_vm._v("Type of Request")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "columns" }, [
-      _c("div", { staticClass: "column" }, [
-        _c("h2", { staticClass: "subtitle is-centered" }, [
-          _c("strong", [_vm._v("Part 1")]),
-          _vm._v(" (To be completed by Requestor)")
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("h2", { staticClass: "subtitle is-centered" }, [
-      _c("strong", [_vm._v("Part 2")]),
-      _vm._v(
-        " Endorsement of Access by Information Owner, User Supervisor or Government Sponsor"
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "columns" }, [
-      _c("div", { staticClass: "column" }, [
-        _c("h3", { staticClass: "subtitle" }, [
-          _c("strong", [_vm._v("Part 3")]),
-          _vm._v(
-            " Security Manager Validates the Background Investigation or Clearance Information"
-          )
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "columns" }, [
-      _c("div", { staticClass: "column" }, [
-        _c("h3", { staticClass: "subtitle" }, [
-          _c("strong", [_vm._v("Part 4")]),
-          _vm._v(
-            " Completion by Authorized Staff Preparing Account Information"
-          )
-        ])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-c6e82a4c", module.exports)
-  }
-}
-
-/***/ }),
-
-/***/ 223:
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(224)
-/* template */
-var __vue_template__ = __webpack_require__(228)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/WorkflowInbox.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-74059440", Component.options)
-  } else {
-    hotAPI.reload("data-v-74059440", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-
-/***/ 224:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__WorkflowItem__ = __webpack_require__(225);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__WorkflowItem___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__WorkflowItem__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    WorkflowItem: __WEBPACK_IMPORTED_MODULE_0__WorkflowItem___default.a
-  },
-
-  created: function created() {
-    this.fetchInboxItems();
-  },
-  data: function data() {
-    return {
-      items: []
-    };
-  },
-
-
-  methods: {
-    fetchInboxItems: function fetchInboxItems() {
-      // todo swap this for a database query using axios
-      this.items.push({
-        id: 1,
-        action: 'Supervisor Approval',
-        name: 'John Doe',
-        summary: 'Super Admin Access',
-        added_at: '2018-02-15T13:21:12-05:00'
-      });
-    }
-  }
-});
-
-/***/ }),
-
-/***/ 225:
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(226)
-/* template */
-var __vue_template__ = __webpack_require__(227)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/WorkflowItem.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1f5fd829", Component.options)
-  } else {
-    hotAPI.reload("data-v-1f5fd829", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-
-/***/ 226:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  computed: {
-    duration: function duration() {
-      return this.item.added_at.fromNow();
-    }
-  },
-
-  created: function created() {
-    this.action_needed = this.action;
-
-    if (this.added_at) {
-      this.item.added_at = __WEBPACK_IMPORTED_MODULE_0_moment___default()(this.added_at);
+    if (!newStyles[id]) {
+      styles.push(newStyles[id] = { id: id, parts: [part] })
     } else {
-      this.item.added_at = __WEBPACK_IMPORTED_MODULE_0_moment___default()();
+      newStyles[id].parts.push(part)
     }
-
-    this.item.name = this.name;
-
-    this.item.summary = this.summary;
-  },
-  data: function data() {
-    return {
-      action_needed: '',
-      item: {
-        name: '',
-        summary: '',
-        added_at: __WEBPACK_IMPORTED_MODULE_0_moment___default()()
-      },
-      more_options: []
-    };
-  },
-
-
-  props: ['action', 'added_at', 'name', 'summary']
-});
-
-/***/ }),
-
-/***/ 227:
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
-    _c("header", { staticClass: "card-header" }, [
-      _c("p", { staticClass: "card-header-title" }, [
-        _vm._v("\n      " + _vm._s(_vm.action_needed) + "\n    ")
-      ]),
-      _vm._v(" "),
-      _vm._m(0)
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-content" }, [
-      _c("div", { staticClass: "content" }, [
-        _vm._v(
-          "\n      " +
-            _vm._s(_vm.item.summary) +
-            " for " +
-            _vm._s(_vm.item.name) +
-            "\n    "
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "content" }, [
-        _vm._m(1),
-        _vm._v(" " + _vm._s(_vm.duration) + "\n    ")
-      ])
-    ]),
-    _vm._v(" "),
-    _vm._m(2)
-  ])
+  }
+  return styles
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      {
-        staticClass: "card-header-icon",
-        attrs: { "aria-label": "more options" }
-      },
-      [
-        _c("span", { staticClass: "icon" }, [
-          _c("i", {
-            staticClass: "fas fa-angle-down",
-            attrs: { "aria-hidden": "true" }
-          })
-        ])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "icon is-small" }, [
-      _c("i", { staticClass: "fas fa-calendar-plus" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("footer", { staticClass: "card-footer" }, [
-      _c("a", { staticClass: "card-footer-item", attrs: { href: "#" } }, [
-        _vm._v("Open")
-      ]),
-      _vm._v(" "),
-      _c("a", { staticClass: "card-footer-item", attrs: { href: "#" } }, [
-        _vm._v("Dismiss")
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
->>>>>>> Stashed changes
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-cab24aea", Component.options)
-  } else {
-    hotAPI.reload("data-v-cab24aea", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
 
 
 /***/ }),
 
-<<<<<<< Updated upstream
-/***/ 206:
+/***/ 214:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8464,10 +4467,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 207:
-=======
-/***/ 228:
->>>>>>> Stashed changes
+/***/ 215:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -8503,25 +4503,15 @@ if (false) {
 
 /***/ }),
 
-<<<<<<< Updated upstream
-/***/ 208:
-=======
-/***/ 229:
->>>>>>> Stashed changes
+/***/ 216:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-<<<<<<< Updated upstream
-var __vue_script__ = __webpack_require__(209)
+var __vue_script__ = __webpack_require__(217)
 /* template */
-var __vue_template__ = __webpack_require__(225)
-=======
-var __vue_script__ = __webpack_require__(230)
-/* template */
-var __vue_template__ = __webpack_require__(244)
->>>>>>> Stashed changes
+var __vue_template__ = __webpack_require__(231)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -8561,38 +4551,17 @@ module.exports = Component.exports
 
 /***/ }),
 
-<<<<<<< Updated upstream
-/***/ 209:
-=======
-/***/ 230:
->>>>>>> Stashed changes
+/***/ 217:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-<<<<<<< Updated upstream
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Footer_vue__ = __webpack_require__(210);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Footer_vue__ = __webpack_require__(218);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Footer_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Footer_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__NavBar_vue__ = __webpack_require__(215);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__NavBar_vue__ = __webpack_require__(223);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__NavBar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__NavBar_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__FlashMessage_vue__ = __webpack_require__(218);
-=======
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Footer_vue__ = __webpack_require__(231);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Footer_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Footer_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__NavBar_vue__ = __webpack_require__(234);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__NavBar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__NavBar_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__FlashMessage_vue__ = __webpack_require__(237);
->>>>>>> Stashed changes
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__FlashMessage_vue__ = __webpack_require__(226);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__FlashMessage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__FlashMessage_vue__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -8615,25 +4584,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-<<<<<<< Updated upstream
-/***/ 210:
-=======
-/***/ 231:
->>>>>>> Stashed changes
+/***/ 218:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-<<<<<<< Updated upstream
-var __vue_script__ = __webpack_require__(211)
+var __vue_script__ = __webpack_require__(219)
 /* template */
-var __vue_template__ = __webpack_require__(214)
-=======
-var __vue_script__ = __webpack_require__(232)
-/* template */
-var __vue_template__ = __webpack_require__(233)
->>>>>>> Stashed changes
+var __vue_template__ = __webpack_require__(222)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -8673,11 +4632,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-<<<<<<< Updated upstream
-/***/ 211:
-=======
-/***/ 232:
->>>>>>> Stashed changes
+/***/ 219:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8715,11 +4670,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-<<<<<<< Updated upstream
-/***/ 214:
-=======
-/***/ 233:
->>>>>>> Stashed changes
+/***/ 222:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -8777,25 +4728,15 @@ if (false) {
 
 /***/ }),
 
-<<<<<<< Updated upstream
-/***/ 215:
-=======
-/***/ 234:
->>>>>>> Stashed changes
+/***/ 223:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-<<<<<<< Updated upstream
-var __vue_script__ = __webpack_require__(216)
+var __vue_script__ = __webpack_require__(224)
 /* template */
-var __vue_template__ = __webpack_require__(217)
-=======
-var __vue_script__ = __webpack_require__(235)
-/* template */
-var __vue_template__ = __webpack_require__(236)
->>>>>>> Stashed changes
+var __vue_template__ = __webpack_require__(225)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -8835,30 +4776,11 @@ module.exports = Component.exports
 
 /***/ }),
 
-<<<<<<< Updated upstream
-/***/ 216:
-=======
-/***/ 235:
->>>>>>> Stashed changes
+/***/ 224:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -8928,11 +4850,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-<<<<<<< Updated upstream
-/***/ 217:
-=======
-/***/ 236:
->>>>>>> Stashed changes
+/***/ 225:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -9055,33 +4973,19 @@ if (false) {
 
 /***/ }),
 
-<<<<<<< Updated upstream
-/***/ 218:
-=======
-/***/ 237:
->>>>>>> Stashed changes
+/***/ 226:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-<<<<<<< Updated upstream
-  __webpack_require__(219)
+  __webpack_require__(227)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(223)
+var __vue_script__ = __webpack_require__(229)
 /* template */
-var __vue_template__ = __webpack_require__(224)
-=======
-  __webpack_require__(238)
-}
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(242)
-/* template */
-var __vue_template__ = __webpack_require__(243)
->>>>>>> Stashed changes
+var __vue_template__ = __webpack_require__(230)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -9121,29 +5025,17 @@ module.exports = Component.exports
 
 /***/ }),
 
-<<<<<<< Updated upstream
-/***/ 219:
-=======
-/***/ 238:
->>>>>>> Stashed changes
+/***/ 227:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-<<<<<<< Updated upstream
-var content = __webpack_require__(220);
+var content = __webpack_require__(228);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(221)("9e76f37a", content, false, {});
-=======
-var content = __webpack_require__(239);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(240)("9e76f37a", content, false, {});
->>>>>>> Stashed changes
+var update = __webpack_require__(16)("9e76f37a", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -9160,14 +5052,10 @@ if(false) {
 
 /***/ }),
 
-<<<<<<< Updated upstream
-/***/ 220:
-=======
-/***/ 239:
->>>>>>> Stashed changes
+/***/ 228:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(14)(false);
+exports = module.exports = __webpack_require__(4)(false);
 // imports
 
 
@@ -9179,286 +5067,7 @@ exports.push([module.i, "\n.alert-flash {\n  position: fixed;\n  right: 25px;\n 
 
 /***/ }),
 
-<<<<<<< Updated upstream
-/***/ 221:
-=======
-/***/ 240:
->>>>>>> Stashed changes
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-  Modified by Evan You @yyx990803
-*/
-
-var hasDocument = typeof document !== 'undefined'
-
-if (typeof DEBUG !== 'undefined' && DEBUG) {
-  if (!hasDocument) {
-    throw new Error(
-    'vue-style-loader cannot be used in a non-browser environment. ' +
-    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
-  ) }
-}
-
-<<<<<<< Updated upstream
-var listToStyles = __webpack_require__(222)
-=======
-var listToStyles = __webpack_require__(241)
->>>>>>> Stashed changes
-
-/*
-type StyleObject = {
-  id: number;
-  parts: Array<StyleObjectPart>
-}
-
-type StyleObjectPart = {
-  css: string;
-  media: string;
-  sourceMap: ?string
-}
-*/
-
-var stylesInDom = {/*
-  [id: number]: {
-    id: number,
-    refs: number,
-    parts: Array<(obj?: StyleObjectPart) => void>
-  }
-*/}
-
-var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
-var singletonElement = null
-var singletonCounter = 0
-var isProduction = false
-var noop = function () {}
-var options = null
-var ssrIdKey = 'data-vue-ssr-id'
-
-// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-// tags it will allow on a page
-var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
-
-module.exports = function (parentId, list, _isProduction, _options) {
-  isProduction = _isProduction
-
-  options = _options || {}
-
-  var styles = listToStyles(parentId, list)
-  addStylesToDom(styles)
-
-  return function update (newList) {
-    var mayRemove = []
-    for (var i = 0; i < styles.length; i++) {
-      var item = styles[i]
-      var domStyle = stylesInDom[item.id]
-      domStyle.refs--
-      mayRemove.push(domStyle)
-    }
-    if (newList) {
-      styles = listToStyles(parentId, newList)
-      addStylesToDom(styles)
-    } else {
-      styles = []
-    }
-    for (var i = 0; i < mayRemove.length; i++) {
-      var domStyle = mayRemove[i]
-      if (domStyle.refs === 0) {
-        for (var j = 0; j < domStyle.parts.length; j++) {
-          domStyle.parts[j]()
-        }
-        delete stylesInDom[domStyle.id]
-      }
-    }
-  }
-}
-
-function addStylesToDom (styles /* Array<StyleObject> */) {
-  for (var i = 0; i < styles.length; i++) {
-    var item = styles[i]
-    var domStyle = stylesInDom[item.id]
-    if (domStyle) {
-      domStyle.refs++
-      for (var j = 0; j < domStyle.parts.length; j++) {
-        domStyle.parts[j](item.parts[j])
-      }
-      for (; j < item.parts.length; j++) {
-        domStyle.parts.push(addStyle(item.parts[j]))
-      }
-      if (domStyle.parts.length > item.parts.length) {
-        domStyle.parts.length = item.parts.length
-      }
-    } else {
-      var parts = []
-      for (var j = 0; j < item.parts.length; j++) {
-        parts.push(addStyle(item.parts[j]))
-      }
-      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
-    }
-  }
-}
-
-function createStyleElement () {
-  var styleElement = document.createElement('style')
-  styleElement.type = 'text/css'
-  head.appendChild(styleElement)
-  return styleElement
-}
-
-function addStyle (obj /* StyleObjectPart */) {
-  var update, remove
-  var styleElement = document.querySelector('style[' + ssrIdKey + '~="' + obj.id + '"]')
-
-  if (styleElement) {
-    if (isProduction) {
-      // has SSR styles and in production mode.
-      // simply do nothing.
-      return noop
-    } else {
-      // has SSR styles but in dev mode.
-      // for some reason Chrome can't handle source map in server-rendered
-      // style tags - source maps in <style> only works if the style tag is
-      // created and inserted dynamically. So we remove the server rendered
-      // styles and inject new ones.
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  if (isOldIE) {
-    // use singleton mode for IE9.
-    var styleIndex = singletonCounter++
-    styleElement = singletonElement || (singletonElement = createStyleElement())
-    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
-    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
-  } else {
-    // use multi-style-tag mode in all other cases
-    styleElement = createStyleElement()
-    update = applyToTag.bind(null, styleElement)
-    remove = function () {
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  update(obj)
-
-  return function updateStyle (newObj /* StyleObjectPart */) {
-    if (newObj) {
-      if (newObj.css === obj.css &&
-          newObj.media === obj.media &&
-          newObj.sourceMap === obj.sourceMap) {
-        return
-      }
-      update(obj = newObj)
-    } else {
-      remove()
-    }
-  }
-}
-
-var replaceText = (function () {
-  var textStore = []
-
-  return function (index, replacement) {
-    textStore[index] = replacement
-    return textStore.filter(Boolean).join('\n')
-  }
-})()
-
-function applyToSingletonTag (styleElement, index, remove, obj) {
-  var css = remove ? '' : obj.css
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = replaceText(index, css)
-  } else {
-    var cssNode = document.createTextNode(css)
-    var childNodes = styleElement.childNodes
-    if (childNodes[index]) styleElement.removeChild(childNodes[index])
-    if (childNodes.length) {
-      styleElement.insertBefore(cssNode, childNodes[index])
-    } else {
-      styleElement.appendChild(cssNode)
-    }
-  }
-}
-
-function applyToTag (styleElement, obj) {
-  var css = obj.css
-  var media = obj.media
-  var sourceMap = obj.sourceMap
-
-  if (media) {
-    styleElement.setAttribute('media', media)
-  }
-  if (options.ssrId) {
-    styleElement.setAttribute(ssrIdKey, obj.id)
-  }
-
-  if (sourceMap) {
-    // https://developer.chrome.com/devtools/docs/javascript-debugging
-    // this makes source maps inside style tags work properly in Chrome
-    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
-    // http://stackoverflow.com/a/26603875
-    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
-  }
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = css
-  } else {
-    while (styleElement.firstChild) {
-      styleElement.removeChild(styleElement.firstChild)
-    }
-    styleElement.appendChild(document.createTextNode(css))
-  }
-}
-
-
-/***/ }),
-
-<<<<<<< Updated upstream
-/***/ 222:
-=======
-/***/ 241:
->>>>>>> Stashed changes
-/***/ (function(module, exports) {
-
-/**
- * Translates the list format produced by css-loader into something
- * easier to manipulate.
- */
-module.exports = function listToStyles (parentId, list) {
-  var styles = []
-  var newStyles = {}
-  for (var i = 0; i < list.length; i++) {
-    var item = list[i]
-    var id = item[0]
-    var css = item[1]
-    var media = item[2]
-    var sourceMap = item[3]
-    var part = {
-      id: parentId + ':' + i,
-      css: css,
-      media: media,
-      sourceMap: sourceMap
-    }
-    if (!newStyles[id]) {
-      styles.push(newStyles[id] = { id: id, parts: [part] })
-    } else {
-      newStyles[id].parts.push(part)
-    }
-  }
-  return styles
-}
-
-
-/***/ }),
-
-<<<<<<< Updated upstream
-/***/ 223:
-=======
-/***/ 242:
->>>>>>> Stashed changes
+/***/ 229:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9516,11 +5125,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-<<<<<<< Updated upstream
-/***/ 224:
-=======
-/***/ 243:
->>>>>>> Stashed changes
+/***/ 230:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -9567,11 +5172,7 @@ if (false) {
 
 /***/ }),
 
-<<<<<<< Updated upstream
-/***/ 225:
-=======
-/***/ 244:
->>>>>>> Stashed changes
+/***/ 231:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -9604,57 +5205,11 @@ if (false) {
 
 /***/ }),
 
-<<<<<<< Updated upstream
-/***/ 226:
-=======
-/***/ 245:
->>>>>>> Stashed changes
+/***/ 232:
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 235:
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(236);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(221)("6455caac", content, false, {});
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-cab24aea\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Temp.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-cab24aea\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Temp.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ 236:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(14)(false);
-// imports
-
-
-// module
-exports.push([module.i, "\nbody {\n  padding-top:60px;\n}\n#wrapper {\n  height:100vh;\n}\n", ""]);
-
-// exports
-
+throw new Error("Module build failed: ModuleBuildError: Module build failed: \n@import \"bulma\";\n^\n      File to import not found or unreadable: bulma.\n      in /Users/daniel.furman/Development/facet/post-award/node_modules/bulmaswatch/pulse/bulmaswatch.scss (line 3, column 1)\n    at runLoaders (/Users/daniel.furman/Development/facet/post-award/node_modules/webpack/lib/NormalModule.js:195:19)\n    at /Users/daniel.furman/Development/facet/post-award/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /Users/daniel.furman/Development/facet/post-award/node_modules/loader-runner/lib/LoaderRunner.js:230:18\n    at context.callback (/Users/daniel.furman/Development/facet/post-award/node_modules/loader-runner/lib/LoaderRunner.js:111:13)\n    at Object.asyncSassJobQueue.push [as callback] (/Users/daniel.furman/Development/facet/post-award/node_modules/sass-loader/lib/loader.js:55:13)\n    at Object.done [as callback] (/Users/daniel.furman/Development/facet/post-award/node_modules/neo-async/async.js:7974:18)\n    at options.error (/Users/daniel.furman/Development/facet/post-award/node_modules/node-sass/lib/index.js:294:32)");
 
 /***/ })
 
-},[139]);
+},[140]);
