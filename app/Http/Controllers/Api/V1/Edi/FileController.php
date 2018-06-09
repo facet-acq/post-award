@@ -46,11 +46,7 @@ class FileController extends ApiController
      */
     public function store()
     {
-        $guardResult = $this->filePathGuard();
-        if (get_class($guardResult) === 'Illuminate\Http\JsonResponse') {
-            return $guardResult;
-        }
-
+        $this->filePath = request()->only('file')['file'][0];
         $path = $this->fetchPath($this->filePath);
         $fileToProcess = EdiInterface::create([
             'file_size' => Storage::size($this->filePath),
