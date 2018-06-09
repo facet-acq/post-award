@@ -1,12 +1,12 @@
-//@import './_variables';
-// @import 'node_modules/bulma/bulma';
+@import './_variables';
+@import 'node_modules/bulma/bulma';
 
 
 $fa-font-path: "~font-awesome/fonts" !default;
 @import '~font-awesome/scss/font-awesome.scss';
 
 
-@import '~bulmaswatch/pulse/bulmaswatch.scss';
+// @import '~bulmaswatch/pulse/bulmaswatch.scss';
 
 
 .card-image > .fa {
