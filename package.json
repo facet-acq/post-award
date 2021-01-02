@@ -16,7 +16,7 @@
         "eslint-plugin-vue": "^3.14.0",
         "font-awesome": "^4.7.0",
         "laravel-mix": "^2.1.11",
-        "node-sass": "^4.9.0",
+        "node-sass": "^4.13.1",
         "typeface-fira-sans": "^0.0.54"
     },
     "dependencies": {
