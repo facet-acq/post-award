@@ -24,7 +24,7 @@
         "bulma": "^0.6.2",
         "bulmaswatch": "^0.6.2",
         "laravel-echo": "^1.4.0",
-        "moment": "^2.22.2",
+        "moment": "^2.29.2",
         "pusher-js": "^4.2.2",
         "vue": "^2.5.16",
         "vue-router": "^3.0.1"
