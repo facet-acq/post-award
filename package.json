@@ -20,7 +20,7 @@
         "typeface-fira-sans": "^0.0.54"
     },
     "dependencies": {
-        "axios": "^0.21.1",
+        "axios": "^1.6.3",
         "bulma": "^0.6.2",
         "bulmaswatch": "^0.6.2",
         "laravel-echo": "^1.4.0",
